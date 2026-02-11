@@ -223,7 +223,7 @@ export default function ContactForm() {
 
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-[#25A098] text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
                 <span>إرسال الطلب</span>
                 <Send size={20} />

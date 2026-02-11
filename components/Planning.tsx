@@ -33,7 +33,7 @@ const steps = [
 
 export default function Planning() {
   return (
-    <section className="py-16 md:py-24 bg-[#0F172A] relative overflow-hidden text-white">
+    <section className="py-16 md:py-24 bg-[#14215B] relative overflow-hidden text-white">
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px]"></div>

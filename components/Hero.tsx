@@ -24,7 +24,7 @@ export default function Hero() {
   return (
     <section className="min-h-[90vh] bg-gradient-to-b from-secondary/50 to-background pt-12 pb-20 overflow-hidden relative">
       {/* Background Pattern - subtle geometric feel */}
-      <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#2BBCB3 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+      <div className="absolute inset-0 z-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#14215B 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Decorative circles - Refined */}

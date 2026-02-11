@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <head>
-        <meta name="theme-color" content="#2BBCB3" />
+        <meta name="theme-color" content="#14215B" />
       </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
