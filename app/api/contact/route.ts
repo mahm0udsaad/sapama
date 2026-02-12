@@ -1,9 +1,8 @@
 import { Resend } from 'resend'
 
-const CONTACT_EMAIL = 'ahmedhazaaqasem@gmail.com'
-
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY
+  const contactEmail = process.env.CONTACT_EMAIL ?? 'ahmedhazaaqasem@gmail.com'
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
 
   if (!apiKey) {
@@ -65,7 +64,7 @@ export async function POST(request: Request) {
   try {
     const { error } = await resend.emails.send({
       from: fromEmail,
-      to: CONTACT_EMAIL,
+      to: contactEmail,
       replyTo: email,
       subject,
       html,
@@ -73,11 +72,13 @@ export async function POST(request: Request) {
     })
 
     if (error) {
-      return Response.json({ error: 'Failed to send email' }, { status: 500 })
+      console.error('Resend send error:', error)
+      return Response.json({ error: error.message || 'Failed to send email' }, { status: 500 })
     }
 
     return Response.json({ success: true })
-  } catch {
+  } catch (err) {
+    console.error('Contact API exception:', err)
     return Response.json({ error: 'Failed to send email' }, { status: 500 })
   }
 }
