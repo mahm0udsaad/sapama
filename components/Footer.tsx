@@ -21,9 +21,9 @@ export default function Footer() {
           >
             <div className="flex items-center gap-2 mb-6">
               <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                <span className="text-white text-lg font-bold">S</span>
+                <span className="text-white text-lg font-bold">M</span>
               </div>
-              <span className="text-3xl font-bold tracking-tight">سباما ميديكال</span>
+              <span className="text-3xl font-bold tracking-tight">مادمـاك ميديكال</span>
             </div>
             <p className="text-gray-400 leading-relaxed mb-8 text-lg">
               متخصصون في توفير الأدوات والمعدات الطبية وكذلك الأجهزة والمستلزمات الرياضية لمختلف القطاعات.
@@ -53,7 +53,7 @@ export default function Footer() {
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-primary rounded-full"></span>
             </h4>
             <ul className="space-y-4">
-              {['الخدمات', 'عن سباما', 'تواصل معنا', 'سياسة الخصوصية', 'شروط الخدمة'].map((item, i) => (
+              {['الخدمات', 'عن مادمـاك', 'تواصل معنا', 'سياسة الخصوصية', 'شروط الخدمة'].map((item, i) => (
                 <li key={i}>
                   <a href="#" className="text-gray-400 hover:text-primary transition flex items-center gap-2 group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
@@ -140,7 +140,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-right">
-              © جميع الحقوق محفوظة لدى سباما ميديكال 2026
+              © جميع الحقوق محفوظة لدى مادمـاك ميديكال 2026
             </p>
             <div className="flex gap-8 text-sm text-gray-400">
               <a href="#" className="hover:text-primary transition">

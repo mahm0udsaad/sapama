@@ -41,13 +41,13 @@ export default function Navigation() {
             <a href="#" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
               <div className="flex items-center gap-2">
                 <img
-                  src="/logo.png"
-                  alt="Spama Logo"
-                  className="h-8 w-auto object-contain"
-                  style={{ minWidth: 110 }}
+                  src="/logo.JPG"
+                  alt="Madmak Logo"
+                  className="h-12 md:h-16 w-auto object-contain"
+                  style={{ minWidth: 150 }}
                 />
                 {/* Optionally: add Arabic name if you want to keep the bilingual touch */}
-                {/* <span className="text-foreground hidden md:inline">سباما</span> */}
+                {/* <span className="text-foreground hidden md:inline">مادمـاك</span> */}
               </div>
             </a>
           </div>

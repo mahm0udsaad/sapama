@@ -45,7 +45,7 @@ export default function Hero() {
               </span>
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-              سباما ميديكال
+              مادمـاك ميديكال
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
                 لتجهيزات مراكز العلاج
