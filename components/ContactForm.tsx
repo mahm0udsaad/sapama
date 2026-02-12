@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, User, MessageSquare, Building2, Map } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { FaSnapchat, FaTiktok } from 'react-icons/fa6'
 
 const regions = [
   'الرياض', 'مكة المكرمة', 'المدينة المنورة', 'القصيم', 'الدمام',
@@ -21,15 +22,46 @@ export default function ContactForm() {
   })
 
   const [focus, setFocus] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitMessage(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send')
+      }
+
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        city: '',
+        region: '',
+        message: '',
+      })
+      setSubmitMessage({ type: 'success', text: 'تم إرسال طلبك بنجاح. سيتم التواصل معك قريباً.' })
+    } catch {
+      setSubmitMessage({ type: 'error', text: 'تعذر إرسال الطلب حالياً. حاول مرة أخرى خلال دقائق.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -65,23 +97,23 @@ export default function ContactForm() {
               </p>
               
               <div className="space-y-8">
-                <a href="tel:8001280001" className="flex items-center gap-5 group transition-all hover:translate-x-2">
+                <a href="tel:0570780836" className="flex items-center gap-5 group transition-all hover:translate-x-2">
                   <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md group-hover:bg-white/20 transition-colors">
                     <Phone size={24} className="text-white" />
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm mb-1">رقم الموحد</p>
-                    <p className="text-xl font-bold font-mono tracking-wide">800 128 0001</p>
+                    <p className="text-white/60 text-sm mb-1">رقم الجوال</p>
+                    <p className="text-xl font-bold font-mono tracking-wide">0570780836</p>
                   </div>
                 </a>
 
-                <a href="mailto:admin@spama.sa" className="flex items-center gap-5 group transition-all hover:translate-x-2">
+                <a href="mailto:madmakvision@gmail.com" className="flex items-center gap-5 group transition-all hover:translate-x-2">
                   <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md group-hover:bg-white/20 transition-colors">
                     <Mail size={24} className="text-white" />
                   </div>
                   <div>
                     <p className="text-white/60 text-sm mb-1">البريد الإلكتروني</p>
-                    <p className="text-xl font-bold">admin@spama.sa</p>
+                    <p className="text-xl font-bold">madmakvision@gmail.com</p>
                   </div>
                 </a>
 
@@ -91,13 +123,33 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <p className="text-white/60 text-sm mb-1">المركز الرئيسي</p>
-                    <p className="text-xl font-bold">جدة، حي الشرفية</p>
+                    <p className="text-xl font-bold">الرياض، إشبيليا</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="relative z-10 mt-12 pt-8 border-t border-white/20">
+               <div className="flex items-center gap-4 mb-5">
+                 <a
+                   href="https://www.tiktok.com/"
+                   target="_blank"
+                   rel="noreferrer"
+                   aria-label="TikTok"
+                   className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
+                 >
+                   <FaTiktok size={18} />
+                 </a>
+                 <a
+                   href="https://www.snapchat.com/add/"
+                   target="_blank"
+                   rel="noreferrer"
+                   aria-label="Snapchat"
+                   className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
+                 >
+                   <FaSnapchat size={18} />
+                 </a>
+               </div>
                <p className="text-white/80 text-sm">
                  ساعات العمل: الأحد - الخميس 
                  <br />
@@ -223,11 +275,18 @@ export default function ContactForm() {
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                <span>إرسال الطلب</span>
+                <span>{isSubmitting ? 'جاري الإرسال...' : 'إرسال الطلب'}</span>
                 <Send size={20} />
               </button>
+
+              {submitMessage && (
+                <p className={`text-sm font-semibold ${submitMessage.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {submitMessage.text}
+                </p>
+              )}
             </form>
           </div>
 

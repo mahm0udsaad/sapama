@@ -142,9 +142,9 @@ export default function FAQ() {
           transition={{ delay: 0.4 }}
         >
           <p className="text-muted-foreground mb-6">هل لديك سؤال آخر لم تجد إجابته؟</p>
-          <button className="btn-primary">
+          <a href="#contact" className="btn-primary inline-block">
             تواصل مع فريقنا
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

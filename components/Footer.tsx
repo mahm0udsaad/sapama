@@ -1,8 +1,8 @@
 'use client'
 
-import { Mail, Phone, MapPin, Facebook, Instagram, MessageCircle } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { FaWhatsapp } from 'react-icons/fa'
+import { FaSnapchat, FaTiktok } from 'react-icons/fa6'
 
 export default function Footer() {
   return (
@@ -20,19 +20,27 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                <span className="text-white text-lg font-bold">M</span>
-              </div>
-              <span className="text-3xl font-bold tracking-tight">مادمـاك ميديكال</span>
+              <img
+                src="/image.png"
+                alt="مدماك فيجن"
+                className="h-12 w-auto object-contain"
+              />
+              <span className="text-3xl font-bold tracking-tight">مدماك فيجن</span>
             </div>
             <p className="text-gray-400 leading-relaxed mb-8 text-lg">
-              متخصصون في توفير الأدوات والمعدات الطبية وكذلك الأجهزة والمستلزمات الرياضية لمختلف القطاعات.
+              متخصصون في تجهيز مراكز التأهيل والعلاج الطبيعي وتوريد الأجهزة والمستلزمات في المملكة.
             </p>
             <div className="flex gap-4">
-              {[Facebook, Instagram, MessageCircle].map((Icon, i) => (
+              {[
+                { Icon: FaTiktok, href: 'https://www.tiktok.com/@madmak_vi', label: 'TikTok' },
+                { Icon: FaSnapchat, href: 'https://snapchat.com/t/7YWtIQ3X', label: 'Snapchat' },
+              ].map(({ Icon, href, label }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
                   className="w-12 h-12 bg-gray-800 hover:bg-primary rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
                 >
                   <Icon size={20} />
@@ -53,11 +61,15 @@ export default function Footer() {
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-primary rounded-full"></span>
             </h4>
             <ul className="space-y-4">
-              {['الخدمات', 'عن مادمـاك', 'تواصل معنا', 'سياسة الخصوصية', 'شروط الخدمة'].map((item, i) => (
-                <li key={i}>
-                  <a href="#" className="text-gray-400 hover:text-primary transition flex items-center gap-2 group">
+              {[
+                { name: 'الخدمات', href: '#services' },
+                { name: 'عن مدماك فيجن', href: '#about' },
+                { name: 'تواصل معنا', href: '#contact' },
+              ].map((item) => (
+                <li key={item.name}>
+                  <a href={item.href} className="text-gray-400 hover:text-primary transition flex items-center gap-2 group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}
@@ -104,8 +116,8 @@ export default function Footer() {
                   <Phone className="text-white" size={20} />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">رقم الموحد</p>
-                  <p className="text-white font-bold text-lg ltr:text-left" dir="ltr">800 128 0001</p>
+                  <p className="text-gray-400 text-sm mb-1">رقم الجوال</p>
+                  <p className="text-white font-bold text-lg ltr:text-left" dir="ltr">0570780836</p>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
@@ -114,7 +126,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm mb-1">البريد الإلكتروني</p>
-                  <p className="text-white font-bold break-all">admin@spama.sa</p>
+                  <p className="text-white font-bold break-all">madmakvision@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
@@ -123,7 +135,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm mb-1">الموقع</p>
-                  <p className="text-white font-bold">جدة، المملكة العربية السعودية</p>
+                  <p className="text-white font-bold">الرياض، إشبيليا</p>
                 </div>
               </div>
             </div>
@@ -140,7 +152,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-right">
-              © جميع الحقوق محفوظة لدى مادمـاك ميديكال 2026
+              © جميع الحقوق محفوظة لدى مدماك فيجن 2026
             </p>
             <div className="flex gap-8 text-sm text-gray-400">
               <a href="#" className="hover:text-primary transition">
@@ -157,17 +169,6 @@ export default function Footer() {
         </motion.div>
       </div>
 
-      {/* Floating WhatsApp Button */}
-      <motion.div 
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, type: "spring" }}
-        className="fixed bottom-8 right-8 flex gap-3 z-40"
-      >
-        <button className="bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full p-4 shadow-2xl transition duration-300 transform hover:scale-110 hover:rotate-12 ring-4 ring-white/20">
-          <FaWhatsapp size={32} aria-label="WhatsApp" />
-        </button>
-      </motion.div>
     </footer>
   )
 }

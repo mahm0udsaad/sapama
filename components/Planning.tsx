@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { ClipboardCheck, PenTool, LayoutDashboard, Truck, CheckCircle2 } from 'lucide-react'
+import { ClipboardCheck, PenTool, LayoutDashboard, Truck } from 'lucide-react'
 
 const steps = [
   {
@@ -33,7 +33,7 @@ const steps = [
 
 export default function Planning() {
   return (
-    <section className="py-16 md:py-24 bg-[#14215B] relative overflow-hidden text-white">
+    <section id="about" className="py-16 md:py-24 bg-[#14215B] relative overflow-hidden text-white">
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px]"></div>
@@ -136,9 +136,9 @@ export default function Planning() {
                <h3 className="text-2xl font-bold text-white mb-1">جاهز لبدء مشروعك؟</h3>
                <p className="text-white/90">احصل على استشارة أولية مجانية لتخطيط مركزك</p>
              </div>
-             <button className="bg-white text-primary hover:bg-gray-50 font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+             <a href="#contact" className="bg-white text-primary hover:bg-gray-50 font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
                تواصل مع خبرائنا الآن
-             </button>
+             </a>
           </div>
         </motion.div>
       </div>

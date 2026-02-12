@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ShoppingCart, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navigation() {
@@ -41,10 +41,10 @@ export default function Navigation() {
             <a href="#" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
               <div className="flex items-center gap-2">
                 <img
-                  src="/logo.JPG"
-                  alt="Madmak Logo"
+                  src="/image.png"
+                  alt="مدماك فيجن"
                   className="h-12 md:h-16 w-auto object-contain"
-                  style={{ minWidth: 150 }}
+                  style={{ minWidth: 150, mixBlendMode: 'multiply' }}
                 />
                 {/* Optionally: add Arabic name if you want to keep the bilingual touch */}
                 {/* <span className="text-foreground hidden md:inline">مادمـاك</span> */}
@@ -68,13 +68,14 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="btn-primary"
             >
               اطلب الآن
-            </motion.button>
+            </motion.a>
           </div>
 
         </div>
@@ -98,9 +99,9 @@ export default function Navigation() {
                 <a href="#contact" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   طلب عرض سعر
                 </a>
-                <button className="btn-primary w-full mt-4">
+                <a href="#contact" className="btn-primary w-full mt-4 block text-center" onClick={() => setIsOpen(false)}>
                   اطلب الآن
-                </button>
+                </a>
               </div>
             </motion.div>
           )}

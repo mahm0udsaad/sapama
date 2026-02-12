@@ -45,23 +45,23 @@ export default function Hero() {
               </span>
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-              مادمـاك ميديكال
+              مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                لتجهيزات مراكز العلاج
+                لتجهيزات مراكز التأهيل والعلاج
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
               نوفر كل ما يلزم أخصائي العلاج الطبيعي والمريض من مستلزمات العلاج الطبيعي للحصول على أفضل النتائج في جلسات العلاج سواء في مراكز الرعاية أو حتى في المنزل.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
-              <button className="btn-primary inline-flex items-center gap-2 group">
+              <a href="#contact" className="btn-primary inline-flex items-center gap-2 group">
                 اطلب الآن
                 <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
-              </button>
-              <button className="btn-secondary">
+              </a>
+              <a href="#services" className="btn-secondary">
                 اعرف المزيد
-              </button>
+              </a>
             </motion.div>
           </motion.div>
 
@@ -72,9 +72,9 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm">
+            <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
-                src="/hero-physiotherapy.png"
+                src="/h2ero-physiotherapy.png"
                 alt="جلسة علاج طبيعي احترافية"
                 width={600}
                 height={500}
@@ -106,25 +106,6 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Stats Section */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          {[
-            { value: '50+', label: 'مركز علاج', color: 'text-primary' },
-            { value: '1000+', label: 'جهاز متخصص', color: 'text-accent' },
-            { value: '24/7', label: 'دعم فني', color: 'text-primary' }
-          ].map((stat, i) => (
-            <div key={i} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center shadow-lg border border-white/50 hover:border-primary/20 transition-all duration-300 hover:-translate-y-1">
-              <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
-              <p className="text-muted-foreground font-medium text-sm md:text-base">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   )

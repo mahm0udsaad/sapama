@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ['latin'] })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'مادمـاك ميديكال - تجهيزات مراكز العلاج الطبيعي',
-  description: 'متخصصون في توفير أجهزة ومعدات العلاج الطبيعي والتأهيل الشامل بالمملكة العربية السعودية',
+  title: 'مدماك فيجن - تجهيزات مراكز التأهيل والعلاج الطبيعي',
+  description: 'متخصصون في تجهيز مراكز التأهيل والعلاج الطبيعي وتوريد الأجهزة والمستلزمات في المملكة العربية السعودية',
   generator: 'v0.app',
 }
 
