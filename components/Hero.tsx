@@ -44,7 +44,7 @@ export default function Hero() {
                 خدمات متخصصة وموثوقة
               </span>
             </motion.div>
-            <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold text-foreground mb-6 leading-tight tracking-tight">
+            <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold text-foreground mb-6 tracking-tight leading-[1.25] md:leading-[1.3]">
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
@@ -74,7 +74,7 @@ export default function Hero() {
           >
             <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
-                src="/h2ero-physiotherapy.png"
+                src="/hero-physiotherapy.png"
                 alt="جلسة علاج طبيعي احترافية"
                 width={600}
                 height={500}

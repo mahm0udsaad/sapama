@@ -21,11 +21,10 @@ export default function Footer() {
           >
             <div className="flex items-center gap-2 mb-6">
               <img
-                src="/image.png"
+                src="/logo.png"
                 alt="مدماك فيجن"
                 className="h-12 w-auto object-contain"
               />
-              <span className="text-3xl font-bold tracking-tight">مدماك فيجن</span>
             </div>
             <p className="text-gray-400 leading-relaxed mb-8 text-lg">
               متخصصون في تجهيز مراكز التأهيل والعلاج الطبيعي وتوريد الأجهزة والمستلزمات في المملكة.

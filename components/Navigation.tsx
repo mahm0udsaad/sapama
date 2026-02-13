@@ -26,7 +26,7 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> 
-        
+
         <div className="flex justify-between items-center h-20">
           {/* Mobile Menu Button */}
           <button
@@ -42,7 +42,7 @@ export default function Navigation() {
             <a href="#" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
               <div className="flex items-center gap-2">
                 <img
-                  src="/image.png"
+                  src="/logo.png"
                   alt="مدماك فيجن"
                   className="h-12 md:h-16 w-auto object-contain"
                   style={{ minWidth: 150, mixBlendMode: 'multiply' }}
