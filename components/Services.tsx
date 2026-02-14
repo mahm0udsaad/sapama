@@ -13,16 +13,18 @@ const services = [
     image: '/service-devices.jpg',
     icon: Zap,
     color: 'bg-primary',
-    text: 'text-primary'
+    text: 'text-primary',
+    border: 'border-primary'
   },
   {
     id: 2,
     title: 'معدات التأهيل الحركي',
     description: 'تشكيلة واسعة من معدات التأهيل الحركي المصممة لتعزيز القدرة الحركية، تشمل المتوازيات، السلالم العلاجية، وطاولات التدريب المتخصصة.',
-    image: '/service-equipment.jpg',
+    image: '/IMG_7855.JPG',
     icon: Package,
     color: 'bg-accent',
-    text: 'text-accent'
+    text: 'text-accent',
+    border: 'border-accent'
   },
   {
     id: 3,
@@ -30,8 +32,9 @@ const services = [
     description: 'مجموعة متكاملة من الأدوات الرياضية الخفيفة والأوزان والكرات العلاجية، مثالية لبرامج التقوية المنزلية وتجهيز الصالات الرياضية العلاجية.',
     image: '/service-sports.jpg',
     icon: Dumbbell,
-    color: 'bg-primary',
-    text: 'text-primary'
+    color: 'bg-yellow-400',
+    text: 'text-yellow-400',
+    border: 'border-yellow-400'
   },
 ]
 
@@ -91,7 +94,7 @@ export default function Services() {
                   onClick={() => setActiveService(service)}
                   className={`group relative p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 overflow-hidden ${
                     isActive 
-                      ? 'bg-white border-primary shadow-lg' 
+                      ? `bg-white ${service.border} shadow-lg` 
                       : 'bg-white/50 border-transparent hover:bg-white hover:border-gray-200'
                   }`}
                 >
@@ -127,7 +130,7 @@ export default function Services() {
                   {isActive && (
                     <motion.div 
                       layoutId="activeBar"
-                      className="absolute right-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-full"
+                      className={`absolute right-0 top-0 bottom-0 w-1.5 rounded-l-full ${service.color}`}
                     />
                   )}
                 </motion.div>
@@ -136,7 +139,7 @@ export default function Services() {
           </div>
 
           {/* Left Column: Image Preview */}
-          <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white hidden lg:block">
+          <div className={`relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl border-4 ${activeService.border} hidden lg:block`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeService.id}

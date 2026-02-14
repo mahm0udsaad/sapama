@@ -31,9 +31,9 @@ const steps = [
   },
 ]
 
-export default function Planning() {
+export default function Planning() {      
   return (
-    <section id="about" className="py-16 md:py-24 bg-[#14215B] relative overflow-hidden text-white">
+    <section id="about" className="py-16 md:py-24 bg-[#6bc168] relative overflow-hidden text-white">
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px]"></div>
@@ -66,14 +66,19 @@ export default function Planning() {
           >
             تخطيط وتجهيز مراكز العلاج الطبيعي تبعــاً لاشتراطات
             <br />
-            <span className="text-primary">وزارة الصحـــة</span> في المملكة العربية السعودية
+            <span
+              className="text-gray-700" 
+            >
+              وزارة الصحـــة
+            </span>{" "}
+            في المملكة العربية السعودية
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-gray-400 text-lg leading-relaxed max-w-3xl mx-auto"
+            className="text-[#f5fff8] text-lg leading-relaxed max-w-3xl mx-auto"
           >
             نحول رؤيتك إلى واقع ملموس من خلال منهجية عمل دقيقة تضمن لك مركزاً علاجياً متطوراً ومطابقاً لأعلى المعايير الرسمية في المملكة.
           </motion.p>
@@ -81,9 +86,6 @@ export default function Planning() {
 
         <div className="relative">
           {/* Connecting Line (Desktop) */}
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 -translate-y-1/2 hidden lg:block rounded-full"></div>
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 -translate-y-1/2 hidden lg:block rounded-full opacity-30"></div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
             {steps.map((step, index) => {
               const Icon = step.icon
@@ -97,22 +99,22 @@ export default function Planning() {
                   className="relative group"
                 >
                   {/* Step Card */}
-                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 hover:border-primary/50 p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 h-full flex flex-col items-center text-center relative z-10">
+                  <div className="bg-white/10 backdrop-blur-sm border border-[#328a3e]/30 hover:border-[#328a3e] p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#328a3e]/10 h-full flex flex-col items-center text-center relative z-10">
                     
                     {/* Icon Circle */}
-                    <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 group-hover:border-primary group-hover:bg-primary text-primary group-hover:text-white flex items-center justify-center mb-6 transition-all duration-300 shadow-lg relative">
+                    <div className="w-16 h-16 rounded-2xl bg-[#328a3e] border border-white group-hover:border-[#6bc168] group-hover:bg-[#6bc168] text-white group-hover:text-gray-700 flex items-center justify-center mb-6 transition-all duration-300 shadow-lg relative">
                       <Icon size={32} />
                       {/* Step Number Badge */}
-                      <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-slate-900 border-2 border-slate-800 text-gray-400 flex items-center justify-center text-sm font-bold shadow-sm group-hover:bg-white group-hover:text-primary transition-colors">
+                      <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-[#ffffff] border-2 border-[#6bc168] text-gray-700 flex items-center justify-center text-sm font-bold shadow-sm group-hover:bg-[#328a3e] group-hover:text-white transition-colors">
                         {index + 1}
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-gray-700 transition-colors">
                       {step.title}
                     </h3>
                     
-                    <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                    <p className="text-white text-sm leading-relaxed group-hover:text-[#dbf3e2] transition-colors">
                       {step.description}
                     </p>
                   </div>
@@ -128,15 +130,18 @@ export default function Planning() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
-          className="mt-20 p-8 rounded-3xl bg-gradient-to-r from-primary to-accent relative overflow-hidden text-center shadow-2xl"
+          className="mt-20 p-8 rounded-3xl bg-gradient-to-r from-[#48ae57] to-[#a6e7b9] relative overflow-hidden text-center shadow-2xl"
         >
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-8">
              <div className="text-right">
-               <h3 className="text-2xl font-bold text-white mb-1">جاهز لبدء مشروعك؟</h3>
-               <p className="text-white/90">احصل على استشارة أولية مجانية لتخطيط مركزك</p>
+               <h3 className="text-2xl font-bold text-[#1d4b27] mb-1">جاهز لبدء مشروعك؟</h3>
+               <p className="text-[#368541]">احصل على استشارة أولية مجانية لتخطيط مركزك</p>
              </div>
-             <a href="#contact" className="bg-white text-primary hover:bg-gray-50 font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+             <a
+               href="#contact"
+               className="bg-white text-gray-700 hover:bg-[#e6fcec] font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105"
+             >
                تواصل مع خبرائنا الآن
              </a>
           </div>
