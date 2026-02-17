@@ -3,6 +3,7 @@
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
+import DaycareSection from '@/components/DaycareSection'
 import Planning from '@/components/Planning'
 import AdditionalServices from '@/components/AdditionalServices'
 import ContactForm from '@/components/ContactForm'
@@ -15,6 +16,7 @@ export default function Home() {
       <Navigation />
       <Hero />
       <Services />
+      <DaycareSection />
       <Planning />
       <AdditionalServices />
       <ContactForm />

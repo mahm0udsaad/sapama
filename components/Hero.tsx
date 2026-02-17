@@ -48,11 +48,11 @@ export default function Hero() {
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                لتجهيزات مراكز التأهيل والعلاج
+                للمنتجات والأجهزة الصحية
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
-              نوفر كل ما يلزم أخصائي العلاج الطبيعي والمريض من مستلزمات العلاج الطبيعي للحصول على أفضل النتائج في جلسات العلاج سواء في مراكز الرعاية أو حتى في المنزل.
+              نوفر منتجات وأجهزة متخصصة لفئات متعددة تشمل العلاج الطبيعي، الرعاية النهارية، ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
               <a href="#contact" className="btn-primary inline-flex items-center gap-2 group">
@@ -75,7 +75,7 @@ export default function Hero() {
             <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
                 src="/hero-physiotherapy.png"
-                alt="جلسة علاج طبيعي احترافية"
+                alt="منتجات وأجهزة رعاية صحية"
                 width={600}
                 height={500}
                 className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"

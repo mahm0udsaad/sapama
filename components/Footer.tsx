@@ -27,7 +27,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-white leading-relaxed mb-8 text-lg">
-              متخصصون في تجهيز مراكز التأهيل والعلاج الطبيعي وتوريد الأجهزة والمستلزمات في المملكة.
+              نوفر منتجات وأجهزة متخصصة في العلاج الطبيعي والرعاية النهارية ورعاية كبار السن داخل المملكة.
             </p>
             <div className="flex gap-4">
               {[
@@ -87,7 +87,7 @@ export default function Footer() {
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-accent rounded-full"></span>
             </h4>
             <ul className="space-y-4">
-              {['أجهزة العلاج الطبيعي', 'معدات التأهيل', 'الصيانة والدعم الفني', 'التشاور والتخطيط', 'التدريب والدعم'].map((item, i) => (
+              {['منتجات علاج طبيعي وأجهزة', 'منتجات رعاية نهارية وأجهزة', 'منتجات رعاية كبار سن وأجهزة', 'الصيانة والدعم الفني', 'التخطيط والتجهيز'].map((item, i) => (
                 <li key={i}>
                   <a href="#" className="text-white hover:text-accent transition flex items-center gap-2 group">
                      <span className="w-1.5 h-1.5 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>

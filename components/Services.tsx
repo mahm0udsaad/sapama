@@ -2,36 +2,36 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Zap, Package, Dumbbell, ArrowLeft } from 'lucide-react'
+import { HeartPulse, Sun, Users, ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const services = [
   {
     id: 1,
-    title: 'أجهزة العلاج الطبيعي',
-    description: 'نوفر أحدث التقنيات في أجهزة العلاج الطبيعي، بما في ذلك أجهزة العلاج الكهربائي، الليزر، والموجات التصادمية، لضمان أفضل نتائج علاجية للمرضى.',
-    image: '/service-devices.jpg',
-    icon: Zap,
+    title: 'منتجات علاج طبيعي وأجهزة',
+    description: 'تجهيزات متكاملة للعلاج الطبيعي تشمل أجهزة العلاج الكهربائي والليزر، أدوات التأهيل الحركي، والمستلزمات اليومية للجلسات العلاجية.',
+    image: '/IMG_7855.JPG',
+    icon: HeartPulse,
     color: 'bg-primary',
     text: 'text-primary',
     border: 'border-primary'
   },
   {
     id: 2,
-    title: 'معدات التأهيل الحركي',
-    description: 'تشكيلة واسعة من معدات التأهيل الحركي المصممة لتعزيز القدرة الحركية، تشمل المتوازيات، السلالم العلاجية، وطاولات التدريب المتخصصة.',
-    image: '/IMG_7855.JPG',
-    icon: Package,
+    title: 'منتجات رعاية نهارية وأجهزة',
+    description: 'حلول عملية لمراكز الرعاية النهارية تشمل أسرة الرعاية، أدوات الحركة، مستلزمات السلامة، وأجهزة المتابعة اليومية.',
+    image: '/first-prompt.png',
+    icon: Sun,
     color: 'bg-accent',
     text: 'text-accent',
     border: 'border-accent'
   },
   {
     id: 3,
-    title: 'الأدوات الرياضية والتمارين',
-    description: 'مجموعة متكاملة من الأدوات الرياضية الخفيفة والأوزان والكرات العلاجية، مثالية لبرامج التقوية المنزلية وتجهيز الصالات الرياضية العلاجية.',
-    image: '/service-sports.jpg',
-    icon: Dumbbell,
+    title: 'منتجات رعاية كبار سن وأجهزة',
+    description: 'منتجات داعمة لكبار السن مثل أجهزة الحركة المنزلية، أدوات التوازن، وسائل الأمان، ومستلزمات تساعد على استقلالية أكبر.',
+    image: '/second-prompt.png',
+    icon: Users,
     color: 'bg-yellow-400',
     text: 'text-yellow-400',
     border: 'border-yellow-400'
@@ -73,7 +73,7 @@ export default function Services() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-600"
           >
-            نجمع بين التقنية الحديثة والخبرة العملية لنقدم لك أفضل تجهيزات العلاج الطبيعي
+            نوفر منتجات وأجهزة متخصصة تغطي احتياجات العلاج الطبيعي والرعاية النهارية ورعاية كبار السن
           </motion.p>
         </div>
 

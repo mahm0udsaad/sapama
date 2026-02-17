@@ -64,7 +64,7 @@ export default function Planning() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
           >
-            تخطيط وتجهيز مراكز العلاج الطبيعي تبعــاً لاشتراطات
+            تخطيط وتجهيز منشآت الرعاية الصحية تبعــاً لاشتراطات
             <br />
             <span
               className="text-gray-700" 
@@ -80,7 +80,7 @@ export default function Planning() {
             transition={{ delay: 0.2 }}
             className="text-[#f5fff8] text-lg leading-relaxed max-w-3xl mx-auto"
           >
-            نحول رؤيتك إلى واقع ملموس من خلال منهجية عمل دقيقة تضمن لك مركزاً علاجياً متطوراً ومطابقاً لأعلى المعايير الرسمية في المملكة.
+            نحول رؤيتك إلى واقع ملموس من خلال منهجية عمل دقيقة تضمن لك منشأة متطورة للعلاج الطبيعي أو الرعاية النهارية أو رعاية كبار السن، ومطابقة لأعلى المعايير الرسمية في المملكة.
           </motion.p>
         </div>
 
