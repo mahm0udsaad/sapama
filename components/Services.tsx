@@ -1,14 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { HeartPulse, Sun, Users, ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+export type ServiceSection = 'physio' | 'daycare' | 'senior'
+
 const services = [
   {
     id: 1,
-    title: 'منتجات علاج طبيعي وأجهزة',
+    section: 'physio' as ServiceSection,
+    title: 'تجهيز مراكز علاج طبيعي',
     description: 'تجهيزات متكاملة للعلاج الطبيعي تشمل أجهزة العلاج الكهربائي والليزر، أدوات التأهيل الحركي، والمستلزمات اليومية للجلسات العلاجية.',
     image: '/IMG_7855.JPG',
     icon: HeartPulse,
@@ -18,28 +21,45 @@ const services = [
   },
   {
     id: 2,
-    title: 'منتجات رعاية نهارية وأجهزة',
-    description: 'حلول عملية لمراكز الرعاية النهارية تشمل أسرة الرعاية، أدوات الحركة، مستلزمات السلامة، وأجهزة المتابعة اليومية.',
+    section: 'daycare' as ServiceSection,
+    title: 'تجهيز مراكز الرعاية النهارية للأطفال',
+    description: 'حلول عملية لمراكز الرعاية النهارية تشمل أسرة الرعاية، أدوات الحركة، مستلزمات السلامة،  المتابعة اليومية.',
     image: '/first-prompt.png',
     icon: Sun,
-    color: 'bg-accent',
-    text: 'text-accent',
-    border: 'border-accent'
+    color: 'bg-[#134da8]',
+    text: 'text-[#134da8]',
+    border: 'border-[#134da8]'
   },
   {
     id: 3,
-    title: 'منتجات رعاية كبار سن وأجهزة',
+    section: 'senior' as ServiceSection,
+    title: 'تجهيز مراكز رعاية كبار السن',
     description: 'منتجات داعمة لكبار السن مثل أجهزة الحركة المنزلية، أدوات التوازن، وسائل الأمان، ومستلزمات تساعد على استقلالية أكبر.',
     image: '/second-prompt.png',
     icon: Users,
-    color: 'bg-yellow-400',
-    text: 'text-yellow-400',
-    border: 'border-yellow-400'
+    color: 'bg-[#6bc168]',
+    text: 'text-[#6bc168]',
+    border: 'border-[#6bc168]'
   },
 ]
 
-export default function Services() {
-  const [activeService, setActiveService] = useState(services[0])
+type ServicesProps = {
+  activeSection?: ServiceSection
+  onServiceSelect?: (section: ServiceSection) => void
+}
+
+export default function Services({ activeSection, onServiceSelect }: ServicesProps) {
+  const [activeService, setActiveService] = useState(
+    services.find((service) => service.section === (activeSection ?? 'physio')) ?? services[0]
+  )
+
+  useEffect(() => {
+    if (!activeSection) return
+    const matched = services.find((service) => service.section === activeSection)
+    if (matched) {
+      setActiveService(matched)
+    }
+  }, [activeSection])
 
   return (
     <section id="services" className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
@@ -91,7 +111,12 @@ export default function Services() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: service.id * 0.1 }}
-                  onClick={() => setActiveService(service)}
+                  onClick={() => {
+                    setActiveService(service)
+                    if (service.section !== 'senior') {
+                      onServiceSelect?.(service.section)
+                    }
+                  }}
                   className={`group relative p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 overflow-hidden ${
                     isActive 
                       ? `bg-white ${service.border} shadow-lg` 

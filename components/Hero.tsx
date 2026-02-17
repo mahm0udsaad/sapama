@@ -44,15 +44,15 @@ export default function Hero() {
                 خدمات متخصصة وموثوقة
               </span>
             </motion.div>
-            <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold text-foreground mb-6 tracking-tight leading-[1.25] md:leading-[1.3]">
+            <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-bold text-foreground mb-4 tracking-tight leading-[1.2] md:leading-[1.25] max-w-xl">
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                للمنتجات والأجهزة الصحية
+                للمستلزمات والأجهزة الطبية
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
-              نوفر منتجات وأجهزة متخصصة لفئات متعددة تشمل العلاج الطبيعي، الرعاية النهارية، ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي.
+              نوفر تجهيزات متكاملة لمراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
               <a href="#contact" className="btn-primary inline-flex items-center gap-2 group">

@@ -3,23 +3,7 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Baby, Blocks, ShieldCheck, Truck, Wrench, GraduationCap } from 'lucide-react'
-
-const careTracks = [
-  'غرف التخاطب والنطق',
-  'غرف العلاج الوظيفي',
-  'غرف التكامل الحسي',
-  'غرف العلاج النفسي وتعديل السلوك',
-  'غرف العلاج الطبيعي للأطفال',
-  'أركان التدخل المبكر'
-]
-
-const productGroups = [
-  'أجهزة وأدوات جلسات التخاطب',
-  'ألعاب تعليمية وتفاعلية آمنة',
-  'أثاث وتجهيزات مراكز الرعاية النهارية',
-  'أدوات تقييم وتشخيص ومتابعة',
-  'مستلزمات برامج الدمج والتأهيل'
-]
+import type { ServiceSection } from '@/components/Services'
 
 const supportServices = [
   { title: 'التوريد والشحن', icon: Truck },
@@ -28,9 +12,101 @@ const supportServices = [
   { title: 'الضمان والدعم الفني', icon: ShieldCheck }
 ]
 
-export default function DaycareSection() {
+const sectionContent: Record<ServiceSection, {
+  badge: string
+  title: string
+  subtitle: string
+  description: string
+  note: string
+  cta: string
+  image: string
+  imageAlt: string
+  tracks: string[]
+  products: string[]
+}> = {
+  physio: {
+    badge: 'تجهيز متخصص للمراكز',
+    title: 'تجهيز مراكز علاج طبيعي',
+    subtitle: 'حلول احترافية للمراكز والعيادات',
+    description: 'تجهيزات متكاملة للعلاج الطبيعي تشمل أجهزة العلاج الكهربائي والليزر، أدوات التأهيل الحركي، والمستلزمات اليومية للجلسات العلاجية.',
+    note: 'نقدم تجهيز المركز بدءاً من تحديد الاحتياج وحتى التوريد والتركيب والتشغيل.',
+    cta: 'اطلب تجهيز مركز علاج طبيعي',
+    image: '/IMG_7855.JPG',
+    imageAlt: 'تجهيز مراكز علاج طبيعي',
+    tracks: [
+      'غرف العلاج الكهربائي',
+      'غرف العلاج بالليزر',
+      'قاعات التأهيل الحركي',
+      'مناطق التمارين العلاجية',
+      'نقاط التقييم والمتابعة'
+    ],
+    products: [
+      'أجهزة التحفيز الكهربائي',
+      'أجهزة الليزر العلاجي',
+      'معدات التأهيل الحركي والتوازن',
+      'طاولات وكراسي جلسات العلاج',
+      'مستلزمات يومية لبرامج العلاج'
+    ]
+  },
+  daycare: {
+    badge: 'تجهيز متخصص للأطفال',
+    title: 'تجهيز مراكز الرعاية النهارية للأطفال',
+    subtitle: 'للأطفال ذوي الإعاقة والتدخل المبكر',
+    description: 'نقدم تجهيزات متكاملة لمراكز الرعاية النهارية للأطفال تشمل التخطيط، التوريد، والتركيب لمسارات التخاطب والتكامل الحسي والعلاج الوظيفي والعلاج الطبيعي وفق متطلبات التشغيل المعتمدة.',
+    note: 'نراعي في الحلول المعروضة اشتراطات وزارة الموارد البشرية والتنمية الاجتماعية الخاصة بمراكز الرعاية النهارية.',
+    cta: 'اطلب تجهيز مركز رعاية نهارية للأطفال',
+    image: '/children-care.png',
+    imageAlt: 'تجهيزات الرعاية النهارية للأطفال',
+    tracks: [
+      'غرف التخاطب والنطق',
+      'غرف العلاج الوظيفي',
+      'غرف التكامل الحسي',
+      'غرف العلاج الطبيعي',
+      'أركان التدخل المبكر'
+    ],
+    products: [
+      'أجهزة وأدوات جلسات التخاطب والتأهيل',
+      'مستلزمات التكامل الحسي وتنمية المهارات',
+      'ألعاب تعليمية آمنة مناسبة للأطفال',
+      'تجهيزات الفصول والقاعات العلاجية',
+      'وسائل تدريب ومتابعة للحالات'
+    ]
+  },
+  senior: {
+    badge: 'تجهيز متخصص لكبار السن',
+    title: 'تجهيز مراكز رعاية كبار السن',
+    subtitle: 'حلول مريحة وآمنة للرعاية اليومية',
+    description: 'نوفر تجهيزات متكاملة لمراكز رعاية كبار السن تشمل أجهزة الحركة والمساعدة، تجهيزات السلامة، وأدوات المتابعة اليومية بما يدعم جودة الحياة والرعاية المستمرة.',
+    note: 'نراعي سهولة الاستخدام وسلامة الحركة داخل المركز في كل تفاصيل التجهيز.',
+    cta: 'اطلب تجهيز مركز رعاية كبار السن',
+    image: '/second-prompt.png',
+    imageAlt: 'تجهيز مراكز رعاية كبار السن',
+    tracks: [
+      'مناطق الحركة والدعم',
+      'مساحات المتابعة اليومية',
+      'غرف الرعاية والتمريض',
+      'محطات التمارين الخفيفة',
+      'نقاط الأمان والوقاية'
+    ],
+    products: [
+      'أجهزة الحركة والمساعدة',
+      'أدوات التوازن والتأهيل البسيط',
+      'تجهيزات الأمان ومنع الانزلاق',
+      'أسرة وكراسي رعاية متخصصة',
+      'أجهزة المتابعة الأساسية'
+    ]
+  }
+}
+
+type DaycareSectionProps = {
+  activeSection?: ServiceSection
+}
+
+export default function DaycareSection({ activeSection = 'daycare' }: DaycareSectionProps) {
+  const content = sectionContent[activeSection]
+
   return (
-    <section id="daycare" className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section id="service-detail" className="py-16 md:py-24 bg-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#14215B 1px, transparent 1px)', backgroundSize: '28px 28px' }}></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -42,18 +118,21 @@ export default function DaycareSection() {
           >
             <span className="inline-flex items-center gap-2 text-primary font-bold text-sm mb-4 bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
               <Baby size={16} />
-              خدمة متخصصة
+              {content.badge}
             </span>
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-5 leading-tight">
-              خدمات الرعاية النهارية
+              {content.title}
               <br />
-              <span className="text-primary">تجهيزات متكاملة للأطفال ومراكز الرعاية</span>
+              <span className="text-primary">{content.subtitle}</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              نقدم حلول رعاية نهارية متكاملة تشمل التخطيط والتجهيز وتوريد المنتجات والأجهزة المناسبة لبرامج التأهيل والتطوير اليومي داخل المركز.
+              {content.description}
+            </p>
+            <p className="text-sm text-muted-foreground mb-6">
+              {content.note}
             </p>
             <a href="#contact" className="btn-primary inline-block">
-              اطلب تجهيز مركز رعاية نهارية
+              {content.cta}
             </a>
           </motion.div>
 
@@ -65,8 +144,8 @@ export default function DaycareSection() {
             className="relative h-72 md:h-96 rounded-3xl overflow-hidden border-4 border-primary/10 shadow-2xl"
           >
             <Image
-              src="/first-prompt.png"
-              alt="تجهيزات الرعاية النهارية"
+              src={content.image}
+              alt={content.imageAlt}
               fill
               className="object-cover"
             />
@@ -86,7 +165,7 @@ export default function DaycareSection() {
               مسارات التجهيز
             </h3>
             <ul className="space-y-3">
-              {careTracks.map((item) => (
+              {content.tracks.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-gray-700">
                   <span className="mt-2 w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
                   {item}
@@ -107,7 +186,7 @@ export default function DaycareSection() {
               المنتجات والأجهزة
             </h3>
             <ul className="space-y-3">
-              {productGroups.map((item) => (
+              {content.products.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-gray-700">
                   <span className="mt-2 w-2 h-2 rounded-full bg-accent flex-shrink-0"></span>
                   {item}

@@ -16,7 +16,6 @@ export default function ContactForm() {
     name: '',
     phone: '',
     email: '',
-    city: '',
     region: '',
     message: '',
   })
@@ -52,7 +51,6 @@ export default function ContactForm() {
         name: '',
         phone: '',
         email: '',
-        city: '',
         region: '',
         message: '',
       })
@@ -219,22 +217,7 @@ export default function ContactForm() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="group relative">
-                  <div className={`absolute left-4 top-3.5 transition-colors ${focus === 'city' ? 'text-primary' : 'text-gray-400'}`}>
-                    <Building2 size={20} />
-                  </div>
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="المدينة"
-                    value={formData.city}
-                    onChange={handleChange}
-                    onFocus={() => setFocus('city')}
-                    onBlur={() => setFocus(null)}
-                    className="w-full pl-4 pr-12 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-gray-900 placeholder-gray-400"
-                  />
-                </div>
+              <div className="grid grid-cols-1 gap-6">
 
                 <div className="group relative">
                    <div className={`absolute left-4 top-3.5 transition-colors ${focus === 'region' ? 'text-primary' : 'text-gray-400'}`}>
