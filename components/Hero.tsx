@@ -74,7 +74,7 @@ export default function Hero() {
           >
             <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
-                src="/hero-physiotherapy.png"
+                src="/hero-physiotherapi.png"
                 alt="منتجات وأجهزة رعاية صحية"
                 width={600}
                 height={500}
