@@ -33,7 +33,7 @@ const services = [
   {
     id: 3,
     section: 'senior' as ServiceSection,
-    title: 'تجهيز مراكز رعاية كبار السن',
+    title: 'مستلزمات رعاية كبار السن',
     description: 'منتجات داعمة لكبار السن مثل أجهزة الحركة المنزلية، أدوات التوازن، وسائل الأمان، ومستلزمات تساعد على استقلالية أكبر.',
     image: '/second-prompt.png',
     icon: Users,
