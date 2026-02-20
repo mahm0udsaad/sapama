@@ -101,10 +101,6 @@ export default function AdditionalServices() {
             )
           })}
         </div>
-        
-        <div className="mt-8 text-center md:hidden">
-          <button className="btn-secondary w-full">عرض جميع الخدمات</button>
-        </div>
       </div>
     </section>
   )
