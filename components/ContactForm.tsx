@@ -105,13 +105,13 @@ export default function ContactForm() {
                   </div>
                 </a>
 
-                <a href="mailto:madmakvision@gmail.com" className="flex items-center gap-5 group transition-all hover:translate-x-2">
+                <a href="mailto:contact@madmakvision.com" className="flex items-center gap-5 group transition-all hover:translate-x-2">
                   <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md group-hover:bg-white/20 transition-colors">
                     <Mail size={24} className="text-white" />
                   </div>
                   <div>
                     <p className="text-white/60 text-sm mb-1">البريد الإلكتروني</p>
-                    <p className="text-xl font-bold">madmakvision@gmail.com</p>
+                    <p className="text-xl font-bold">contact@madmakvision.com</p>
                   </div>
                 </a>
 

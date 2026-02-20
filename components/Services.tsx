@@ -22,7 +22,7 @@ const services = [
   {
     id: 2,
     section: 'daycare' as ServiceSection,
-    title: 'تجهيز مراكز الرعاية النهارية للأطفال',
+    title: 'تجهيز مراكز الرعاية النهارية',
     description: 'حلول عملية لمراكز الرعاية النهارية تشمل أسرة الرعاية، أدوات الحركة، مستلزمات السلامة،  المتابعة اليومية.',
     image: '/first-prompt.png',
     icon: Sun,
@@ -145,10 +145,27 @@ export default function Services({ activeSection, onServiceSelect }: ServicesPro
                       <div className={`mt-4 flex items-center text-sm font-semibold transition-all duration-300 ${
                         isActive ? service.text : 'text-transparent h-0 overflow-hidden'
                       }`}>
+                        <a
+                          href="#service-detail"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            setActiveService(service)
+                            onServiceSelect?.(service.section)
+                            document.getElementById('service-detail')?.scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'start'
+                            })
+                          }}
+                          className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                        >
+                          عرض المزيد
+                          <ArrowLeft size={16} />
+                        </a>
                       </div>
                     </div>
                   </div>
-                  
+                      
                   {/* Active Indicator Bar */}
                   {isActive && (
                     <motion.div 
