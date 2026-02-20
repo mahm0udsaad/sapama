@@ -87,7 +87,7 @@ export default function Footer() {
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-accent rounded-full"></span>
             </h4>
             <ul className="space-y-4">
-              {['منتجات علاج طبيعي وأجهزة', 'منتجات رعاية نهارية وأجهزة', 'منتجات رعاية كبار سن وأجهزة', 'الصيانة والدعم الفني', 'التخطيط والتجهيز'].map((item, i) => (
+              {['تجهيز مراكز علاج طبيعي', 'تجهيز مراكز الرعاية النهارية', 'تجهيز مراكز رعاية كبار السن', 'تصنيع مستلزمات التأهيل', 'الدعم الفني والصيانة'].map((item, i) => (
                 <li key={i}>
                   <a href="#" className="text-white hover:text-accent transition flex items-center gap-2 group">
                      <span className="w-1.5 h-1.5 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
