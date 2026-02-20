@@ -125,7 +125,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm mb-1">البريد الإلكتروني</p>
-                  <p className="text-white font-bold break-all">madmakvision@gmail.com</p>
+                  <p className="text-white font-bold break-all">contact@madmakvision.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">

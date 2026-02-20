@@ -145,8 +145,6 @@ export default function Services({ activeSection, onServiceSelect }: ServicesPro
                       <div className={`mt-4 flex items-center text-sm font-semibold transition-all duration-300 ${
                         isActive ? service.text : 'text-transparent h-0 overflow-hidden'
                       }`}>
-                        <span>اكتشف المزيد</span>
-                        <ArrowLeft size={16} className="mr-2 animate-pulse" />
                       </div>
                     </div>
                   </div>
