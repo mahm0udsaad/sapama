@@ -58,15 +58,6 @@ export default function AdditionalServices() {
               لا نكتفي بالتوريد، بل نقدم منظومة خدمات مساندة تضمن نجاح مشروعك واستدامته.
             </p>
           </motion.div>
-          
-          <motion.button 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="hidden md:flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all"
-          >
-             جميع الخدمات <ArrowUpLeft size={20} />
-          </motion.button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
