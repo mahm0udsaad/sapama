@@ -1,31 +1,50 @@
-'use client'
+import type { Metadata } from "next"
+import HomePageClient from "@/components/HomePageClient"
+import {
+  arabicSeoKeywords,
+  companyName,
+  getSiteUrl,
+  siteDescription,
+  siteTitle,
+} from "@/lib/seo"
 
-import { useState } from 'react'
-import Navigation from '@/components/Navigation'
-import Hero from '@/components/Hero'
-import Services from '@/components/Services'
-import type { ServiceSection } from '@/components/Services'
-import DaycareSection from '@/components/DaycareSection'
-import Planning from '@/components/Planning'
-import AdditionalServices from '@/components/AdditionalServices'
-import ContactForm from '@/components/ContactForm'
-import FAQ from '@/components/FAQ'
-import Footer from '@/components/Footer'
+const siteUrl = getSiteUrl()
+
+export const metadata: Metadata = {
+  title: siteTitle,
+  description: siteDescription,
+  keywords: arabicSeoKeywords,
+  alternates: {
+    canonical: "/",
+    languages: {
+      "ar-SA": "/",
+      ar: "/",
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ar_SA",
+    url: siteUrl,
+    title: siteTitle,
+    description: siteDescription,
+    siteName: companyName,
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: `${companyName} - تجهيزات طبية متكاملة`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/logo.png"],
+  },
+}
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState<ServiceSection>('physio')
-
-  return (
-    <div className="w-full bg-background">
-      <Navigation />
-      <Hero />
-      <Services activeSection={activeSection} onServiceSelect={setActiveSection} />
-      <DaycareSection activeSection={activeSection} />
-      <Planning />
-      <AdditionalServices />
-      <ContactForm />
-      <FAQ />
-      <Footer />
-    </div>
-  )
+  return <HomePageClient />
 }
