@@ -3,7 +3,8 @@
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, User, MessageSquare, Building2, Map } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { FaSnapchat, FaTiktok } from 'react-icons/fa6'
+import { FaInstagram, FaSnapchat, FaTiktok, FaXTwitter } from 'react-icons/fa6'
+import { socialLinks } from '@/lib/seo'
 
 const regions = [
   'الرياض', 'مكة المكرمة', 'المدينة المنورة', 'القصيم', 'الدمام',
@@ -130,7 +131,7 @@ export default function ContactForm() {
             <div className="relative z-10 mt-12 pt-8 border-t border-white/20">
                <div className="flex items-center gap-4 mb-5">
                  <a
-                   href="https://www.tiktok.com/"
+                   href={socialLinks.tiktok}
                    target="_blank"
                    rel="noreferrer"
                    aria-label="TikTok"
@@ -139,13 +140,31 @@ export default function ContactForm() {
                    <FaTiktok size={18} />
                  </a>
                  <a
-                   href="https://www.snapchat.com/add/"
+                   href={socialLinks.snapchat}
                    target="_blank"
                    rel="noreferrer"
                    aria-label="Snapchat"
                    className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
                  >
                    <FaSnapchat size={18} />
+                 </a>
+                 <a
+                   href={socialLinks.x}
+                   target="_blank"
+                   rel="noreferrer"
+                   aria-label="X"
+                   className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
+                 >
+                   <FaXTwitter size={18} />
+                 </a>
+                 <a
+                   href={socialLinks.instagram}
+                   target="_blank"
+                   rel="noreferrer"
+                   aria-label="Instagram"
+                   className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
+                 >
+                   <FaInstagram size={18} />
                  </a>
                </div>
                <p className="text-white/80 text-sm">

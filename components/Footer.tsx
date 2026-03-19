@@ -2,7 +2,8 @@
 
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { FaSnapchat, FaTiktok } from 'react-icons/fa6'
+import { FaInstagram, FaSnapchat, FaTiktok, FaXTwitter } from 'react-icons/fa6'
+import { socialLinks } from '@/lib/seo'
 
 export default function Footer() {
   return (
@@ -31,8 +32,10 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               {[
-                { Icon: FaTiktok, href: 'https://www.tiktok.com/@madmak_vi', label: 'TikTok' },
-                { Icon: FaSnapchat, href: 'https://snapchat.com/t/7YWtIQ3X', label: 'Snapchat' },
+                { Icon: FaTiktok, href: socialLinks.tiktok, label: 'TikTok' },
+                { Icon: FaSnapchat, href: socialLinks.snapchat, label: 'Snapchat' },
+                { Icon: FaXTwitter, href: socialLinks.x, label: 'X' },
+                { Icon: FaInstagram, href: socialLinks.instagram, label: 'Instagram' },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}

@@ -63,6 +63,19 @@ export const arabicSeoKeywords = [
 
 const defaultSiteUrl = "https://madmakvi.com"
 
+export const socialLinks = {
+  tiktok: "https://www.tiktok.com/@madmak_vi",
+  snapchat: "https://snapchat.com/t/7YWtIQ3X",
+  x: "https://x.com/madmakvi?s=21",
+  instagram:
+    "https://www.instagram.com/madmakvi?igsh=NTBmM2w5bTNpZDZr&utm_source=qr",
+} as const
+
+export const trackingIds = {
+  gtm: "GTM-PTN54LND",
+  googleAds: "AW-17993120221",
+} as const
+
 export function getSiteUrl() {
   const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl
   return rawUrl.endsWith("/") ? rawUrl.slice(0, -1) : rawUrl
