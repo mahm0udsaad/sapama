@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey)
 
-  const subject = `طلب جديد من الموقع - ${name}`
+  const subject = `madmakvi Medical - طلب جديد من الموقع - ${name}`
 
   const html = `
     <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.7; color: #0f172a;">
