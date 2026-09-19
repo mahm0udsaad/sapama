@@ -44,6 +44,10 @@ body {
     --ring: 256 33% 54%;
 
     --radius: 0.75rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-full: 999px;
 
     --chart-1: 256 33% 54%;
     --chart-2: 200 50% 66%;
@@ -119,6 +123,61 @@ body {
   .service-card {
     @apply bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/20;
   }
+
+  .admin-card { @apply rounded-[var(--radius-lg)] border border-border bg-card shadow-sm; }
+  .admin-input { @apply flex min-h-11 w-full rounded-[var(--radius-md)] border border-input bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-70; }
+  .admin-primary-button, .admin-secondary-button, .admin-danger-button, .admin-nav-link, .admin-nav-link-active { @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-md)] px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70; }
+  .admin-primary-button { @apply bg-primary text-primary-foreground hover:bg-primary/90; }
+  .admin-secondary-button { @apply border border-border bg-card text-foreground hover:bg-muted; }
+  .admin-danger-button { @apply border border-destructive/35 bg-card text-destructive hover:bg-destructive/10; }
+  .admin-nav-link { @apply text-muted-foreground hover:bg-muted hover:text-foreground; }
+  .admin-nav-link-active { @apply bg-primary/10 text-primary; }
+  .admin-icon-button { @apply inline-flex size-10 cursor-pointer items-center justify-center rounded-[var(--radius-md)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50; }
+  .admin-upload { @apply flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-md)] border border-dashed border-primary/50 bg-primary/5 px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10; }
+  .admin-preview-panel { @apply rounded-[var(--radius-lg)] border border-border bg-card p-4 shadow-sm; }
+  .status-issued, .status-cancelled, .status-failed, .status-processing { @apply inline-flex rounded-[var(--radius-full)] px-2.5 py-1 text-xs font-bold; }
+  .status-issued { @apply bg-primary/15 text-primary; }
+  .status-cancelled { @apply bg-muted text-muted-foreground; }
+  .status-failed { @apply bg-destructive/15 text-destructive; }
+  .status-processing { @apply bg-accent/35 text-accent-foreground; }
+}
+
+.quotation-preview { direction: rtl; width: 760px; min-height: 984px; padding: 20px 25px; background: white; color: #111827; font-family: Arial, Tahoma, sans-serif; box-shadow: 0 2px 12px rgb(15 23 42 / 12%); }
+.quotation-preview p { margin: 0; }
+.quotation-preview-header { display: grid; grid-template-columns: 1fr 1.08fr; min-height: 130px; border-top: 1px solid #2f6edb; }
+.quotation-preview-seller { border: 1px solid #2f6edb; border-top: 0; border-left: 0; padding: 9px 13px; color: #42526b; font-size: 13px; font-weight: 700; line-height: 1.95; }
+.quotation-preview-logo { display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #2f6edb; }
+.quotation-preview-logo img { width: 245px; height: auto; object-fit: contain; }
+.quotation-preview h2 { margin: 24px 0; color: #0874bc; text-align: center; font-size: 25px; font-weight: 800; }
+.quotation-preview-meta { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #111827; font-size: 14px; font-weight: 700; line-height: 1.9; }
+.quotation-preview-meta > div { padding: 5px 10px; }
+.quotation-preview-meta > div + div { border-right: 1px solid #111827; }
+.quotation-preview table { width: 100%; margin-top: 26px; border-collapse: collapse; table-layout: fixed; font-size: 11px; }
+.quotation-preview th, .quotation-preview td { border: 1px solid #111827; padding: 5px 3px; text-align: center; vertical-align: top; }
+.quotation-preview th { height: 38px; background: #dce9f7; font-size: 12px; vertical-align: middle; }
+.quotation-preview th:nth-child(1) { width: 3%; }
+.quotation-preview th:nth-child(2) { width: 30%; }
+.quotation-preview th:nth-child(3) { width: 7%; }
+.quotation-preview th:nth-child(4), .quotation-preview th:nth-child(5), .quotation-preview th:nth-child(6), .quotation-preview th:nth-child(7) { width: 8%; }
+.quotation-preview th:nth-child(8) { width: 27%; }
+.quotation-preview tbody tr { height: 108px; }
+.quotation-preview .preview-number { color: #c91515; font-weight: 800; }
+.quotation-preview .preview-description { text-align: right; line-height: 1.65; }
+.quotation-preview .preview-description span { display: block; margin-top: 5px; text-align: center; font-weight: 700; }
+.quotation-preview td img { width: 100%; height: 94px; object-fit: contain; }
+.quotation-preview .preview-empty-image { color: #64748b; font-size: 10px; }
+.quotation-preview-summary { display: grid; grid-template-columns: 1fr 1fr; margin-top: 23px; border: 1px solid #111827; font-size: 13px; font-weight: 700; line-height: 1.8; }
+.quotation-preview-summary > div { padding: 5px 10px; }
+.quotation-preview-summary > div + div { border-right: 1px solid #111827; }
+.quotation-preview-summary b { color: #d31313; }
+.quotation-preview-details { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #111827; border-top: 0; font-size: 12px; font-weight: 700; line-height: 1.78; }
+.quotation-preview-details > div { padding: 5px 10px; }
+.quotation-preview-details > div + div { border-right: 1px solid #111827; }
+.quotation-preview-details span { color: #d31313; }
+.quotation-preview-sales { margin-top: 7px !important; text-align: center; font-size: 14px; }
+
+@media (max-width: 767px) {
+  .quotation-preview { width: 680px; min-height: 880px; transform-origin: top right; }
 }
 
 @keyframes fadeIn {

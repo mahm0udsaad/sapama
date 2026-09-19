@@ -8,5 +8,11 @@ instrumentation-client.ts
 # Common ignores
 node_modules/
 .next/
+.env
 .env*.local
 .DS_Store
+
+# Local quotation audit database and generated PDFs
+data/
+tmp/
+output/
