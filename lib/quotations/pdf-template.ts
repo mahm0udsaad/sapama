@@ -23,6 +23,11 @@ function logoDataUrl() {
   return `data:image/png;base64,${logo.toString("base64")}`
 }
 
+function fontFace(weight: number) {
+  const file = path.join(process.cwd(), "node_modules", "@fontsource", "noto-sans-arabic", "files", `noto-sans-arabic-arabic-${weight}-normal.woff2`)
+  return `@font-face { font-family: "Noto Sans Arabic"; font-weight: ${weight}; src: url(data:font/woff2;base64,${readFileSync(file).toString("base64")}) format("woff2"); }`
+}
+
 function displayDate(date: string) {
   const [year, month, day] = date.split("-")
   return `${day}/${month}/${year}`
@@ -55,9 +60,11 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
 <head>
   <meta charset="utf-8" />
   <style>
+    ${fontFace(400)}
+    ${fontFace(700)}
     @page { size: Letter portrait; margin: 0; }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; color: #111827; font-family: Arial, Tahoma, sans-serif; }
+    html, body { margin: 0; padding: 0; color: #111827; font-family: "Noto Sans Arabic", Arial, Tahoma, sans-serif; }
     body { background: white; direction: rtl; }
     .page { width: 8.5in; min-height: 11in; padding: .23in .28in .22in; display: flex; flex-direction: column; gap: 13px; }
     .header { display: grid; grid-template-columns: 1fr 1.08fr; min-height: 132px; border-top: 1px solid #2f6edb; }

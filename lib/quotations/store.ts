@@ -1,5 +1,3 @@
-import { mkdirSync } from "node:fs"
-import path from "node:path"
 import { randomUUID } from "node:crypto"
 import { getSupabase } from "@/lib/supabase/server"
 import { TEMPLATE_VERSION } from "./constants"
@@ -14,11 +12,7 @@ import type {
   StoredQuotation,
 } from "./types"
 
-const dataDirectory = process.env.QUOTATIONS_DATA_DIR
-  ? path.resolve(process.env.QUOTATIONS_DATA_DIR)
-  : path.join(process.cwd(), "data")
-export const pdfDirectory = path.join(dataDirectory, "quotation-pdfs")
-mkdirSync(pdfDirectory, { recursive: true })
+export const PDF_BUCKET = "quotation-pdfs"
 
 type QuotationRow = {
   id: string

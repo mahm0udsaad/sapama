@@ -1,7 +1,7 @@
-import { readFile } from "node:fs/promises"
 import { NextResponse } from "next/server"
 import { getAdminUsername } from "@/lib/admin-auth"
-import { getQuotationPdf } from "@/lib/quotations/store"
+import { getSupabase } from "@/lib/supabase/server"
+import { PDF_BUCKET, getQuotationPdf } from "@/lib/quotations/store"
 
 export const runtime = "nodejs"
 
@@ -15,8 +15,9 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   }
 
   try {
-    const pdf = await readFile(record.pdf_path)
-    return new NextResponse(pdf, {
+    const { data, error } = await getSupabase().storage.from(PDF_BUCKET).download(record.pdf_path)
+    if (error || !data) throw error ?? new Error("missing")
+    return new NextResponse(await data.arrayBuffer(), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `inline; filename="quotation-${record.quotation_number}.pdf"`,
