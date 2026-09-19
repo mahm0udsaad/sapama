@@ -86,7 +86,9 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
             <tbody className="divide-y divide-border">
               {visible.map((quote) => (
                 <tr key={quote.id} className="bg-card">
-                  <td className="px-5 py-4 font-bold tabular-nums">{quote.quotationNumber}</td>
+                  <td className="px-5 py-4 font-bold tabular-nums">
+                    {quote.status === "issued" ? <Link href={`/admin/quotations/${quote.id}/edit`} className="text-primary underline-offset-4 hover:underline" title="تعديل العرض">{quote.quotationNumber}</Link> : quote.quotationNumber}
+                  </td>
                   <td className="px-5 py-4 font-semibold">{quote.customerName}</td>
                   <td className="px-5 py-4 text-muted-foreground">{quote.issueDate}</td>
                   <td className="px-5 py-4 font-bold tabular-nums">{formatMoney(quote.total)} ر.س</td>

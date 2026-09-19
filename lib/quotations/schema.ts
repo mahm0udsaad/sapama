@@ -23,7 +23,7 @@ const itemSchema = z.object({
 export const quotationInputSchema = z.object({
   customerId: z.string().uuid(),
   customerName: z.string().trim().min(2).max(200),
-  contactId: z.string().uuid(),
+  contactId: z.string().max(100).optional().default(""),
   contactName: z.string().trim().min(2).max(200),
   phone: z.string().trim().min(7).max(30),
   address: z.string().trim().min(2).max(300),

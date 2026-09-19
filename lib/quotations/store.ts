@@ -353,3 +353,31 @@ export async function updateQuotationOfferStatus(id: string, offerStatus: OfferS
   })
   return true
 }
+
+export async function updateQuotationContent(id: string, input: QuotationInput, actor: string) {
+  const db = getSupabase()
+  const now = new Date().toISOString()
+  const { data, error } = await db
+    .from("quotations")
+    .update({ payload: input, total: quotationTotals(input).total, offer_status: input.offerStatus, updated_at: now })
+    .eq("id", id)
+    .eq("status", "issued")
+    .select("pdf_sha256")
+  if (error) throw error
+  if (!data?.length) return false
+  await db.from("quotation_audit_events").insert({
+    id: randomUUID(),
+    quotation_id: id,
+    action: "edited",
+    actor,
+    details: { previousSha256: data[0].pdf_sha256 },
+    created_at: now,
+  })
+  return true
+}
+
+export async function replaceQuotationPdf(id: string, sha256: string) {
+  const db = getSupabase()
+  const { error } = await db.from("quotations").update({ pdf_sha256: sha256, updated_at: new Date().toISOString() }).eq("id", id)
+  if (error) throw error
+}

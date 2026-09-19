@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import { getAdminUsername } from "@/lib/admin-auth"
-import { offerStatusSchema } from "@/lib/quotations/schema"
-import { cancelQuotation, getQuotation, updateQuotationOfferStatus } from "@/lib/quotations/store"
+import { generateQuotationPdf } from "@/lib/quotations/generate-pdf"
+import { upsertProductsFromQuotation } from "@/lib/quotations/products-store"
+import { offerStatusSchema, quotationInputSchema } from "@/lib/quotations/schema"
+import { cancelQuotation, getQuotation, replaceQuotationPdf, updateQuotationContent, updateQuotationOfferStatus } from "@/lib/quotations/store"
 
 export const runtime = "nodejs"
 
@@ -34,4 +36,26 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     return NextResponse.json({ success: true })
   }
   return NextResponse.json({ error: "الإجراء غير مدعوم" }, { status: 400 })
+}
+
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
+  const actor = await getAdminUsername()
+  if (!actor) return NextResponse.json({ error: "غير مصرح" }, { status: 401 })
+  const { id } = await context.params
+  const parsed = quotationInputSchema.safeParse(await request.json().catch(() => null))
+  if (!parsed.success) return NextResponse.json({ error: "تحقق من جميع الحقول المطلوبة" }, { status: 400 })
+  try {
+    if (!(await updateQuotationContent(id, parsed.data, actor))) {
+      return NextResponse.json({ error: "لا يمكن تعديل هذا العرض" }, { status: 409 })
+    }
+    const quotation = await getQuotation(id)
+    if (!quotation) throw new Error("عرض السعر غير موجود")
+    const generated = await generateQuotationPdf(quotation)
+    await replaceQuotationPdf(id, generated.sha256)
+    await upsertProductsFromQuotation(quotation.items, actor)
+    return NextResponse.json({ id, quotationNumber: quotation.quotationNumber, pdfUrl: `/api/quotations/${id}/pdf` })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "تعذر تحديث عرض السعر"
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }

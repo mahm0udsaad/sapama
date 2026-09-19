@@ -7,7 +7,7 @@ import { CheckCircle2, Download, ImagePlus, ListPlus, Plus, Save, Trash2, UserPl
 import QuotationPreview from "./QuotationPreview"
 import ProductPickerModal from "./ProductPickerModal"
 import { OFFER_STATUS_LABELS } from "@/lib/quotations/types"
-import type { Customer, CustomerContact, DiscountType, OfferStatus, Product, QuotationInput, QuotationItem, VatRate } from "@/lib/quotations/types"
+import type { StoredQuotation, Customer, DiscountType, OfferStatus, Product, QuotationInput, QuotationItem, VatRate } from "@/lib/quotations/types"
 
 const DRAFT_KEY = "madmak-quotation-draft-v3"
 const CREATE_NEW = "__new__"
@@ -40,14 +40,14 @@ async function requestJson<T>(url: string, options: RequestInit): Promise<T> {
   return result
 }
 
-export default function QuotationBuilder({ nextQuotationNumber, initialCustomers }: { nextQuotationNumber: number; initialCustomers: Customer[] }) {
+export default function QuotationBuilder({ nextQuotationNumber, initialCustomers, existing }: { nextQuotationNumber: number; initialCustomers: Customer[]; existing?: StoredQuotation }) {
   const router = useRouter()
   const [customers, setCustomers] = useState(initialCustomers)
-  const [quotation, setQuotation] = useState<QuotationInput>(() => ({ ...EMPTY_QUOTATION, items: [emptyItem()] }))
+  const [quotation, setQuotation] = useState<QuotationInput>(() => existing
+    ? { customerId: existing.customerId, customerName: existing.customerName, contactId: existing.contactId, contactName: existing.contactName, phone: existing.phone, address: existing.address, customerCommercialRegistration: existing.customerCommercialRegistration, customerTaxNumber: existing.customerTaxNumber, offerStatus: existing.offerStatus, items: existing.items }
+    : { ...EMPTY_QUOTATION, items: [emptyItem()] })
   const [showNewCustomer, setShowNewCustomer] = useState(false)
-  const [showNewContact, setShowNewContact] = useState(false)
   const [newCustomer, setNewCustomer] = useState(EMPTY_NEW_CUSTOMER)
-  const [newContact, setNewContact] = useState({ name: "", phone: "" })
   const [directoryBusy, setDirectoryBusy] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
@@ -57,6 +57,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
   const selectedCustomer = useMemo(() => customers.find((customer) => customer.id === quotation.customerId), [customers, quotation.customerId])
 
   useEffect(() => {
+    if (existing) return
     const saved = localStorage.getItem(DRAFT_KEY)
     if (!saved) return
     try {
@@ -66,15 +67,15 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
   }, [])
 
   useEffect(() => {
+    if (existing) return
     const timeout = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify(quotation)), 400)
     return () => window.clearTimeout(timeout)
-  }, [quotation])
+  }, [quotation, existing])
 
   function selectCustomer(value: string) {
     if (value === CREATE_NEW) { setShowNewCustomer(true); return }
     const customer = customers.find((entry) => entry.id === value)
     setShowNewCustomer(false)
-    setShowNewContact(false)
     setQuotation((current) => ({
       ...current,
       customerId: customer?.id ?? "",
@@ -82,17 +83,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
       address: composeAddress(customer),
       customerCommercialRegistration: customer?.commercialRegistration ?? "",
       customerTaxNumber: customer?.taxNumber ?? "",
-      contactId: "",
-      contactName: "",
-      phone: "",
     }))
-  }
-
-  function selectContact(value: string) {
-    if (value === CREATE_NEW) { setShowNewContact(true); return }
-    const contact = selectedCustomer?.contacts.find((entry) => entry.id === value)
-    setShowNewContact(false)
-    setQuotation((current) => ({ ...current, contactId: contact?.id ?? "", contactName: contact?.name ?? "", phone: contact?.phone ?? "" }))
   }
 
   async function createNewCustomer() {
@@ -107,24 +98,9 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
         address: composeAddress(result.customer),
         customerCommercialRegistration: result.customer.commercialRegistration ?? "",
         customerTaxNumber: result.customer.taxNumber ?? "",
-        contactId: "",
-        contactName: "",
-        phone: "",
       }))
-      setShowNewCustomer(false); setShowNewContact(true); setNewCustomer(EMPTY_NEW_CUSTOMER)
+      setShowNewCustomer(false); setNewCustomer(EMPTY_NEW_CUSTOMER)
     } catch (creationError) { setError(creationError instanceof Error ? creationError.message : "تعذر إنشاء العميل") }
-    finally { setDirectoryBusy(false) }
-  }
-
-  async function createNewContact() {
-    if (!quotation.customerId) return
-    setError(""); setDirectoryBusy(true)
-    try {
-      const result = await requestJson<{ contact: CustomerContact }>(`/api/customers/${quotation.customerId}/contacts`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newContact) })
-      setCustomers((current) => current.map((customer) => customer.id === quotation.customerId ? { ...customer, contacts: [...customer.contacts, result.contact].toSorted((a, b) => a.name.localeCompare(b.name, "ar")) } : customer))
-      setQuotation((current) => ({ ...current, contactId: result.contact.id, contactName: result.contact.name, phone: result.contact.phone }))
-      setShowNewContact(false); setNewContact({ name: "", phone: "" })
-    } catch (creationError) { setError(creationError instanceof Error ? creationError.message : "تعذر إنشاء المسؤول") }
     finally { setDirectoryBusy(false) }
   }
 
@@ -166,11 +142,11 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
 
   async function issueQuotation(event: FormEvent) {
     event.preventDefault(); setError("")
-    if (!quotation.customerId || !quotation.contactId) { setError("اختر العميل والمسؤول قبل إصدار عرض السعر."); return }
+    if (!quotation.customerId || !quotation.contactName.trim() || !quotation.phone.trim()) { setError("اختر العميل وأدخل المسؤول ورقم هاتفه قبل إصدار عرض السعر."); return }
     if (!quotation.items.length) { setError("أضف منتجاً واحداً على الأقل."); return }
     setSubmitting(true)
     try {
-      const result = await requestJson<{ quotationNumber: number; pdfUrl: string }>("/api/quotations", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quotation) })
+      const result = await requestJson<{ quotationNumber: number; pdfUrl: string }>(existing ? `/api/quotations/${existing.id}` : "/api/quotations", { method: existing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quotation) })
       localStorage.removeItem(DRAFT_KEY)
       setIssued({ number: result.quotationNumber, url: result.pdfUrl })
       router.refresh()
@@ -180,7 +156,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
 
   if (issued) return (
     <main className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-4 py-10"><section className="admin-card w-full p-8 text-center">
-      <CheckCircle2 className="mx-auto size-14 text-primary" aria-hidden="true" /><h1 className="mt-5 text-3xl font-bold">تم إصدار عرض السعر رقم {issued.number}</h1>
+      <CheckCircle2 className="mx-auto size-14 text-primary" aria-hidden="true" /><h1 className="mt-5 text-3xl font-bold">{existing ? "تم تحديث عرض السعر رقم" : "تم إصدار عرض السعر رقم"} {issued.number}</h1>
       <p className="mt-3 text-muted-foreground">حُفظ ملف PDF والبيانات والبصمة الرقمية في سجل التدقيق.</p>
       <div className="mt-7 flex flex-wrap justify-center gap-3"><a href={issued.url} target="_blank" rel="noreferrer" className="admin-primary-button"><Download aria-hidden="true" /> فتح PDF</a><Link href="/admin/quotations" className="admin-secondary-button">العودة إلى الأرشيف</Link></div>
     </section></main>
@@ -188,7 +164,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
 
   return (
     <main className="mx-auto max-w-[1500px] px-4 py-7 lg:px-8">
-      <div className="mb-6 flex items-end justify-between gap-4"><div><p className="text-sm font-bold text-primary">عرض رقم {nextQuotationNumber}</p><h1 className="mt-1 text-3xl font-bold">إنشاء عرض سعر</h1></div><p className="hidden items-center gap-2 text-sm text-muted-foreground md:flex"><Save className="size-4" aria-hidden="true" /> تُحفظ المسودة تلقائياً على هذا الجهاز</p></div>
+      <div className="mb-6 flex items-end justify-between gap-4"><div><p className="text-sm font-bold text-primary">عرض رقم {nextQuotationNumber}</p><h1 className="mt-1 text-3xl font-bold">{existing ? "تعديل عرض سعر" : "إنشاء عرض سعر"}</h1></div><p className="hidden items-center gap-2 text-sm text-muted-foreground md:flex"><Save className="size-4" aria-hidden="true" /> تُحفظ المسودة تلقائياً على هذا الجهاز</p></div>
       <form onSubmit={issueQuotation} className="grid items-start gap-7 xl:grid-cols-[minmax(430px,0.78fr)_minmax(650px,1.22fr)]">
         <div className="space-y-5">
           <section className="admin-card p-5">
@@ -210,10 +186,9 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
                   <button type="button" disabled={directoryBusy || newCustomer.name.trim().length < 2} onClick={createNewCustomer} className="admin-primary-button sm:col-span-2"><UserPlus aria-hidden="true" /> حفظ العميل</button>
                 </InlineCreator>
               ) : null}
-              <Field label="المسؤول" wide><select required disabled={!selectedCustomer} value={quotation.contactId} onChange={(event) => selectContact(event.target.value)} className="admin-input"><option value="">{selectedCustomer ? "اختر المسؤول" : "اختر العميل أولاً"}</option>{selectedCustomer?.contacts.map((contact) => <option key={contact.id} value={contact.id}>{contact.name} — {contact.phone}</option>)}{selectedCustomer ? <option value={CREATE_NEW}>+ إنشاء مسؤول جديد</option> : null}</select></Field>
-              {showNewContact && selectedCustomer ? <InlineCreator title={`مسؤول جديد لدى ${selectedCustomer.name}`} onClose={() => setShowNewContact(false)}><Field label="اسم المسؤول"><input value={newContact.name} onChange={(event) => setNewContact((current) => ({ ...current, name: event.target.value }))} className="admin-input" /></Field><Field label="رقم الهاتف"><input inputMode="tel" value={newContact.phone} onChange={(event) => setNewContact((current) => ({ ...current, phone: event.target.value }))} className="admin-input" /></Field><button type="button" disabled={directoryBusy || newContact.name.trim().length < 2 || newContact.phone.trim().length < 7} onClick={createNewContact} className="admin-primary-button sm:col-span-2"><UserPlus aria-hidden="true" /> حفظ المسؤول</button></InlineCreator> : null}
+              <Field label="المسؤول"><input required value={quotation.contactName} onChange={(event) => setQuotation((current) => ({ ...current, contactName: event.target.value }))} className="admin-input" placeholder="اسم المسؤول" /></Field>
+              <Field label="رقم هاتف المسؤول"><input required inputMode="tel" value={quotation.phone} onChange={(event) => setQuotation((current) => ({ ...current, phone: event.target.value }))} className="admin-input" placeholder="05xxxxxxxx" /></Field>
               <Field label="العنوان" wide><textarea readOnly rows={2} value={quotation.address} className="admin-input min-h-16 resize-none bg-muted/35" placeholder="يُعبأ من العميل" /></Field>
-              <Field label="رقم هاتف المسؤول"><input readOnly value={quotation.phone} className="admin-input bg-muted/35" placeholder="يُعبأ من المسؤول" /></Field>
               {selectedCustomer?.commercialRegistration || selectedCustomer?.taxNumber ? (
                 <Field label="السجل التجاري / الرقم الضريبي"><input readOnly value={[selectedCustomer.commercialRegistration, selectedCustomer.taxNumber].filter(Boolean).join(" — ")} className="admin-input bg-muted/35" /></Field>
               ) : null}
@@ -264,7 +239,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
             </article>)}</div>
           </section>
           {error ? <p role="alert" className="rounded-[var(--radius-md)] border border-destructive/30 bg-destructive/10 p-4 text-sm font-semibold text-destructive">{error}</p> : null}
-          <button disabled={submitting || directoryBusy} className="admin-primary-button min-h-12 w-full text-base">{submitting ? "جارٍ إنشاء وحفظ ملف PDF..." : `إصدار عرض السعر رقم ${nextQuotationNumber}`}</button>
+          <button disabled={submitting || directoryBusy} className="admin-primary-button min-h-12 w-full text-base">{submitting ? "جارٍ إنشاء وحفظ ملف PDF..." : (existing ? `حفظ تعديلات عرض السعر رقم ${nextQuotationNumber}` : `إصدار عرض السعر رقم ${nextQuotationNumber}`)}</button>
         </div>
         <section className="admin-preview-panel xl:sticky xl:top-5"><div className="mb-3 flex items-center justify-between"><h2 className="font-bold">معاينة مباشرة</h2><span className="text-xs text-muted-foreground">Letter · صفحة الطباعة</span></div><div className="overflow-auto rounded-[var(--radius-md)] bg-[#dfe4ea] p-3 sm:p-6"><QuotationPreview quotation={quotation} quotationNumber={nextQuotationNumber} /></div></section>
       </form>
