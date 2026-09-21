@@ -175,7 +175,7 @@ body {
 .quotation-preview-details > div { padding: 5px 10px; }
 .quotation-preview-details > div + div { border-right: 1px solid #004aad; }
 .quotation-preview-details span { color: #7d5bc7; }
-.quotation-preview-sales { margin-top: 7px !important; color: #004aad; text-align: center; font-size: 14px; font-weight: 700; }
+.quotation-preview-sales { margin-top: 7px !important; color: #004aad; text-align: right; font-size: 14px; font-weight: 700; }
 
 @media (max-width: 767px) {
   .quotation-preview { width: 680px; min-height: 880px; transform-origin: top right; }

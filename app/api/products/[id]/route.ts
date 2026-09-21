@@ -1,27 +1,22 @@
 import { NextResponse } from "next/server"
 import { getAdminUsername } from "@/lib/admin-auth"
+import { updateProduct } from "@/lib/quotations/products-store"
 import { productSchema } from "@/lib/quotations/schema"
-import { createProduct, listProducts } from "@/lib/quotations/products-store"
 
 export const runtime = "nodejs"
 
-export async function GET(request: Request) {
-  const actor = await getAdminUsername()
-  if (!actor) return NextResponse.json({ error: "غير مصرح" }, { status: 401 })
-
-  const query = new URL(request.url).searchParams.get("q") ?? ""
-  return NextResponse.json({ products: await listProducts(query) })
-}
-
-export async function POST(request: Request) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const actor = await getAdminUsername()
   if (!actor) return NextResponse.json({ error: "غير مصرح" }, { status: 401 })
   const parsed = productSchema.safeParse(await request.json().catch(() => null))
   if (!parsed.success) return NextResponse.json({ error: "تحقق من بيانات المنتج والصورة" }, { status: 400 })
+  const { id } = await context.params
   try {
-    return NextResponse.json({ product: await createProduct(parsed.data, actor) }, { status: 201 })
+    const product = await updateProduct(id, parsed.data)
+    if (!product) return NextResponse.json({ error: "المنتج غير موجود" }, { status: 404 })
+    return NextResponse.json({ product })
   } catch (error) {
-    const message = error instanceof Error ? error.message : "تعذر إضافة المنتج"
+    const message = error instanceof Error ? error.message : "تعذر تحديث المنتج"
     return NextResponse.json({ error: message.includes("duplicate") ? "يوجد منتج بنفس الوصف" : message }, { status: 409 })
   }
 }

@@ -99,7 +99,7 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
     .details > div + div { border-right: 1px solid #004aad; }
     .details p { margin: 0; }
     .warranty { color: #7d5bc7; }
-    .sales { color: #004aad; font-size: 15px; font-weight: 700; text-align: center; margin-top: -8px; }
+    .sales { color: #004aad; font-size: 15px; font-weight: 700; text-align: right; margin-top: -8px; }
     .audit { margin-top: auto; border-top: 1px solid #dbe3ef; padding-top: 5px; font-size: 7px; color: #64748b; direction: ltr; text-align: left; }
   </style>
 </head>

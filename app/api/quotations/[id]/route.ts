@@ -55,7 +55,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     const quotation = await getQuotation(id)
     if (!quotation) throw new Error("عرض السعر غير موجود")
     const generated = await generateQuotationPdf(quotation)
-    await replaceQuotationPdf(id, generated.sha256)
+    await replaceQuotationPdf(id, generated.pdfPath, generated.sha256)
     await upsertProductsFromQuotation(quotation.items, actor)
     return NextResponse.json({ id, quotationNumber: quotation.quotationNumber, pdfUrl: `/api/quotations/${id}/pdf` })
   } catch (error) {

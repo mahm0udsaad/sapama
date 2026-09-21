@@ -31,7 +31,7 @@ export async function listProducts(search = ""): Promise<Product[]> {
     .select("id, description, origin, unit_price, vat_rate, image_data_url, created_at")
     .order("usage_count", { ascending: false })
     .order("description")
-    .limit(50)
+    .limit(500)
 
   const term = search.trim()
   if (term) query = query.ilike("description", `%${term}%`)
@@ -39,6 +39,57 @@ export async function listProducts(search = ""): Promise<Product[]> {
   const { data, error } = await query
   if (error) throw error
   return ((data ?? []) as ProductRow[]).map(mapProduct)
+}
+
+type ProductInput = {
+  description: string
+  origin: string
+  unitPrice: number
+  vatRate: VatRate
+  imageDataUrl?: string | null
+}
+
+export async function createProduct(input: ProductInput, actor: string): Promise<Product> {
+  const db = getSupabase()
+  const id = randomUUID()
+  const now = new Date().toISOString()
+  const { data, error } = await db
+    .from("products")
+    .insert({
+      id,
+      description: input.description,
+      origin: input.origin,
+      unit_price: input.unitPrice,
+      vat_rate: input.vatRate,
+      image_data_url: input.imageDataUrl ?? null,
+      usage_count: 0,
+      created_by: actor,
+      created_at: now,
+      updated_at: now,
+    })
+    .select("id, description, origin, unit_price, vat_rate, image_data_url, created_at")
+    .single()
+  if (error) throw error
+  return mapProduct(data as ProductRow)
+}
+
+export async function updateProduct(id: string, input: ProductInput): Promise<Product | null> {
+  const db = getSupabase()
+  const { data, error } = await db
+    .from("products")
+    .update({
+      description: input.description,
+      origin: input.origin,
+      unit_price: input.unitPrice,
+      vat_rate: input.vatRate,
+      image_data_url: input.imageDataUrl ?? null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select("id, description, origin, unit_price, vat_rate, image_data_url, created_at")
+    .maybeSingle()
+  if (error) throw error
+  return data ? mapProduct(data as ProductRow) : null
 }
 
 export async function upsertProductsFromQuotation(items: QuotationItem[], actor: string) {

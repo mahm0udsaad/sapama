@@ -19,5 +19,5 @@ export const QUOTATION_DEFAULTS = {
     "ضمان سنتين على العيوب المصنعية ولا يشمل الإكسسوارات أو سوء الاستخدام للأجهزة الكهربائية.",
 } as const
 
-export const TEMPLATE_VERSION = "quotation-ar-v2"
+export const TEMPLATE_VERSION = "quotation-ar-v3"
 export const FIRST_QUOTATION_NUMBER = 1168

@@ -318,6 +318,56 @@ export async function createCustomer(
   }
 }
 
+type CustomerInput = {
+  name: string
+  address: string
+  district: string
+  street: string
+  postalCode: string
+  additionalNumber: string
+  buildingNumber: string
+  commercialRegistration: string
+  taxNumber: string
+}
+
+export async function updateCustomer(id: string, input: CustomerInput): Promise<Customer | null> {
+  const db = getSupabase()
+  const { data, error } = await db
+    .from("customers")
+    .update({
+      name: input.name,
+      address: input.address,
+      district: input.district,
+      street: input.street,
+      postal_code: input.postalCode,
+      additional_number: input.additionalNumber,
+      building_number: input.buildingNumber,
+      commercial_registration: input.commercialRegistration,
+      tax_number: input.taxNumber,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select("id, name, address, district, street, postal_code, additional_number, building_number, commercial_registration, tax_number, created_at")
+    .maybeSingle()
+  if (error) throw error
+  if (!data) return null
+
+  const { data: contacts, error: contactsError } = await db
+    .from("customer_contacts")
+    .select("id, customer_id, name, phone, created_at")
+    .eq("customer_id", id)
+    .order("name")
+  if (contactsError) throw contactsError
+  const mappedContacts = ((contacts ?? []) as ContactRow[]).map((contact) => ({
+    id: contact.id,
+    customerId: contact.customer_id,
+    name: contact.name,
+    phone: contact.phone,
+    createdAt: contact.created_at,
+  }))
+  return mapCustomer(data as CustomerRow, mappedContacts)
+}
+
 export async function createCustomerContact(customerId: string, name: string, phone: string, actor: string): Promise<CustomerContact | null> {
   const db = getSupabase()
   const { data: customer } = await db.from("customers").select("id").eq("id", customerId).maybeSingle()
@@ -397,8 +447,11 @@ export async function updateQuotationContent(id: string, input: QuotationInput, 
   return true
 }
 
-export async function replaceQuotationPdf(id: string, sha256: string) {
+export async function replaceQuotationPdf(id: string, pdfPath: string, sha256: string) {
   const db = getSupabase()
-  const { error } = await db.from("quotations").update({ pdf_sha256: sha256, updated_at: new Date().toISOString() }).eq("id", id)
+  const { error } = await db
+    .from("quotations")
+    .update({ pdf_path: pdfPath, pdf_sha256: sha256, updated_at: new Date().toISOString() })
+    .eq("id", id)
   if (error) throw error
 }
