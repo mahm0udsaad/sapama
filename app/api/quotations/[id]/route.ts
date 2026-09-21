@@ -24,10 +24,14 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   if (payload?.action === "update_offer_status") {
     const offerStatus = offerStatusSchema.safeParse((payload as { offerStatus?: unknown }).offerStatus)
     if (!offerStatus.success) return NextResponse.json({ error: "حالة العرض غير صالحة" }, { status: 400 })
-    if (!(await updateQuotationOfferStatus(id, offerStatus.data, actor))) {
-      return NextResponse.json({ error: "عرض السعر غير موجود" }, { status: 404 })
+    try {
+      const persistedStatus = await updateQuotationOfferStatus(id, offerStatus.data, actor)
+      if (!persistedStatus) return NextResponse.json({ error: "عرض السعر غير موجود" }, { status: 404 })
+      return NextResponse.json({ success: true, offerStatus: persistedStatus })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "تعذر تحديث حالة العرض"
+      return NextResponse.json({ error: message }, { status: 500 })
     }
-    return NextResponse.json({ success: true })
   }
   if (payload?.action === "cancel") {
     if (!(await cancelQuotation(id, actor))) {

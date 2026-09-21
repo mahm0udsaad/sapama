@@ -339,11 +339,25 @@ export async function createCustomerContact(customerId: string, name: string, ph
 
 export async function updateQuotationOfferStatus(id: string, offerStatus: OfferStatus, actor: string) {
   const db = getSupabase()
-  const { data: existing } = await db.from("quotations").select("offer_status").eq("id", id).maybeSingle()
+  const { data: existing, error: selectError } = await db
+    .from("quotations")
+    .select("offer_status, payload")
+    .eq("id", id)
+    .maybeSingle()
+  if (selectError) throw selectError
   if (!existing) return false
   const now = new Date().toISOString()
-  await db.from("quotations").update({ offer_status: offerStatus, updated_at: now }).eq("id", id)
-  await db.from("quotation_audit_events").insert({
+  const payload = { ...(existing.payload as QuotationInput), offerStatus }
+  const { data: updated, error: updateError } = await db
+    .from("quotations")
+    .update({ offer_status: offerStatus, payload, updated_at: now })
+    .eq("id", id)
+    .select("offer_status")
+    .maybeSingle()
+  if (updateError) throw updateError
+  if (!updated) return false
+
+  const { error: auditError } = await db.from("quotation_audit_events").insert({
     id: randomUUID(),
     quotation_id: id,
     action: "offer_status_changed",
@@ -351,7 +365,8 @@ export async function updateQuotationOfferStatus(id: string, offerStatus: OfferS
     details: { previousStatus: existing.offer_status, offerStatus },
     created_at: now,
   })
-  return true
+  if (auditError) console.error("Failed to record quotation status audit event", auditError)
+  return updated.offer_status as OfferStatus
 }
 
 export async function updateQuotationContent(id: string, input: QuotationInput, actor: string) {
@@ -359,7 +374,13 @@ export async function updateQuotationContent(id: string, input: QuotationInput, 
   const now = new Date().toISOString()
   const { data, error } = await db
     .from("quotations")
-    .update({ payload: input, total: quotationTotals(input).total, offer_status: input.offerStatus, updated_at: now })
+    .update({
+      payload: input,
+      total: quotationTotals(input).total,
+      offer_status: input.offerStatus,
+      template_version: TEMPLATE_VERSION,
+      updated_at: now,
+    })
     .eq("id", id)
     .eq("status", "issued")
     .select("pdf_sha256")

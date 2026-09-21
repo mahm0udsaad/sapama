@@ -13,6 +13,7 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
   const [quotations, setQuotations] = useState(initialQuotations)
   const [query, setQuery] = useState("")
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [statusError, setStatusError] = useState("")
 
   const visible = useMemo(() => {
     const normalized = query.trim()
@@ -37,15 +38,26 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
   }
 
   async function updateOfferStatus(id: string, offerStatus: OfferStatus) {
+    const previousStatus = quotations.find((quote) => quote.id === id)?.offerStatus
+    if (!previousStatus || previousStatus === offerStatus) return
+
+    setStatusError("")
     setBusyId(id)
-    const response = await fetch(`/api/quotations/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update_offer_status", offerStatus }),
-    })
-    setBusyId(null)
-    if (response.ok) {
-      setQuotations((current) => current.map((quote) => quote.id === id ? { ...quote, offerStatus } : quote))
+    setQuotations((current) => current.map((quote) => quote.id === id ? { ...quote, offerStatus } : quote))
+    try {
+      const response = await fetch(`/api/quotations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "update_offer_status", offerStatus }),
+      })
+      const result = await response.json().catch(() => null) as { error?: string; offerStatus?: OfferStatus } | null
+      if (!response.ok || !result?.offerStatus) throw new Error(result?.error || "تعذر تحديث حالة العرض")
+      setQuotations((current) => current.map((quote) => quote.id === id ? { ...quote, offerStatus: result.offerStatus! } : quote))
+    } catch (error) {
+      setQuotations((current) => current.map((quote) => quote.id === id ? { ...quote, offerStatus: previousStatus } : quote))
+      setStatusError(error instanceof Error ? error.message : "تعذر تحديث حالة العرض")
+    } finally {
+      setBusyId(null)
     }
   }
 
@@ -69,6 +81,7 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
             <Search className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="ابحث بالرقم أو اسم العميل" className="admin-input pr-10" />
           </label>
+          {statusError ? <p className="mt-3 text-sm font-semibold text-destructive" role="alert">{statusError}</p> : null}
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px] text-right text-sm">

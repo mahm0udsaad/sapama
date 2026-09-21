@@ -22,7 +22,6 @@ export default function QuotationPreview({ quotation, quotationNumber }: { quota
         </div>
         <div className="quotation-preview-logo"><img src="/logo.png" alt="مدماك فيجن" /></div>
       </header>
-      <h2>[ عرض سعر ]</h2>
       <section className="quotation-preview-meta">
         <div>
           <p>التاريخ: {date}</p>
@@ -74,4 +73,3 @@ export default function QuotationPreview({ quotation, quotationNumber }: { quota
     </div>
   )
 }
-
