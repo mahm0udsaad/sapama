@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { PackagePlus, Search } from "lucide-react"
+import { ImageIcon, PackagePlus, Search } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { formatMoney } from "@/lib/quotations/calculations"
 import type { Product } from "@/lib/quotations/types"
@@ -76,9 +76,24 @@ export default function ProductPickerModal({
               }}
               className="flex w-full items-center justify-between gap-3 rounded-[var(--radius-md)] border border-border p-3 text-right transition-colors hover:border-primary hover:bg-primary/5"
             >
-              <span>
-                <span className="block font-semibold">{product.description}</span>
-                {product.origin ? <span className="block text-xs text-muted-foreground">{product.origin}</span> : null}
+              <span className="flex min-w-0 flex-1 items-center gap-3">
+                <span className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-sm)] border border-border bg-white">
+                  {product.imageDataUrl ? (
+                    <img
+                      src={product.imageDataUrl}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="size-full object-contain"
+                    />
+                  ) : (
+                    <ImageIcon className="size-6 text-muted-foreground" aria-hidden="true" />
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-semibold">{product.description}</span>
+                  {product.origin ? <span className="block text-xs text-muted-foreground">{product.origin}</span> : null}
+                </span>
               </span>
               <span className="flex shrink-0 items-center gap-2 text-sm font-bold text-primary">
                 {formatMoney(product.unitPrice)} ر.س <PackagePlus className="size-4" aria-hidden="true" />

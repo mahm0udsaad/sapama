@@ -1,0 +1,1 @@
+-- Production catalog data is versioned in migrations.
