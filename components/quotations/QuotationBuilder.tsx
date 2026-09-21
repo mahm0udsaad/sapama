@@ -11,6 +11,8 @@ import type { StoredQuotation, Customer, DiscountType, OfferStatus, Product, Quo
 
 const DRAFT_KEY = "madmak-quotation-draft-v3"
 const CREATE_NEW = "__new__"
+const MAX_IMAGE_DATA_URL_LENGTH = 260_000
+const MAX_QUOTATION_REQUEST_BYTES = 4_000_000
 
 function emptyItem(): QuotationItem {
   return { id: crypto.randomUUID(), description: "", origin: "", quantity: 1, unitPrice: 0, vatRate: 0, discountType: null, discountValue: 0 }
@@ -34,10 +36,57 @@ const EMPTY_NEW_CUSTOMER = {
 }
 
 async function requestJson<T>(url: string, options: RequestInit): Promise<T> {
-  const response = await fetch(url, options)
-  const result = await response.json().catch(() => ({})) as T & { error?: string }
-  if (!response.ok) throw new Error(result.error ?? "تعذر الاتصال بالخادم")
+  let response: Response
+  try {
+    response = await fetch(url, options)
+  } catch {
+    throw new Error("تعذر الاتصال بالخادم. تحقق من الإنترنت ثم حاول مرة أخرى.")
+  }
+  const responseText = await response.text()
+  const result = responseText ? parseJson<T>(responseText) : ({} as T & { error?: string })
+  if (!response.ok) {
+    const serverError = typeof result === "object" && result && "error" in result ? String(result.error) : ""
+    if (serverError) throw new Error(serverError)
+    if (response.status === 413) throw new Error("حجم صور المنتجات كبير جداً. أعد اختيار الصور وسيتم ضغطها تلقائياً.")
+    if (response.status === 401) throw new Error("انتهت جلسة الدخول. حدّث الصفحة وسجّل الدخول مرة أخرى.")
+    if (response.status === 504) throw new Error("استغرق إنشاء ملف PDF وقتاً أطول من المسموح. حاول مرة أخرى.")
+    throw new Error(`تعذر تنفيذ الطلب على الخادم (رمز ${response.status}).`)
+  }
   return result
+}
+
+function parseJson<T>(value: string): T & { error?: string } {
+  try {
+    return JSON.parse(value) as T & { error?: string }
+  } catch {
+    return {} as T & { error?: string }
+  }
+}
+
+async function optimizeImageDataUrl(dataUrl: string) {
+  if (dataUrl.length <= MAX_IMAGE_DATA_URL_LENGTH) return dataUrl
+
+  const image = new Image()
+  image.decoding = "async"
+  image.src = dataUrl
+  await image.decode()
+
+  let scale = Math.min(1, 1000 / image.naturalWidth, 1000 / image.naturalHeight)
+  let optimized = dataUrl
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const canvas = document.createElement("canvas")
+    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale))
+    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale))
+    const context = canvas.getContext("2d")
+    if (!context) throw new Error("تعذر تجهيز صورة المنتج")
+    context.fillStyle = "#ffffff"
+    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(image, 0, 0, canvas.width, canvas.height)
+    optimized = canvas.toDataURL("image/jpeg", Math.max(0.48, 0.82 - attempt * 0.1))
+    if (optimized.length <= MAX_IMAGE_DATA_URL_LENGTH) return optimized
+    scale *= 0.72
+  }
+  throw new Error("تعذر ضغط صورة المنتج إلى حجم مناسب. اختر صورة أصغر.")
 }
 
 export default function QuotationBuilder({ nextQuotationNumber, initialCustomers, existing }: { nextQuotationNumber: number; initialCustomers: Customer[]; existing?: StoredQuotation }) {
@@ -50,6 +99,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
   const [newCustomer, setNewCustomer] = useState(EMPTY_NEW_CUSTOMER)
   const [directoryBusy, setDirectoryBusy] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [imageBusy, setImageBusy] = useState(false)
   const [error, setError] = useState("")
   const [issued, setIssued] = useState<{ number: number; url: string } | null>(null)
   const [pickerOpen, setPickerOpen] = useState(false)
@@ -131,13 +181,26 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
     }))
   }
 
-  function uploadImage(id: string, event: ChangeEvent<HTMLInputElement>) {
+  async function uploadImage(id: string, event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (!file) return
     if (file.size > 2_000_000) { setError("حجم صورة المنتج يجب ألا يتجاوز 2 ميجابايت."); return }
-    const reader = new FileReader()
-    reader.onload = () => updateItem(id, { imageDataUrl: String(reader.result) })
-    reader.readAsDataURL(file)
+    setError("")
+    setImageBusy(true)
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(String(reader.result))
+        reader.onerror = () => reject(new Error("تعذر قراءة صورة المنتج"))
+        reader.readAsDataURL(file)
+      })
+      updateItem(id, { imageDataUrl: await optimizeImageDataUrl(dataUrl) })
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "تعذر تجهيز صورة المنتج")
+    } finally {
+      setImageBusy(false)
+      event.target.value = ""
+    }
   }
 
   async function issueQuotation(event: FormEvent) {
@@ -146,7 +209,19 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
     if (!quotation.items.length) { setError("أضف منتجاً واحداً على الأقل."); return }
     setSubmitting(true)
     try {
-      const result = await requestJson<{ quotationNumber: number; pdfUrl: string }>(existing ? `/api/quotations/${existing.id}` : "/api/quotations", { method: existing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quotation) })
+      const normalizedQuotation = {
+        ...quotation,
+        items: await Promise.all(quotation.items.map(async (item) => ({
+          ...item,
+          imageDataUrl: item.imageDataUrl ? await optimizeImageDataUrl(item.imageDataUrl) : undefined,
+        }))),
+      }
+      const requestBody = JSON.stringify(normalizedQuotation)
+      if (new Blob([requestBody]).size > MAX_QUOTATION_REQUEST_BYTES) {
+        throw new Error("حجم صور العرض كبير جداً. احذف بعض الصور الكبيرة أو أعد اختيارها ثم حاول مرة أخرى.")
+      }
+      setQuotation(normalizedQuotation)
+      const result = await requestJson<{ quotationNumber: number; pdfUrl: string }>(existing ? `/api/quotations/${existing.id}` : "/api/quotations", { method: existing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: requestBody })
       localStorage.removeItem(DRAFT_KEY)
       setIssued({ number: result.quotationNumber, url: result.pdfUrl })
       router.refresh()
@@ -239,7 +314,7 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
             </article>)}</div>
           </section>
           {error ? <p role="alert" className="rounded-[var(--radius-md)] border border-destructive/30 bg-destructive/10 p-4 text-sm font-semibold text-destructive">{error}</p> : null}
-          <button disabled={submitting || directoryBusy} className="admin-primary-button min-h-12 w-full text-base">{submitting ? "جارٍ إنشاء وحفظ ملف PDF..." : (existing ? `حفظ تعديلات عرض السعر رقم ${nextQuotationNumber}` : `إصدار عرض السعر رقم ${nextQuotationNumber}`)}</button>
+          <button disabled={submitting || directoryBusy || imageBusy} className="admin-primary-button min-h-12 w-full text-base">{imageBusy ? "جارٍ تجهيز صورة المنتج..." : submitting ? "جارٍ إنشاء وحفظ ملف PDF..." : (existing ? `حفظ تعديلات عرض السعر رقم ${nextQuotationNumber}` : `إصدار عرض السعر رقم ${nextQuotationNumber}`)}</button>
         </div>
         <section className="admin-preview-panel xl:sticky xl:top-5"><div className="mb-3 flex items-center justify-between"><h2 className="font-bold">معاينة مباشرة</h2><span className="text-xs text-muted-foreground">Letter · صفحة الطباعة</span></div><div className="overflow-auto rounded-[var(--radius-md)] bg-[#dfe4ea] p-3 sm:p-6"><QuotationPreview quotation={quotation} quotationNumber={nextQuotationNumber} /></div></section>
       </form>

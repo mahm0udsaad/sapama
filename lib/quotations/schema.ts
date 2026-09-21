@@ -9,7 +9,7 @@ const itemSchema = z.object({
   vatRate: z.union([z.literal(0), z.literal(15)]),
   imageDataUrl: z
     .string()
-    .max(3_000_000)
+    .max(300_000)
     .refine(
       (value) => !value || /^data:image\/(png|jpe?g|webp);base64,/i.test(value),
       "صيغة صورة غير مدعومة",
