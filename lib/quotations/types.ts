@@ -85,6 +85,10 @@ export type QuotationInput = {
   customerTaxNumber?: string
   offerStatus: OfferStatus
   items: QuotationItem[]
+  validityDays?: number
+  deliveryDays?: number
+  paymentTerms?: string
+  warranty?: string
 }
 
 export type QuotationStatus = "processing" | "issued" | "cancelled" | "failed"
@@ -114,6 +118,8 @@ export type QuotationSummary = Pick<
   | "createdAt"
   | "issuedAt"
   | "pdfSha256"
+  | "createdBy"
 > & {
   total: number
+  createdByName: string
 }

@@ -31,6 +31,10 @@ export const quotationInputSchema = z.object({
   customerTaxNumber: z.string().trim().max(50).optional(),
   offerStatus: z.enum(["temporary", "approved", "in_progress", "sent", "expired"]),
   items: z.array(itemSchema).min(1).max(12),
+  validityDays: z.coerce.number().int().positive().max(365).optional(),
+  deliveryDays: z.coerce.number().int().positive().max(365).optional(),
+  paymentTerms: z.string().trim().max(300).optional(),
+  warranty: z.string().trim().max(1000).optional(),
 })
 
 const optionalText = (max: number) => z.string().trim().max(max).optional().default("")

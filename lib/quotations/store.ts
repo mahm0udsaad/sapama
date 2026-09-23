@@ -45,6 +45,10 @@ function mapStoredQuotation(row: QuotationRow): StoredQuotation {
     customerTaxNumber: payload.customerTaxNumber ?? "",
     offerStatus: row.offer_status ?? payload.offerStatus ?? "temporary",
     items: payload.items ?? [],
+    validityDays: payload.validityDays,
+    deliveryDays: payload.deliveryDays,
+    paymentTerms: payload.paymentTerms,
+    warranty: payload.warranty,
     id: row.id,
     quotationNumber: row.quotation_number,
     status: row.status,
@@ -141,7 +145,7 @@ export async function listQuotations(search = ""): Promise<QuotationSummary[]> {
   const db = getSupabase()
   let query = db
     .from("quotations")
-    .select("id, quotation_number, status, offer_status, issue_date, payload, total, created_at, issued_at, pdf_sha256")
+    .select("id, quotation_number, status, offer_status, issue_date, payload, total, created_by, created_at, issued_at, pdf_sha256")
     .neq("status", "processing")
     .order("quotation_number", { ascending: false })
     .limit(250)
@@ -159,6 +163,9 @@ export async function listQuotations(search = ""): Promise<QuotationSummary[]> {
   if (error) throw error
   const rows = (data ?? []) as unknown as QuotationRow[]
 
+  const { data: users } = await db.from("app_users").select("username, display_name")
+  const displayNameByUsername = new Map(((users ?? []) as { username: string; display_name: string }[]).map((user) => [user.username, user.display_name]))
+
   return rows.map((row) => ({
     id: row.id,
     quotationNumber: row.quotation_number,
@@ -170,6 +177,8 @@ export async function listQuotations(search = ""): Promise<QuotationSummary[]> {
     issuedAt: row.issued_at,
     pdfSha256: row.pdf_sha256,
     total: row.total,
+    createdBy: row.created_by,
+    createdByName: displayNameByUsername.get(row.created_by) ?? row.created_by,
   }))
 }
 

@@ -49,7 +49,7 @@ export default function QuotationPreview({ quotation, quotationNumber }: { quota
                 <td>{formatMoney(item.quantity)}</td>
                 <td>{formatMoney(item.unitPrice)}</td>
                 <td>{formatDiscount(item)}</td>
-                <td>{item.vatRate ? `${item.vatRate}%` : "--"}</td>
+                <td>{result.vat ? formatMoney(result.vat) : "--"}</td>
                 <td>{formatMoney(result.total)}</td>
                 <td>{item.imageDataUrl ? <img src={item.imageDataUrl} alt="صورة المنتج" /> : <span className="preview-empty-image">بدون صورة</span>}</td>
               </tr>
@@ -66,7 +66,7 @@ export default function QuotationPreview({ quotation, quotationNumber }: { quota
           <p>البيانات البنكية للتحويل:</p><p>اسم الحساب: {COMPANY.accountName}</p><p>رقم الحساب: {COMPANY.accountNumber}</p><p>رقم الآيبان: {COMPANY.iban}</p><p>اسم البنك: {COMPANY.bankName}</p>
         </div>
         <div>
-          <p>مدة عرض السعر: {QUOTATION_DEFAULTS.validityDays} يوم</p><p>مدة التوريد بعد التعميد: {QUOTATION_DEFAULTS.deliveryDays} أيام</p><p>طريقة الدفع: {QUOTATION_DEFAULTS.paymentTerms}</p><p>الضمان: <span>{QUOTATION_DEFAULTS.warranty}</span></p>
+          <p>مدة عرض السعر: {quotation.validityDays ?? QUOTATION_DEFAULTS.validityDays} يوم</p><p>مدة التوريد بعد التعميد: {quotation.deliveryDays ?? QUOTATION_DEFAULTS.deliveryDays} أيام</p><p>طريقة الدفع: {quotation.paymentTerms ?? QUOTATION_DEFAULTS.paymentTerms}</p><p>الضمان: <span>{quotation.warranty ?? QUOTATION_DEFAULTS.warranty}</span></p>
         </div>
       </section>
       <p className="quotation-preview-sales">مسؤول المبيعات: {COMPANY.salesRepresentative}</p>

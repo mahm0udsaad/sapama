@@ -48,7 +48,7 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
           <td>${formatMoney(item.quantity)}</td>
           <td>${formatMoney(item.unitPrice)}</td>
           <td>${formatDiscount(item)}</td>
-          <td>${item.vatRate === 0 ? "--" : `${item.vatRate}%`}</td>
+          <td>${result.vat === 0 ? "--" : formatMoney(result.vat)}</td>
           <td>${formatMoney(result.total)}</td>
           <td class="product-image">${image}</td>
         </tr>`
@@ -66,20 +66,20 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; color: #11204f; font-family: "Noto Sans Arabic", Arial, Tahoma, sans-serif; }
     body { background: white; direction: rtl; }
-    .page { width: 8.5in; min-height: 11in; padding: .23in .28in .22in; display: flex; flex-direction: column; gap: 13px; border-top: 8px solid #004aad; }
-    .header { display: grid; grid-template-columns: 1fr 1.08fr; min-height: 132px; border: 1px solid #004aad; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgb(0 74 173 / 10%); }
-    .seller { border-left: 1px solid #004aad; padding: 8px 13px; font-size: 13px; line-height: 1.85; font-weight: 700; color: #11204f; background: linear-gradient(145deg, #f3f7ff, #f6f1ff); }
+    .page { width: 8.5in; min-height: 11in; padding: .23in .28in .22in; display: flex; flex-direction: column; gap: 13px; border-top: 8px solid #2665b9; }
+    .header { display: grid; grid-template-columns: 1fr 1.08fr; min-height: 132px; border: 1px solid #2665b9; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgb(0 74 173 / 10%); }
+    .seller { border-left: 1px solid #2665b9; padding: 8px 13px; font-size: 13px; line-height: 1.85; font-weight: 700; color: #11204f; background: linear-gradient(145deg, #f3f7ff, #f6f1ff); }
     .seller p { margin: 0; }
     .logo-wrap { display: flex; align-items: center; justify-content: center; position: relative; background: white; }
-    .logo-wrap::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 5px; background: linear-gradient(90deg, #004aad 0 34%, #6bc168 34% 67%, #ab88f0 67%); }
+    .logo-wrap::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 5px; background: linear-gradient(90deg, #2665b9 0 34%, #6bc168 34% 67%, #ab88f0 67%); }
     .logo-wrap img { width: 250px; height: auto; object-fit: contain; }
-    .meta { border: 1px solid #004aad; border-radius: 9px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 14px; font-weight: 700; line-height: 1.85; background: #fbfdff; }
+    .meta { border: 1px solid #2665b9; border-radius: 9px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 14px; font-weight: 700; line-height: 1.85; background: #fbfdff; }
     .meta > div { padding: 4px 10px; }
-    .meta > div + div { border-right: 1px solid #004aad; }
+    .meta > div + div { border-right: 1px solid #2665b9; }
     .meta p { margin: 0; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
     th, td { border: 1px solid #b9c8e1; padding: 5px 4px; text-align: center; vertical-align: top; }
-    th { border-color: #004aad; background: #004aad; color: white; font-size: 13px; height: 36px; vertical-align: middle; }
+    th { border-color: #2665b9; background: #2665b9; color: white; font-size: 13px; height: 36px; vertical-align: middle; }
     tbody tr:nth-child(even) { background: #f8fbff; }
     tbody tr { height: 108px; }
     .number { color: #7d5bc7; font-weight: 800; width: 3%; }
@@ -88,18 +88,18 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
     .product-image { width: 27%; padding: 5px; vertical-align: middle; }
     .product-image img { width: 100%; height: 98px; object-fit: contain; }
     .image-placeholder { color: #64748b; font-size: 11px; }
-    .summary { border: 1px solid #004aad; border-radius: 9px 9px 0 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 13px; font-weight: 700; line-height: 1.7; background: #f3f7ff; }
+    .summary { border: 1px solid #2665b9; border-radius: 9px 9px 0 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 13px; font-weight: 700; line-height: 1.7; background: #f3f7ff; }
     .summary > div { padding: 5px 10px; }
-    .summary > div + div { border-right: 1px solid #004aad; }
+    .summary > div + div { border-right: 1px solid #2665b9; }
     .summary p { margin: 0; }
     .amount-words { font-size: 14px; text-align: center; margin-top: 4px !important; }
-    .red { color: #004aad; }
-    .details { border: 1px solid #004aad; border-top: 0; border-radius: 0 0 9px 9px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 12.5px; font-weight: 700; line-height: 1.7; }
+    .red { color: #2665b9; }
+    .details { border: 1px solid #2665b9; border-top: 0; border-radius: 0 0 9px 9px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; font-size: 12.5px; font-weight: 700; line-height: 1.7; }
     .details > div { padding: 4px 10px; }
-    .details > div + div { border-right: 1px solid #004aad; }
+    .details > div + div { border-right: 1px solid #2665b9; }
     .details p { margin: 0; }
     .warranty { color: #7d5bc7; }
-    .sales { color: #004aad; font-size: 15px; font-weight: 700; text-align: right; margin-top: -8px; }
+    .sales { color: #2665b9; font-size: 15px; font-weight: 700; text-align: right; margin-top: -8px; }
     .audit { margin-top: auto; border-top: 1px solid #dbe3ef; padding-top: 5px; font-size: 7px; color: #64748b; direction: ltr; text-align: left; }
   </style>
 </head>
@@ -167,10 +167,10 @@ export function renderQuotationHtml(quotation: StoredQuotation) {
         <p>اسم البنك: ${COMPANY.bankName}</p>
       </div>
       <div>
-        <p>مدة عرض السعر: ${QUOTATION_DEFAULTS.validityDays} يوم</p>
-        <p>مدة التوريد بعد التعميد: ${QUOTATION_DEFAULTS.deliveryDays} أيام</p>
-        <p>طريقة الدفع: ${QUOTATION_DEFAULTS.paymentTerms}</p>
-        <p>الضمان: <span class="warranty">${QUOTATION_DEFAULTS.warranty}</span></p>
+        <p>مدة عرض السعر: ${quotation.validityDays ?? QUOTATION_DEFAULTS.validityDays} يوم</p>
+        <p>مدة التوريد بعد التعميد: ${quotation.deliveryDays ?? QUOTATION_DEFAULTS.deliveryDays} أيام</p>
+        <p>طريقة الدفع: ${escapeHtml(quotation.paymentTerms ?? QUOTATION_DEFAULTS.paymentTerms)}</p>
+        <p>الضمان: <span class="warranty">${escapeHtml(quotation.warranty ?? QUOTATION_DEFAULTS.warranty)}</span></p>
       </div>
     </section>
 

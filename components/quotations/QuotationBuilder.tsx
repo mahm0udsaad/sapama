@@ -7,6 +7,7 @@ import { CheckCircle2, Download, ImagePlus, ListPlus, Plus, Save, Trash2, UserPl
 import QuotationPreview from "./QuotationPreview"
 import ProductPickerModal from "./ProductPickerModal"
 import { OFFER_STATUS_LABELS } from "@/lib/quotations/types"
+import { QUOTATION_DEFAULTS } from "@/lib/quotations/constants"
 import type { StoredQuotation, Customer, DiscountType, OfferStatus, Product, QuotationInput, QuotationItem, VatRate } from "@/lib/quotations/types"
 
 const DRAFT_KEY = "madmak-quotation-draft-v3"
@@ -21,6 +22,10 @@ function emptyItem(): QuotationItem {
 const EMPTY_QUOTATION: QuotationInput = {
   customerId: "", customerName: "", contactId: "", contactName: "", phone: "", address: "",
   offerStatus: "temporary", items: [],
+  validityDays: QUOTATION_DEFAULTS.validityDays,
+  deliveryDays: QUOTATION_DEFAULTS.deliveryDays,
+  paymentTerms: QUOTATION_DEFAULTS.paymentTerms,
+  warranty: QUOTATION_DEFAULTS.warranty,
 }
 
 const EMPTY_NEW_CUSTOMER = {
@@ -93,7 +98,13 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
   const router = useRouter()
   const [customers, setCustomers] = useState(initialCustomers)
   const [quotation, setQuotation] = useState<QuotationInput>(() => existing
-    ? { customerId: existing.customerId, customerName: existing.customerName, contactId: existing.contactId, contactName: existing.contactName, phone: existing.phone, address: existing.address, customerCommercialRegistration: existing.customerCommercialRegistration, customerTaxNumber: existing.customerTaxNumber, offerStatus: existing.offerStatus, items: existing.items }
+    ? {
+        customerId: existing.customerId, customerName: existing.customerName, contactId: existing.contactId, contactName: existing.contactName, phone: existing.phone, address: existing.address, customerCommercialRegistration: existing.customerCommercialRegistration, customerTaxNumber: existing.customerTaxNumber, offerStatus: existing.offerStatus, items: existing.items,
+        validityDays: existing.validityDays ?? QUOTATION_DEFAULTS.validityDays,
+        deliveryDays: existing.deliveryDays ?? QUOTATION_DEFAULTS.deliveryDays,
+        paymentTerms: existing.paymentTerms ?? QUOTATION_DEFAULTS.paymentTerms,
+        warranty: existing.warranty ?? QUOTATION_DEFAULTS.warranty,
+      }
     : { ...EMPTY_QUOTATION, items: [emptyItem()] })
   const [showNewCustomer, setShowNewCustomer] = useState(false)
   const [newCustomer, setNewCustomer] = useState(EMPTY_NEW_CUSTOMER)
@@ -312,6 +323,15 @@ export default function QuotationBuilder({ nextQuotationNumber, initialCustomers
                 <Field label="صورة المنتج"><label className="admin-upload"><ImagePlus aria-hidden="true" /><span>{item.imageDataUrl ? "تغيير الصورة" : "اختيار صورة"}</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => uploadImage(item.id, event)} className="sr-only" /></label></Field>
               </div>
             </article>)}</div>
+          </section>
+          <section className="admin-card p-5">
+            <div className="mb-5 flex items-center justify-between gap-3"><h2 className="text-lg font-bold">شروط العرض</h2><span className="text-xs text-muted-foreground">قيم افتراضية قابلة للتعديل</span></div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="مدة عرض السعر (يوم)"><input type="number" min="1" step="1" value={quotation.validityDays ?? QUOTATION_DEFAULTS.validityDays} onChange={(event) => setQuotation((current) => ({ ...current, validityDays: Number(event.target.value) }))} className="admin-input" /></Field>
+              <Field label="مدة التوريد بعد التعميد (أيام)"><input type="number" min="1" step="1" value={quotation.deliveryDays ?? QUOTATION_DEFAULTS.deliveryDays} onChange={(event) => setQuotation((current) => ({ ...current, deliveryDays: Number(event.target.value) }))} className="admin-input" /></Field>
+              <Field label="طريقة الدفع" wide><input value={quotation.paymentTerms ?? QUOTATION_DEFAULTS.paymentTerms} onChange={(event) => setQuotation((current) => ({ ...current, paymentTerms: event.target.value }))} className="admin-input" /></Field>
+              <Field label="الضمان" wide><textarea rows={2} value={quotation.warranty ?? QUOTATION_DEFAULTS.warranty} onChange={(event) => setQuotation((current) => ({ ...current, warranty: event.target.value }))} className="admin-input min-h-16 resize-y" /></Field>
+            </div>
           </section>
           {error ? <p role="alert" className="rounded-[var(--radius-md)] border border-destructive/30 bg-destructive/10 p-4 text-sm font-semibold text-destructive">{error}</p> : null}
           <button disabled={submitting || directoryBusy || imageBusy} className="admin-primary-button min-h-12 w-full text-base">{imageBusy ? "جارٍ تجهيز صورة المنتج..." : submitting ? "جارٍ إنشاء وحفظ ملف PDF..." : (existing ? `حفظ تعديلات عرض السعر رقم ${nextQuotationNumber}` : `إصدار عرض السعر رقم ${nextQuotationNumber}`)}</button>

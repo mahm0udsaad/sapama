@@ -92,6 +92,7 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
                 <th className="px-5 py-3 font-semibold">التاريخ</th>
                 <th className="px-5 py-3 font-semibold">الإجمالي</th>
                 <th className="px-5 py-3 font-semibold">حالة العرض</th>
+                <th className="px-5 py-3 font-semibold">أنشئ بواسطة</th>
                 <th className="px-5 py-3 font-semibold">حالة الملف</th>
                 <th className="px-5 py-3 font-semibold">الإجراءات</th>
               </tr>
@@ -116,6 +117,7 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
                       {Object.entries(OFFER_STATUS_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                     </select>
                   </td>
+                  <td className="px-5 py-4 text-muted-foreground">{quote.createdByName}</td>
                   <td className="px-5 py-4"><span className={`status-${quote.status}`}>{STATUS_LABELS[quote.status]}</span></td>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-2">
@@ -134,7 +136,7 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
                 </tr>
               ))}
               {!visible.length ? (
-                <tr><td colSpan={7} className="px-5 py-16 text-center text-muted-foreground">لا توجد عروض مطابقة.</td></tr>
+                <tr><td colSpan={8} className="px-5 py-16 text-center text-muted-foreground">لا توجد عروض مطابقة.</td></tr>
               ) : null}
             </tbody>
           </table>
