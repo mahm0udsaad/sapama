@@ -3,7 +3,7 @@ import { getAdminUsername } from "@/lib/admin-auth"
 import { generateQuotationPdf } from "@/lib/quotations/generate-pdf"
 import { upsertProductsFromQuotation } from "@/lib/quotations/products-store"
 import { offerStatusSchema, quotationInputSchema } from "@/lib/quotations/schema"
-import { cancelQuotation, getQuotation, replaceQuotationPdf, updateQuotationContent, updateQuotationOfferStatus } from "@/lib/quotations/store"
+import { cancelQuotation, deleteQuotation, getQuotation, replaceQuotationPdf, updateQuotationContent, updateQuotationOfferStatus } from "@/lib/quotations/store"
 
 export const runtime = "nodejs"
 
@@ -40,6 +40,19 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     return NextResponse.json({ success: true })
   }
   return NextResponse.json({ error: "الإجراء غير مدعوم" }, { status: 400 })
+}
+
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
+  const actor = await getAdminUsername()
+  if (!actor) return NextResponse.json({ error: "غير مصرح" }, { status: 401 })
+  const { id } = await context.params
+  try {
+    if (!(await deleteQuotation(id))) return NextResponse.json({ error: "عرض السعر غير موجود" }, { status: 404 })
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "تعذر حذف عرض السعر"
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {

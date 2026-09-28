@@ -2,7 +2,16 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { Ban, Download, FilePlus2, Search } from "lucide-react"
+import { Ban, Download, FilePlus2, Search, Trash2 } from "lucide-react"
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { formatMoney } from "@/lib/quotations/calculations"
 import { OFFER_STATUS_LABELS } from "@/lib/quotations/types"
 import type { OfferStatus, QuotationSummary } from "@/lib/quotations/types"
@@ -14,6 +23,9 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
   const [query, setQuery] = useState("")
   const [busyId, setBusyId] = useState<string | null>(null)
   const [statusError, setStatusError] = useState("")
+  const [pendingDelete, setPendingDelete] = useState<QuotationSummary | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState("")
 
   const visible = useMemo(() => {
     const normalized = query.trim()
@@ -34,6 +46,24 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
     setBusyId(null)
     if (response.ok) {
       setQuotations((current) => current.map((quote) => quote.id === id ? { ...quote, status: "cancelled" } : quote))
+    }
+  }
+
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    const id = pendingDelete.id
+    setDeleteError("")
+    setDeleting(true)
+    try {
+      const response = await fetch(`/api/quotations/${id}`, { method: "DELETE" })
+      const result = await response.json().catch(() => null) as { error?: string } | null
+      if (!response.ok) throw new Error(result?.error || "تعذر حذف عرض السعر")
+      setQuotations((current) => current.filter((quote) => quote.id !== id))
+      setPendingDelete(null)
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "تعذر حذف عرض السعر")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -131,6 +161,14 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
                           <Ban aria-hidden="true" /> إلغاء
                         </button>
                       ) : null}
+                      <button
+                        disabled={busyId === quote.id}
+                        onClick={() => { setDeleteError(""); setPendingDelete(quote) }}
+                        className="admin-danger-button"
+                        aria-label={`حذف عرض السعر ${quote.quotationNumber}`}
+                      >
+                        <Trash2 aria-hidden="true" /> حذف
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -142,6 +180,24 @@ export default function QuotationArchive({ initialQuotations }: { initialQuotati
           </table>
         </div>
       </section>
+
+      <AlertDialog open={pendingDelete !== null} onOpenChange={(open) => { if (!open && !deleting) setPendingDelete(null) }}>
+        <AlertDialogContent dir="rtl" className="text-right">
+          <AlertDialogHeader className="text-right sm:text-right">
+            <AlertDialogTitle>حذف عرض السعر رقم {pendingDelete?.quotationNumber}؟</AlertDialogTitle>
+            <AlertDialogDescription>
+              سيتم حذف العرض الخاص بـ «{pendingDelete?.customerName}» وملف PDF المرتبط به وسجل التعديلات نهائياً. لا يمكن التراجع عن هذا الإجراء.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {deleteError ? <p className="text-sm font-semibold text-destructive" role="alert">{deleteError}</p> : null}
+          <AlertDialogFooter className="gap-2 sm:justify-start sm:gap-2 sm:space-x-0">
+            <button type="button" onClick={confirmDelete} disabled={deleting} className="admin-danger-button">
+              <Trash2 aria-hidden="true" /> {deleting ? "جارٍ الحذف..." : "حذف نهائي"}
+            </button>
+            <AlertDialogCancel disabled={deleting} className="mt-0">إلغاء</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   )
 }

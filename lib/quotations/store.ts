@@ -222,6 +222,19 @@ export async function cancelQuotation(id: string, actor: string) {
   return true
 }
 
+export async function deleteQuotation(id: string) {
+  const db = getSupabase()
+  const { data, error } = await db.from("quotations").delete().eq("id", id).select("pdf_path")
+  if (error) throw error
+  if (!data?.length) return false
+  const pdfPath = (data[0] as { pdf_path: string | null }).pdf_path
+  if (pdfPath) {
+    const { error: storageError } = await db.storage.from(PDF_BUCKET).remove([pdfPath])
+    if (storageError) console.error("Failed to remove quotation PDF", storageError)
+  }
+  return true
+}
+
 type CustomerRow = {
   id: string
   name: string
