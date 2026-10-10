@@ -85,3 +85,7 @@ export const companyName = "مدماك فيجن"
 export const siteTitle = `${companyName} | تجهيزات العلاج الطبيعي والرعاية النهارية`
 export const siteDescription =
   "حلول متكاملة لتجهيز مراكز العلاج الطبيعي والمرافق الطبية والرعاية النهارية، مع أجهزة علاج طبيعي، أدوات إعادة تأهيل، ومستلزمات طبية عالية الجودة في السعودية."
+
+export const contactPhone = "0570780836"
+export const contactPhoneIntl = "+966570780836"
+export const contactEmail = "contact@madmakvision.com"

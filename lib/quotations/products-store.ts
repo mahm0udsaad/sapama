@@ -1,6 +1,12 @@
 import { randomUUID } from "node:crypto"
+import { revalidatePath } from "next/cache"
 import { getSupabase } from "@/lib/supabase/server"
 import type { Product, QuotationItem, VatRate } from "./types"
+
+function revalidatePublicCatalog() {
+  revalidatePath("/products", "layout")
+  revalidatePath("/sitemap.xml")
+}
 
 type ProductRow = {
   id: string
@@ -70,6 +76,7 @@ export async function createProduct(input: ProductInput, actor: string): Promise
     .select("id, description, origin, unit_price, vat_rate, image_data_url, created_at")
     .single()
   if (error) throw error
+  revalidatePublicCatalog()
   return mapProduct(data as ProductRow)
 }
 
@@ -89,6 +96,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Pr
     .select("id, description, origin, unit_price, vat_rate, image_data_url, created_at")
     .maybeSingle()
   if (error) throw error
+  if (data) revalidatePublicCatalog()
   return data ? mapProduct(data as ProductRow) : null
 }
 
@@ -133,4 +141,5 @@ export async function upsertProductsFromQuotation(items: QuotationItem[], actor:
       })
     }
   }
+  revalidatePublicCatalog()
 }

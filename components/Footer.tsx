@@ -64,9 +64,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {[
-                { name: 'الخدمات', href: '#services' },
-                { name: 'عن مدماك فيجن', href: '#about' },
-                { name: 'تواصل معنا', href: '#contact' },
+                { name: 'الخدمات', href: '/#services' },
+                { name: 'منتجاتنا', href: '/products' },
+                { name: 'عن مدماك فيجن', href: '/#about' },
+                { name: 'تواصل معنا', href: '/#contact' },
               ].map((item) => (
                 <li key={item.name}>
                   <a href={item.href} className="text-white hover:text-primary transition flex items-center gap-2 group">

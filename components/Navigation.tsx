@@ -39,7 +39,7 @@ export default function Navigation() {
 
           {/* Centered Logo for Mobile, Right for Desktop */}
           <div className="flex-1 md:flex-none text-center md:text-right">
-            <a href="#" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
+            <a href="/" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
               <div className="flex items-center gap-2">
                 <img
                   src="/logo.png"
@@ -56,9 +56,10 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8 ml-12">
             {[
-              { name: 'خدماتنا', href: '#services' },
-              { name: 'من نحن', href: '#about' },
-              { name: 'طلب عرض سعر', href: '#contact' },
+              { name: 'خدماتنا', href: '/#services' },
+              { name: 'منتجاتنا', href: '/products' },
+              { name: 'من نحن', href: '/#about' },
+              { name: 'طلب عرض سعر', href: '/#contact' },
             ].map((item) => (
               <a
                 key={item.name}
@@ -70,7 +71,7 @@ export default function Navigation() {
               </a>
             ))}
             <motion.a
-              href="#contact"
+              href="/#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="btn-primary"
@@ -91,16 +92,19 @@ export default function Navigation() {
               className="md:hidden overflow-hidden border-t border-gray-100"
             >
               <div className="py-4 space-y-4 bg-white/95 backdrop-blur-sm rounded-b-2xl shadow-xl px-4">
-                <a href="#services" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+                <a href="/#services" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   خدماتنا
                 </a>
-                <a href="#about" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+                <a href="/products" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+                  منتجاتنا
+                </a>
+                <a href="/#about" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   من نحن
                 </a>
-                <a href="#contact" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+                <a href="/#contact" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   طلب عرض سعر
                 </a>
-                <a href="#contact" className="btn-primary w-full mt-4 block text-center" onClick={() => setIsOpen(false)}>
+                <a href="/#contact" className="btn-primary w-full mt-4 block text-center" onClick={() => setIsOpen(false)}>
                   اطلب الآن
                 </a>
               </div>
