@@ -2,76 +2,16 @@
 
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { homeFaqs } from '@/lib/seo'
 
-const faqs = [
-  {
-    id: 1,
-    question: 'ما الفئات التي تغطيها منتجاتكم وأجهزتكم؟',
-    answer:
-      'نوفر ثلاثة مسارات رئيسية: منتجات علاج طبيعي وأجهزة، منتجات رعاية نهارية وأجهزة، ومنتجات رعاية كبار سن وأجهزة.',
-  },
-  {
-    id: 2,
-    question: 'هل الأجهزة التي توفرونها معتمدة رسميًا؟',
-    answer:
-      'نعم، جميع الأجهزة مسجّلة ومعتمدة لدى هيئة الغذاء والدواء السعودية (SFDA)، ومطابقة لاشتراطات الاستخدام المهني.',
-  },
-  {
-    id: 3,
-    question: 'هل يمكن تخصيص التجهيزات حسب نوعية المرضى وحجم المركز؟',
-    answer:
-      'نعم، يمكننا تخصيص باقة الأجهزة بناءً على نوع الحالات المستهدفة (تأهيل عظام، رياضيين، كبار سن...) وكذلك حسب المساحة المتوفرة والميزانية.',
-  },
-  {
-    id: 4,
-    question: 'كم تستغرق مدة تجهيز المنشأة؟',
-    answer:
-      'مدة التنفيذ تعتمد على حجم الطلب والموقع، وتتراوح غالبًا من 7 إلى 21 يوم عمل داخل المملكة.',
-  },
-  {
-    id: 5,
-    question: 'هل تقدمون خدمات الشحن والتركيب داخل السعودية؟',
-    answer:
-      'نعم، نوفر شحن الأجهزة وتركيبها في جميع مدن المملكة، ضمن التجهيز الكامل أو عند الشراء المنفصل.',
-  },
-  {
-    id: 6,
-    question: 'هل تشمل الأجهزة ضمانًا؟',
-    answer:
-      'جميع الأجهزة تشمل ضمانًا لمدة تصل إلى 24 شهرًا، مع توفر دعم فني وخدمة ما بعد البيع حسب سياسة الضمان.',
-  },
-  {
-    id: 7,
-    question: 'هل يشمل العرض تدريبًا على استخدام الأجهزة؟',
-    answer:
-      'نقدّم كتيّبات ودليل استخدام واضح لكل جهاز، كما يمكن ترتيب جلسة تعريفية عن بُعد عند الحاجة.',
-  },
-  {
-    id: 8,
-    question: 'هل تتوفر الأجهزة مباشرة أم تحتاج إلى طلب مسبق؟',
-    answer:
-      'الأجهزة الشائعة متوفرة في المخزون للتسليم السريع، أما الأجهزة المتخصصة فقد تحتاج إلى طلب مسبق خلال فترة محددة.',
-  },
-  {
-    id: 9,
-    question: 'هل يمكن شراء المنتجات والأجهزة للاستخدام المنزلي؟',
-    answer:
-      'نعم، نوفر خيارات منزلية مخصصة للمرضى وكبار السن تدعم الحركة اليومية والتأهيل والمتابعة الصحية بسهولة وأمان.',
-  },
-  {
-    id: 10,
-    question: 'ما أنواع المنتجات التي يمكن شراؤها للاستخدام المنزلي؟',
-    answer:
-      'نوفر أجهزة وأدوات للحركة والتوازن والتمارين الخفيفة، بالإضافة إلى مستلزمات رعاية يومية مخصصة لدعم كبار السن والحالات التأهيلية في المنزل.',
-  },
-]
+const faqs = homeFaqs.map((faq, index) => ({ id: index + 1, ...faq }))
 
 export default function FAQ() {
   const [openId, setOpenId] = useState<number | null>(null)
 
   return (
-    <section className="py-24 bg-white">
+    <section id="faq" className="py-24 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-16"
@@ -98,6 +38,9 @@ export default function FAQ() {
               transition={{ delay: index * 0.05, duration: 0.4 }}
             >
               <button
+                type="button"
+                aria-expanded={openId === faq.id}
+                aria-controls={`faq-answer-${faq.id}`}
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
                 className={`w-full px-6 py-5 flex items-center justify-between text-right transition-colors ${
                   openId === faq.id ? 'bg-primary/5' : 'bg-white hover:bg-gray-50'
@@ -116,20 +59,19 @@ export default function FAQ() {
                 />
               </button>
 
-              <AnimatePresence>
-                {openId === faq.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <div className="px-6 py-5 bg-white border-t border-gray-100">
-                      <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Answers stay in the DOM so search engines can read them. */}
+              <div
+                id={`faq-answer-${faq.id}`}
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                  openId === faq.id ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="px-6 py-5 bg-white border-t border-gray-100">
+                    <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -142,7 +84,7 @@ export default function FAQ() {
           transition={{ delay: 0.4 }}
         >
           <p className="text-muted-foreground mb-6">هل لديك سؤال آخر لم تجد إجابته؟</p>
-          <a href="#contact" className="btn-primary inline-block">
+          <a href="/#contact" className="btn-primary inline-block">
             تواصل مع فريقنا
           </a>
         </motion.div>

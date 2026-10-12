@@ -40,7 +40,7 @@ const services = [
 
 export default function AdditionalServices() {
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section id="about" className="py-16 md:py-24 bg-white relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#7662AF 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
       

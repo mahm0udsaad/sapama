@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import { storeUrl } from '@/lib/seo'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -49,19 +50,19 @@ export default function Hero() {
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                للمستلزمات والأجهزة الطبية
+                لأجهزة العلاج الطبيعي والمستلزمات الطبية
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
-              نوفر تجهيزات متكاملة لمراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي.
+              متجر سعودي متخصص في أجهزة العلاج الطبيعي ومعدات إعادة التأهيل، وتجهيز مراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي وتوصيل لجميع مدن المملكة.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
-              <a href="#contact" className="btn-primary inline-flex items-center gap-2 group">
-                اطلب الآن
+              <a href={storeUrl} className="btn-primary inline-flex items-center gap-2 group">
+                تسوق من المتجر
                 <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
               </a>
-              <a href="#services" className="btn-secondary">
-                اعرف المزيد
+              <a href="#contact" className="btn-secondary">
+                اطلب عرض سعر
               </a>
             </motion.div>
           </motion.div>
@@ -75,10 +76,11 @@ export default function Hero() {
           >
             <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
-                src="/hero-physiotherapi.png"
-                alt="منتجات وأجهزة رعاية صحية"
-                width={600}
-                height={500}
+                src="/images/hero-physiotherapy-equipment.webp"
+                alt="أجهزة ومعدات العلاج الطبيعي من مدماك فيجن"
+                width={898}
+                height={559}
+                sizes="(min-width: 768px) 50vw, 100vw"
                 className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
                 priority
               />

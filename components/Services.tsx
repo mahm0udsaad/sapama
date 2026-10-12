@@ -11,9 +11,10 @@ const services = [
   {
     id: 1,
     section: 'physio' as ServiceSection,
+    href: '/physiotherapy-center-setup',
     title: 'تجهيز مراكز علاج طبيعي',
     description: 'تجهيزات متكاملة للعلاج الطبيعي تشمل أجهزة العلاج الكهربائي والليزر، أدوات التأهيل الحركي، والمستلزمات اليومية للجلسات العلاجية.',
-    image: '/IMG_7855.JPG',
+    image: '/images/physiotherapy-center-equipment.webp',
     icon: HeartPulse,
     color: 'bg-primary',
     text: 'text-primary',
@@ -22,9 +23,10 @@ const services = [
   {
     id: 2,
     section: 'daycare' as ServiceSection,
+    href: '/daycare-center-setup',
     title: 'تجهيز مراكز الرعاية النهارية',
     description: 'حلول عملية لمراكز الرعاية النهارية تشمل أسرة الرعاية، أدوات الحركة، مستلزمات السلامة،  المتابعة اليومية.',
-    image: '/first-prompt.png',
+    image: '/images/daycare-center-equipment.webp',
     icon: Sun,
     color: 'bg-[#134da8]',
     text: 'text-[#134da8]',
@@ -33,9 +35,10 @@ const services = [
   {
     id: 3,
     section: 'senior' as ServiceSection,
+    href: '/elderly-care-supplies',
     title: 'مستلزمات رعاية كبار السن',
     description: 'منتجات داعمة لكبار السن مثل أجهزة الحركة المنزلية، أدوات التوازن، وسائل الأمان، ومستلزمات تساعد على استقلالية أكبر.',
-    image: '/second-prompt.png',
+    image: '/images/elderly-care-equipment.webp',
     icon: Users,
     color: 'bg-[#6bc168]',
     text: 'text-[#6bc168]',
@@ -162,6 +165,13 @@ export default function Services({ activeSection, onServiceSelect }: ServicesPro
                           عرض المزيد
                           <ArrowLeft size={16} />
                         </a>
+                        <a
+                          href={service.href}
+                          onClick={(event) => event.stopPropagation()}
+                          className="inline-flex items-center gap-2 ms-6 hover:opacity-80 transition-opacity"
+                        >
+                          تفاصيل {service.title}
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -193,6 +203,7 @@ export default function Services({ activeSection, onServiceSelect }: ServicesPro
                   src={activeService.image || "/placeholder.svg"}
                   alt={activeService.title}
                   fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
                 
@@ -223,6 +234,7 @@ export default function Services({ activeSection, onServiceSelect }: ServicesPro
                   src={activeService.image || "/placeholder.svg"}
                   alt={activeService.title}
                   fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">

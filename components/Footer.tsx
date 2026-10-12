@@ -3,7 +3,7 @@
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { FaInstagram, FaSnapchat, FaTiktok, FaXTwitter } from 'react-icons/fa6'
-import { socialLinks } from '@/lib/seo'
+import { contactInfo, servicePages, socialLinks, storeUrl } from '@/lib/seo'
 
 export default function Footer() {
   return (
@@ -22,8 +22,11 @@ export default function Footer() {
           >
             <div className="flex items-center gap-2 mb-6 bg-white rounded-xl p-2">
               <img
-                src="/logo.png"
+                src="/images/logo.webp"
                 alt="مدماك فيجن"
+                width={158}
+                height={48}
+                loading="lazy"
                 className="h-12 w-auto object-contain"
               />
             </div>
@@ -64,9 +67,11 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {[
-                { name: 'الخدمات', href: '#services' },
-                { name: 'عن مدماك فيجن', href: '#about' },
-                { name: 'تواصل معنا', href: '#contact' },
+                { name: 'متجر مدماك فيجن', href: storeUrl },
+                { name: 'الخدمات', href: '/#services' },
+                { name: 'عن مدماك فيجن', href: '/#about' },
+                { name: 'الأسئلة الشائعة', href: '/#faq' },
+                { name: 'تواصل معنا', href: '/#contact' },
               ].map((item) => (
                 <li key={item.name}>
                   <a href={item.href} className="text-white hover:text-primary transition flex items-center gap-2 group">
@@ -90,11 +95,11 @@ export default function Footer() {
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-accent rounded-full"></span>
             </h4>
             <ul className="space-y-4">
-              {['تجهيز مراكز علاج طبيعي', 'تجهيز مراكز الرعاية النهارية', 'تجهيز مراكز رعاية كبار السن', 'تصنيع مستلزمات التأهيل', 'الدعم الفني والصيانة'].map((item, i) => (
-                <li key={i}>
-                  <a href="#" className="text-white hover:text-accent transition flex items-center gap-2 group">
+              {servicePages.map((page) => (
+                <li key={page.slug}>
+                  <a href={`/${page.slug}`} className="text-white hover:text-accent transition flex items-center gap-2 group">
                      <span className="w-1.5 h-1.5 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {item}
+                    {page.title}
                   </a>
                 </li>
               ))}
@@ -119,7 +124,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm mb-1">رقم الجوال</p>
-                  <p className="text-white font-bold text-lg ltr:text-left" dir="ltr">0570780836</p>
+                  <a href={`tel:${contactInfo.phoneIntl}`} className="text-white font-bold text-lg ltr:text-left" dir="ltr">{contactInfo.phoneDisplay}</a>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
@@ -128,7 +133,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm mb-1">البريد الإلكتروني</p>
-                  <p className="text-white font-bold break-all">contact@madmakvision.com</p>
+                  <a href={`mailto:${contactInfo.email}`} className="text-white font-bold break-all">{contactInfo.email}</a>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
@@ -137,7 +142,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm mb-1">الموقع</p>
-                  <p className="text-white font-bold">الرياض، إشبيليا</p>
+                  <address className="text-white font-bold not-italic">{contactInfo.city}، {contactInfo.district}</address>
                 </div>
               </div>
             </div>
@@ -157,13 +162,10 @@ export default function Footer() {
               © جميع الحقوق محفوظة لدى مدماك فيجن 2026
             </p>
             <div className="flex gap-8 text-sm text-white">
-              <a href="#" className="hover:text-primary transition">
-                سياسة الخصوصية
+              <a href={storeUrl} className="hover:text-primary transition">
+                تسوق من المتجر
               </a>
-              <a href="#" className="hover:text-primary transition">
-                شروط الاستخدام
-              </a>
-              <a href="#" className="hover:text-primary transition">
+              <a href="/sitemap.xml" className="hover:text-primary transition">
                 خريطة الموقع
               </a>
             </div>

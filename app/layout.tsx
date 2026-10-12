@@ -6,11 +6,15 @@ import "./globals.css"
 import {
   arabicSeoKeywords,
   companyName,
+  companyNameEn,
   getSiteUrl,
+  ogImage,
+  organizationId,
+  organizationSchema,
   siteDescription,
   siteTitle,
-  socialLinks,
   trackingIds,
+  websiteId,
 } from "@/lib/seo"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -27,17 +31,14 @@ export const metadata: Metadata = {
   applicationName: companyName,
   referrer: "origin-when-cross-origin",
   keywords: arabicSeoKeywords,
-  authors: [{ name: companyName }],
+  authors: [{ name: companyName, url: siteUrl }],
   creator: companyName,
   publisher: companyName,
-  category: "Medical",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "ar-SA": "/",
-      ar: "/",
-    },
+  category: "Medical Equipment",
+  icons: {
+    apple: "/apple-touch-icon.png",
   },
+  formatDetection: { telephone: true, email: true, address: false },
   openGraph: {
     type: "website",
     locale: "ar_SA",
@@ -45,21 +46,15 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
     siteName: companyName,
-    images: [
-      {
-        url: "/logo.png",
-        width: 1200,
-        height: 630,
-        alt: `${companyName} - حلول وتجهيزات طبية`,
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@madmakvi",
+    creator: "@madmakvi",
     title: siteTitle,
     description: siteDescription,
-    images: ["/logo.png"],
-    creator: "@madmakvi",
+    images: [ogImage.url],
   },
   robots: {
     index: true,
@@ -71,6 +66,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
       "max-video-preview": -1,
     },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
   },
 }
 
@@ -85,23 +86,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const websiteSchema = {
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: companyName,
-    url: siteUrl,
-    inLanguage: "ar-SA",
-    description: siteDescription,
-    keywords: arabicSeoKeywords.join(", "),
-  }
-
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: companyName,
-    url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
-    sameAs: Object.values(socialLinks),
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": websiteId(siteUrl),
+        name: companyName,
+        alternateName: companyNameEn,
+        url: siteUrl,
+        inLanguage: "ar-SA",
+        description: siteDescription,
+        publisher: { "@id": organizationId(siteUrl) },
+      },
+      organizationSchema(siteUrl),
+    ],
   }
 
   return (
@@ -135,11 +134,7 @@ gtag('config', '${trackingIds.googleAds}');`}
         </noscript>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         {children}
       </body>
