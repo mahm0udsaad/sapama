@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { ArrowLeft, CheckCircle2 } from "lucide-react"
+import { ArrowLeft, CheckCircle2, ShoppingBag } from "lucide-react"
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
 import {
@@ -12,6 +12,7 @@ import {
   getSiteUrl,
   ogImage,
   organizationId,
+  servedCities,
   servicePages,
   storeUrl,
 } from "@/lib/seo"
@@ -62,6 +63,8 @@ export default async function ServicePage({ params }: PageProps) {
   const siteUrl = getSiteUrl()
   const pageUrl = `${siteUrl}/${page.slug}`
   const relatedPages = servicePages.filter((item) => item.slug !== page.slug)
+  const storeLink = page.storeCategory?.url ?? storeUrl
+  const storeLinkLabel = page.storeCategory ? `تسوق ${page.storeCategory.name} من المتجر` : "تصفح متجر مدماك فيجن"
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -83,14 +86,18 @@ export default async function ServicePage({ params }: PageProps) {
         url: pageUrl,
         image: `${siteUrl}${page.image}`,
         provider: { "@id": organizationId(siteUrl) },
-        areaServed: { "@type": "Country", name: "المملكة العربية السعودية" },
+        areaServed: [
+          { "@type": "Country", name: "المملكة العربية السعودية" },
+          ...servedCities.map((city) => ({ "@type": "City", name: city })),
+        ],
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: page.title,
-          url: storeUrl,
+          url: storeLink,
           itemListElement: page.sections.map((section) => ({
             "@type": "OfferCatalog",
             name: section.heading,
+            ...(section.storeLinks?.[0] && { url: section.storeLinks[0].url }),
             itemListElement: (section.items ?? []).map((item) => ({
               "@type": "Offer",
               itemOffered: { "@type": "Product", name: item },
@@ -136,8 +143,8 @@ export default async function ServicePage({ params }: PageProps) {
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">{page.intro}</p>
                 <div className="flex gap-4 flex-wrap">
-                  <a href={storeUrl} className="btn-primary inline-flex items-center gap-2 group">
-                    تسوق {page.title} من المتجر
+                  <a href={storeLink} className="btn-primary inline-flex items-center gap-2 group">
+                    {storeLinkLabel}
                     <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
                   </a>
                   <a href="/#contact" className="btn-secondary">
@@ -160,6 +167,13 @@ export default async function ServicePage({ params }: PageProps) {
         </section>
 
         <section className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 mb-14">
+            {page.overview.map((paragraph) => (
+              <p key={paragraph} className="text-lg text-muted-foreground leading-loose">
+                {paragraph}
+              </p>
+            ))}
+          </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             {page.sections.map((section) => (
               <article key={section.heading} className="rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
@@ -174,6 +188,20 @@ export default async function ServicePage({ params }: PageProps) {
                       </li>
                     ))}
                   </ul>
+                )}
+                {section.storeLinks && (
+                  <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+                    {section.storeLinks.map((category) => (
+                      <a
+                        key={category.url}
+                        href={category.url}
+                        className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
+                      >
+                        <ShoppingBag size={18} />
+                        {category.name} في المتجر
+                      </a>
+                    ))}
+                  </div>
                 )}
               </article>
             ))}
@@ -210,8 +238,8 @@ export default async function ServicePage({ params }: PageProps) {
                   </a>
                 </p>
               </div>
-              <a href={storeUrl} className="bg-white text-primary font-bold py-3 px-8 rounded-xl hover:shadow-lg transition">
-                زيارة المتجر
+              <a href={storeLink} className="bg-white text-primary font-bold py-3 px-8 rounded-xl hover:shadow-lg transition">
+                {page.storeCategory ? `قسم ${page.storeCategory.name}` : "زيارة المتجر"}
               </a>
             </div>
 

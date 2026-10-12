@@ -38,7 +38,7 @@ export default function Hero() {
           <motion.div 
             className="flex flex-col justify-center order-2 md:order-2"
             variants={containerVariants}
-            initial="hidden"
+            initial={false}
             animate="visible"
           >
             <motion.div variants={itemVariants} className="inline-block mb-4">
@@ -50,11 +50,11 @@ export default function Hero() {
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                لأجهزة العلاج الطبيعي والمستلزمات الطبية
+                لتجهيز مراكز العلاج الطبيعي والرعاية النهارية
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
-              متجر سعودي متخصص في أجهزة العلاج الطبيعي ومعدات إعادة التأهيل، وتجهيز مراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن، مع حلول مناسبة للمنشآت والاستخدام المنزلي وتوصيل لجميع مدن المملكة.
+              نجهّز مراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن في السعودية، ونورّد أجهزة العلاج الطبيعي ومعدات إعادة التأهيل للمنشآت والاستخدام المنزلي، مع توصيل لجميع مدن المملكة.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
               <a href={storeUrl} className="btn-primary inline-flex items-center gap-2 group">
@@ -70,14 +70,14 @@ export default function Hero() {
           {/* Hero Image - Left side on RTL */}
           <motion.div 
             className="order-1 md:order-1 relative"
-            initial={{ opacity: 0, x: -50 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="relative overflow-hidden shadow-2xl border-4 border-white/50 backdrop-blur-sm rounded-[2rem] md:rounded-[5rem_1.5rem_5rem_1.5rem]">
               <Image
                 src="/images/hero-physiotherapy-equipment.webp"
-                alt="أجهزة ومعدات العلاج الطبيعي من مدماك فيجن"
+                alt="تجهيز مركز علاج طبيعي بأجهزة ومعدات من مدماك فيجن"
                 width={898}
                 height={559}
                 sizes="(min-width: 768px) 50vw, 100vw"
