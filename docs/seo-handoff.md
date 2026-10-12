@@ -173,9 +173,11 @@ The store appears for none of these, which is consistent with it not being index
 
 **Search Console and Bing Webmaster Tools**
 
-- [ ] Add and verify `madmakvision.com` in both (DNS TXT through Salla's domain settings, or Salla's Google integration).
-- [ ] Add and verify `madmakvi.com`: set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` and `NEXT_PUBLIC_BING_SITE_VERIFICATION` in Vercel, then redeploy.
-- [ ] Submit `https://madmakvi.com/sitemap.xml`, and the store sitemap once Salla serves it.
+- [x] `madmakvi.com` verified in Google Search Console as a domain property (DNS TXT added on Hostinger, 2026-10-12). No Vercel env var is needed for Google.
+- [x] `https://madmakvi.com/sitemap.xml` submitted in Search Console.
+- [ ] `https://madmakvision.com` is added in Search Console but not verified. Paste this tag into Salla's Search Console / custom head-tag setting, then press Verify: `<meta name="google-site-verification" content="XPaf41mPRfum2kDx_CtJDeQwtBiH1SN346GkW_-ZMpk" />`
+- [ ] Bing Webmaster Tools: the `madmakvi.com` zone already holds a Bing verification CNAME from an earlier setup. Sign in with that account, confirm the site is listed, submit the sitemap, and add `madmakvision.com`.
+- [ ] Submit the store sitemap once Salla serves it.
 - [ ] Request indexing: store home, the 17 category URLs, the 15 products in section 3, and the 8 landing pages.
 
 **Google Business Profile**
