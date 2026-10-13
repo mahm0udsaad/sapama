@@ -97,11 +97,8 @@ export default async function ServicePage({ params }: PageProps) {
           itemListElement: page.sections.map((section) => ({
             "@type": "OfferCatalog",
             name: section.heading,
+            description: section.body,
             ...(section.storeLinks?.[0] && { url: section.storeLinks[0].url }),
-            itemListElement: (section.items ?? []).map((item) => ({
-              "@type": "Offer",
-              itemOffered: { "@type": "Product", name: item },
-            })),
           })),
         },
       },
