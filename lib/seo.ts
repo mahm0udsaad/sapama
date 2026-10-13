@@ -1,3 +1,7 @@
+import { categoryPath, storeCategories, storeCategoryList, storeUrl, type StoreCategory } from "./store-categories"
+
+export { storeCategories, storeUrl }
+
 export const arabicSeoKeywords = [
   "مدماك فيجن",
   "متجر مدماك فيجن",
@@ -28,37 +32,6 @@ export const arabicSeoKeywords = [
 ]
 
 const defaultSiteUrl = "https://madmakvi.com"
-
-/** The online store where products are sold. */
-export const storeUrl = "https://madmakvision.com"
-
-type StoreCategory = { name: string; url: string }
-
-const storeCategory = (name: string, path: string): StoreCategory => ({
-  name,
-  url: encodeURI(`${storeUrl}/${path}`),
-})
-
-/** Real category pages of the store. Landing pages link to these, not just the store home. */
-export const storeCategories = {
-  physiotherapy: storeCategory("العلاج الطبيعي ومستلزماته", "العلاج-الطبيعي-و-مستلزماته/c1112889071"),
-  electrotherapy: storeCategory("الأجهزة الكهربائية", "الأجهزة-الكهربائية/c1704436730"),
-  btl: storeCategory("أجهزة BTL", "أجهزة-شركة-btl/c1269249283"),
-  chattanooga: storeCategory("أجهزة Chattanooga", "أجهزة-شركة-chattanooga/c460588562"),
-  chinesport: storeCategory("أجهزة Chinesport", "أجهزة-شركة-chinesport/c770029847"),
-  tables: storeCategory("طاولات العلاج الطبيعي والمساج", "طاولات-علاج-طبيعي-مساج/c22667716"),
-  rehabilitation: storeCategory("أجهزة وأدوات إعادة التأهيل", "أجهزة-و-أدوات-أعادة-التاهيل/c755183558"),
-  hydrotherapy: storeCategory("أجهزة وأدوات العلاج المائي", "أجهزة-و-أدوات-العلاج-المائي/c2129153735"),
-  assessment: storeCategory("أدوات التقييم", "أدوات-التقييم/c70669797"),
-  massage: storeCategory("أجهزة وأدوات المساج", "أجهزة-و-أدوات-المساج/c1444115686"),
-  daycare: storeCategory("الرعاية النهارية ومستلزماتها", "الرعاية-النهارية-و-مستلزماتها/c132318674"),
-  daycarePhysio: storeCategory("العلاج الطبيعي للأطفال", "العلاج-الطبيعي/c681365933"),
-  occupational: storeCategory("العلاج الوظيفي", "العلاج-الوظيفي/c1589097132"),
-  nursing: storeCategory("عيادات التمريض", "عيادات-التمريض/c639844008"),
-  speech: storeCategory("مستلزمات النطق والتخاطب", "مستلزمات-النطق-و-التخاطب/c2054811822"),
-  sensory: storeCategory("التواصل الحسي", "التواصل-الحسي/c1879596457"),
-  classroom: storeCategory("الفصول المدرسية", "الفصول-المدرسية/c531864491"),
-} as const
 
 export const socialLinks = {
   tiktok: "https://www.tiktok.com/@madmak_vi",
@@ -148,11 +121,11 @@ export function organizationSchema(siteUrl: string) {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: `منتجات متجر ${companyName}`,
-      url: storeUrl,
-      itemListElement: Object.values(storeCategories).map((category) => ({
+      url: `${siteUrl}/products`,
+      itemListElement: storeCategoryList.map((category) => ({
         "@type": "OfferCatalog",
         name: category.name,
-        url: category.url,
+        url: `${siteUrl}${categoryPath(category)}`,
       })),
     },
   }
@@ -192,7 +165,7 @@ export type ServicePage = {
   overview: string[]
   image: string
   imageAlt: string
-  /** Store category the page's CTAs point to. Falls back to the store home. */
+  /** Product category the page's CTAs point to. Falls back to the products hub. */
   storeCategory?: StoreCategory
   sections: { heading: string; body: string; items?: string[]; storeLinks?: StoreCategory[] }[]
   faqs: { question: string; answer: string }[]
@@ -977,6 +950,14 @@ export const servicePages: ServicePage[] = [
     ],
   },
 ]
+
+/** The setup guide that covers a product category, if any. */
+export function servicePageForCategory(category: StoreCategory) {
+  return (
+    servicePages.find((page) => page.storeCategory === category) ??
+    servicePages.find((page) => page.sections.some((section) => section.storeLinks?.includes(category)))
+  )
+}
 
 export const homeFaqs = [
   {

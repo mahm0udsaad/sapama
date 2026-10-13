@@ -169,7 +169,19 @@ Who ranks now (Bing, Saudi Arabic, 2026-10-12):
 
 The store appears for none of these, which is consistent with it not being indexed.
 
-## 5. Off-site checklist
+## 5. Product catalog on the landing site
+
+Added 2026-10-13 because the store's SEO settings cannot be edited. The landing site now carries the store's catalog and sends buyers to Salla to pay.
+
+- `/products` is the hub, `/categories/<slug>` lists each of the 17 store categories, and `/products/<arabic-slug>-p<id>` is one page per product (304 pages).
+- Each product page shows the store price and availability, the description, and a buy button that opens the product on `madmakvision.com` with `utm_source=madmakvi.com`, so referrals are measurable.
+- Product pages carry `Product` + `Offer` structured data with the SAR price and stock status. Category pages carry `ItemList`.
+- Data comes from the store's public storefront API (`lib/store-api.mjs`). Builds use the committed snapshot `lib/store-catalog.snapshot.json`; deployed pages re-read prices and stock from the store every 6 hours.
+- Run `pnpm sync:store` and commit the result after adding products or editing descriptions in Salla. New products appear on their own within 6 hours, but with a plain description until the snapshot is refreshed.
+- This reverses the keyword split in section 4 for product and buying queries: those now target the pages on this site. If the store's own SEO is ever fixed, choose one site per product to avoid two copies competing.
+- 27 products have no description in the store, so their pages are thin. Add descriptions in Salla, then run the sync.
+
+## 6. Off-site checklist
 
 **Search Console and Bing Webmaster Tools**
 

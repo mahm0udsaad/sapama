@@ -1,9 +1,15 @@
 import type { MetadataRoute } from "next"
 import { getSiteUrl, servicePages } from "@/lib/seo"
+import { categoryPath, storeCategoryList } from "@/lib/store-categories"
+import { getProducts, productImage, productPath } from "@/lib/store-catalog"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Keep in step with catalogRevalidateSeconds in lib/store-catalog.ts.
+export const revalidate = 21600
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl()
   const lastModified = new Date()
+  const products = await getProducts()
 
   return [
     {
@@ -20,5 +26,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       images: [`${siteUrl}${page.image}`],
     })),
+    { url: `${siteUrl}/products`, lastModified, changeFrequency: "daily", priority: 0.9 },
+    ...storeCategoryList.map((category) => ({
+      url: `${siteUrl}${categoryPath(category)}`,
+      lastModified,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    })),
+    ...products.map((product) => {
+      const image = productImage(product, 1200)
+      return {
+        url: `${siteUrl}${productPath(product)}`,
+        lastModified,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+        ...(image && { images: [image] }),
+      }
+    }),
   ]
 }

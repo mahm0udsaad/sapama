@@ -67,6 +67,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {[
+                { name: 'المنتجات والأسعار', href: '/products' },
                 { name: 'متجر مدماك فيجن', href: storeUrl },
                 { name: 'الخدمات', href: '/#services' },
                 { name: 'عن مدماك فيجن', href: '/#about' },

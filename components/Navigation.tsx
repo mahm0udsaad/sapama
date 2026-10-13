@@ -61,6 +61,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-8 ml-12">
             {[
               { name: 'خدماتنا', href: '/#services' },
+              { name: 'المنتجات', href: '/products' },
               { name: 'من نحن', href: '/#about' },
               { name: 'المتجر', href: storeUrl },
               { name: 'طلب عرض سعر', href: '/#contact' },
@@ -98,6 +99,9 @@ export default function Navigation() {
               <div className="py-4 space-y-4 bg-white/95 backdrop-blur-sm rounded-b-2xl shadow-xl px-4">
                 <a href="/#services" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   خدماتنا
+                </a>
+                <a href="/products" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+                  المنتجات
                 </a>
                 <a href="/#about" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
                   من نحن

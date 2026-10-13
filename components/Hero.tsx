@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
-import { storeUrl } from '@/lib/seo'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -57,8 +56,8 @@ export default function Hero() {
               نجهّز مراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن في السعودية، ونورّد أجهزة العلاج الطبيعي ومعدات إعادة التأهيل للمنشآت والاستخدام المنزلي، مع توصيل لجميع مدن المملكة.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
-              <a href={storeUrl} className="btn-primary inline-flex items-center gap-2 group">
-                تسوق من المتجر
+              <a href="/products" className="btn-primary inline-flex items-center gap-2 group">
+                تصفح المنتجات والأسعار
                 <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
               </a>
               <a href="#contact" className="btn-secondary">

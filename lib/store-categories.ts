@@ -1,0 +1,211 @@
+/** The online store where products are sold. */
+export const storeUrl = "https://madmakvision.com"
+
+export type StoreCategory = {
+  /** Path segment of the category page on this site: /categories/<slug>. */
+  slug: string
+  /** Category id on the store. */
+  id: string
+  name: string
+  /** Category page on the store. */
+  url: string
+  parent?: string
+  metaTitle: string
+  metaDescription: string
+}
+
+const category = (
+  slug: string,
+  id: string,
+  storePath: string,
+  name: string,
+  metaTitle: string,
+  metaDescription: string,
+  parent?: string,
+): StoreCategory => ({
+  slug,
+  id,
+  name,
+  url: encodeURI(`${storeUrl}/${storePath}/c${id}`),
+  parent,
+  metaTitle,
+  metaDescription,
+})
+
+/** Real categories of the store. Each has a product listing page on this site. */
+export const storeCategories = {
+  physiotherapy: category(
+    "physiotherapy",
+    "1112889071",
+    "العلاج-الطبيعي-و-مستلزماته",
+    "العلاج الطبيعي ومستلزماته",
+    "أجهزة علاج طبيعي ومستلزماته للبيع في السعودية",
+    "تسوق أجهزة العلاج الطبيعي: أجهزة كهربائية، طاولات علاج، أدوات تأهيل، علاج مائي، أدوات تقييم ومساج، بأسعار واضحة وتوصيل لجميع مدن المملكة.",
+  ),
+  electrotherapy: category(
+    "electrotherapy",
+    "1704436730",
+    "الأجهزة-الكهربائية",
+    "الأجهزة الكهربائية",
+    "أجهزة العلاج الكهربائي: تنس، ليزر، شوك ويف، موجات فوق صوتية",
+    "أجهزة العلاج الطبيعي الكهربائية من BTL وChattanooga وChinesport: تنبيه كهربائي، موجات فوق صوتية، ليزر، موجات تصادمية وشد فقرات، مع الأسعار.",
+    "physiotherapy",
+  ),
+  btl: category(
+    "btl",
+    "1269249283",
+    "أجهزة-شركة-btl",
+    "أجهزة BTL",
+    "أجهزة BTL للعلاج الطبيعي في السعودية",
+    "أجهزة BTL للعلاج الطبيعي: الموجات التصادمية BTL-6000، الليزر عالي الشدة، التيكار، شد الفقرات، الموجات فوق الصوتية والتنبيه الكهربائي، مع الأسعار.",
+    "electrotherapy",
+  ),
+  chattanooga: category(
+    "chattanooga",
+    "460588562",
+    "أجهزة-شركة-chattanooga",
+    "أجهزة Chattanooga",
+    "أجهزة Chattanooga شاتانوجا للعلاج الطبيعي",
+    "أجهزة شاتانوجا: كومبو التنبيه الكهربائي مع الموجات فوق الصوتية، Mobile 2، أجهزة التراساوند وكومبكس لتحفيز العضلات، بأسعار واضحة وتوصيل داخل المملكة.",
+    "electrotherapy",
+  ),
+  chinesport: category(
+    "chinesport",
+    "770029847",
+    "أجهزة-شركة-chinesport",
+    "أجهزة Chinesport",
+    "أجهزة Chinesport للعلاج الطبيعي",
+    "أجهزة Chinesport: ليزر عالي الطاقة وليزر ماسح، تيكار، موجات تصادمية محمولة وأجهزة شد الفقرات الكهربائية، متوفرة للطلب من مدماك فيجن.",
+    "electrotherapy",
+  ),
+  tables: category(
+    "therapy-tables",
+    "22667716",
+    "طاولات-علاج-طبيعي-مساج",
+    "طاولات العلاج الطبيعي والمساج",
+    "طاولات وأسرّة علاج طبيعي ومساج كهربائية وثابتة",
+    "سرير وطاولة علاج طبيعي كهربائية بحركتين وثلاث حركات، طاولات مساج قابلة للطي، طاولات كشف وكراسي معالجين، بأسعار واضحة وتوصيل داخل المملكة.",
+    "physiotherapy",
+  ),
+  rehabilitation: category(
+    "rehabilitation",
+    "755183558",
+    "أجهزة-و-أدوات-أعادة-التاهيل",
+    "أجهزة وأدوات إعادة التأهيل",
+    "أجهزة وأدوات إعادة التأهيل والتمارين العلاجية",
+    "متوازي مشي، درج تأهيل، دراجات وأجهزة سير، ألواح توازن، أحزمة مقاومة، عجلة الكتف وطاولات الوقوف. كل ما تحتاجه صالة التأهيل في مكان واحد.",
+    "physiotherapy",
+  ),
+  hydrotherapy: category(
+    "hydrotherapy",
+    "2129153735",
+    "أجهزة-و-أدوات-العلاج-المائي",
+    "أجهزة وأدوات العلاج المائي",
+    "أجهزة العلاج المائي والكمادات الحارة والباردة",
+    "أحواض علاج مائي، سير ودراجة تحت الماء، أجهزة كمادات حارة Hydrocollator، كمادات رملية وجل، أجهزة العلاج بالبرودة وحمام شمع البرافين.",
+    "physiotherapy",
+  ),
+  assessment: category(
+    "assessment-tools",
+    "70669797",
+    "أدوات-التقييم",
+    "أدوات التقييم",
+    "أدوات التقييم في العلاج الطبيعي: جونيوميتر وقياس القبضة",
+    "جونيوميتر، مقياس نطاق الحركة، مقياس قوة قبضة اليد، مطرقة أعصاب، موازين وأطقم تقييم سريري لأخصائيي وطلاب العلاج الطبيعي.",
+    "physiotherapy",
+  ),
+  massage: category(
+    "massage",
+    "1444115686",
+    "أجهزة-و-أدوات-المساج",
+    "أجهزة وأدوات المساج",
+    "أجهزة مساج وأدوات تدليك علاجي",
+    "أجهزة مساج وتدليك عميق بالحرارة والبرودة، أدوات جراستون IASTM، أكواب حجامة سيليكون وكمادات كهربائية للاستخدام المنزلي والعيادات.",
+    "physiotherapy",
+  ),
+  daycare: category(
+    "daycare",
+    "132318674",
+    "الرعاية-النهارية-و-مستلزماتها",
+    "الرعاية النهارية ومستلزماتها",
+    "مستلزمات وتجهيزات مراكز الرعاية النهارية",
+    "أدوات العلاج الوظيفي والتخاطب والتكامل الحسي والعلاج الطبيعي للأطفال، مع تجهيزات عيادة التمريض والفصول لمراكز الرعاية النهارية.",
+  ),
+  daycarePhysio: category(
+    "pediatric-physiotherapy",
+    "681365933",
+    "العلاج-الطبيعي",
+    "العلاج الطبيعي للأطفال",
+    "أجهزة علاج طبيعي للأطفال ومراكز الرعاية",
+    "مشايات وواقفات وطاولات وقوف للأطفال، أجهزة سير ودراجات تمارين، ألواح وعوارض توازن وأدوات تأهيل حركي بمقاسات الأطفال.",
+    "daycare",
+  ),
+  occupational: category(
+    "occupational-therapy",
+    "1589097132",
+    "العلاج-الوظيفي",
+    "العلاج الوظيفي",
+    "أدوات علاج وظيفي للأطفال والكبار",
+    "ألواح الأوتاد والثقوب، أدوات تقوية اليد والأصابع، لوحات المهارات اليومية وألعاب إدراكية لجلسات العلاج الوظيفي في المراكز والمنزل.",
+    "daycare",
+  ),
+  nursing: category(
+    "nursing-clinic",
+    "639844008",
+    "عيادات-التمريض",
+    "عيادات التمريض",
+    "مستلزمات عيادة التمريض للمراكز والمدارس",
+    "أجهزة قياس الضغط والسكر والحرارة والأكسجين، نيبولايزر، طاولات كشف، حقيبة إسعافات ومستهلكات طبية لتجهيز عيادة التمريض.",
+    "daycare",
+  ),
+  speech: category(
+    "speech-therapy",
+    "2054811822",
+    "مستلزمات-النطق-و-التخاطب",
+    "مستلزمات النطق والتخاطب",
+    "أدوات تخاطب ومستلزمات جلسات النطق",
+    "أدوات تخاطب للأطفال: بطاقات الكلام، أدوات تدريب الفم واللسان والتنفس، وأجهزة قياس وتأهيل الصوت لأخصائيي النطق والمراكز.",
+    "daycare",
+  ),
+  sensory: category(
+    "sensory-integration",
+    "1879596457",
+    "التواصل-الحسي",
+    "التواصل الحسي",
+    "أدوات تكامل حسي وألعاب حسية للأطفال",
+    "أدوات تكامل حسي: أنبوب الفقاعات، الألياف الضوئية، أراجيح حسية، مسبح كرات، بلاطات حسية وسترة ضغط، للمراكز والمنزل.",
+    "daycare",
+  ),
+  classroom: category(
+    "classroom-furniture",
+    "531864491",
+    "الفصول-المدرسية",
+    "الفصول المدرسية",
+    "أثاث فصول ومراكز رعاية للأطفال",
+    "طاولات رياض أطفال دائرية ونصف دائرية، كراسي أطفال ووحدات تخزين خشبية لتجهيز الفصول وقاعات مراكز الرعاية النهارية.",
+    "daycare",
+  ),
+} as const satisfies Record<string, StoreCategory>
+
+export type StoreCategoryKey = keyof typeof storeCategories
+
+export const storeCategoryList: StoreCategory[] = Object.values(storeCategories)
+
+export const categoryPath = (category: StoreCategory) => `/categories/${category.slug}`
+
+export function findCategoryBySlug(slug: string) {
+  return storeCategoryList.find((item) => item.slug === slug)
+}
+
+export function findCategoryById(id: string) {
+  return storeCategoryList.find((item) => item.id === id)
+}
+
+export function parentCategory(category: StoreCategory) {
+  return category.parent ? storeCategories[category.parent as StoreCategoryKey] : undefined
+}
+
+export function childCategories(category: StoreCategory) {
+  const key = (Object.keys(storeCategories) as StoreCategoryKey[]).find((item) => storeCategories[item] === category)
+  return storeCategoryList.filter((item) => item.parent === key)
+}
