@@ -104,7 +104,7 @@ export default async function CategoryPage({ params }: PageProps) {
               {category.metaTitle}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{category.metaDescription}</p>
-            <p className="text-sm text-muted-foreground">{products.length} منتجًا بأسعار المتجر الحالية</p>
+            <p className="text-sm text-muted-foreground">{products.length} منتجًا</p>
 
             {children.length > 0 && (
               <div className="flex flex-wrap gap-3 mt-8">

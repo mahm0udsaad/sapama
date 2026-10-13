@@ -5,10 +5,9 @@ import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
 import Breadcrumbs from "@/components/catalog/Breadcrumbs"
 import ProductCard from "@/components/catalog/ProductCard"
-import { breadcrumbSchema, companyName, contactInfo, getSiteUrl, organizationId, servicePageForCategory } from "@/lib/seo"
+import { breadcrumbSchema, companyName, contactInfo, getSiteUrl, servicePageForCategory, websiteId } from "@/lib/seo"
 import { categoryPath, parentCategory } from "@/lib/store-categories"
 import {
-  formatPrice,
   getCategoryProducts,
   getProductBySlug,
   getProducts,
@@ -33,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const product = await getProductBySlug((await params).slug)
   if (!product) return {}
 
-  const title = `${product.name} | السعر والمواصفات`
+  const title = `${product.name} | المواصفات والطلب`
   const description = productSummary(product)
   const image = productImage(product, 1200)
 
@@ -105,24 +104,17 @@ export default async function ProductPage({ params }: PageProps) {
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
+      // Prices are not shown on this site, so there is no Product/Offer markup:
+      // Google requires an offer price in structured data to be visible on the page.
       {
-        "@type": "Product",
-        "@id": `${pageUrl}#product`,
+        "@type": "ItemPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
         name: product.name,
         description: summary,
-        sku: product.id,
-        url: pageUrl,
-        ...(image && { image: [productImage(product, 1200)] }),
-        ...(category && { category: category.name }),
-        offers: {
-          "@type": "Offer",
-          url: product.storeUrl,
-          price: product.price,
-          priceCurrency: product.currency,
-          availability: product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-          itemCondition: "https://schema.org/NewCondition",
-          seller: { "@id": organizationId(siteUrl) },
-        },
+        inLanguage: "ar-SA",
+        ...(image && { primaryImageOfPage: productImage(product, 1200) }),
+        isPartOf: { "@id": websiteId(siteUrl) },
       },
       breadcrumbSchema(siteUrl, crumbs),
     ],
@@ -169,8 +161,7 @@ export default async function ProductPage({ params }: PageProps) {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-4 mb-3">
-                  <span className="text-3xl font-bold text-primary">{formatPrice(product)}</span>
+                <div className="flex items-center gap-4 mb-6">
                   <span
                     className={`text-sm font-semibold rounded-full px-3 py-1 ${
                       product.available ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"
@@ -179,10 +170,6 @@ export default async function ProductPage({ params }: PageProps) {
                     {product.available ? "متوفر" : "غير متوفر حاليًا"}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-6">
-                  السعر والتوفر كما في متجر {companyName}، ويُعتمد السعر النهائي عند إتمام الطلب في المتجر.
-                </p>
-
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">{summary}</p>
 
                 <div className="flex gap-4 flex-wrap">

@@ -10,9 +10,9 @@ import { getCategoryProducts, getProducts, productImage } from "@/lib/store-cata
 // Keep in step with catalogRevalidateSeconds in lib/store-catalog.ts.
 export const revalidate = 21600
 
-const title = "منتجات العلاج الطبيعي والرعاية النهارية بالأسعار"
+const title = "منتجات العلاج الطبيعي والرعاية النهارية"
 const description =
-  "جميع منتجات مدماك فيجن بأسعارها: أجهزة العلاج الكهربائي، طاولات العلاج، معدات التأهيل، العلاج المائي، أدوات التكامل الحسي والعلاج الوظيفي والتخاطب، مع رابط شراء مباشر من المتجر."
+  "جميع منتجات مدماك فيجن: أجهزة العلاج الكهربائي، طاولات العلاج، معدات التأهيل، العلاج المائي، أدوات التكامل الحسي والعلاج الوظيفي والتخاطب، مع رابط شراء مباشر من المتجر."
 
 export const metadata: Metadata = {
   title,
@@ -69,7 +69,7 @@ export default async function ProductsPage() {
               <span className="block text-primary text-2xl md:text-3xl mt-3">أجهزة العلاج الطبيعي ومستلزمات الرعاية النهارية</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-              {total} منتجًا بأسعار المتجر الحالية. اختر القسم لتصفح المنتجات ومواصفاتها، ثم أكمل الشراء مباشرة من متجر{" "}
+              {total} منتجًا. اختر القسم لتصفح المنتجات ومواصفاتها، ثم أكمل الشراء مباشرة من متجر{" "}
               {companyName}.
             </p>
           </div>

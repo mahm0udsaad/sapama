@@ -21,7 +21,7 @@ export type StoreProduct = {
   categoryIds: string[]
 }
 
-/** Product and category pages re-read prices and stock from the store this often. */
+/** Product and category pages re-read the catalog and stock from the store this often. */
 export const catalogRevalidateSeconds = 21600
 
 const snapshotProducts = snapshot.products as unknown as StoreProduct[]
@@ -35,7 +35,7 @@ const loadLiveProducts = unstable_cache(
 
 export const getProducts = cache(async (): Promise<StoreProduct[]> => {
   // Builds use the committed snapshot so they never depend on the store being reachable.
-  // Deployed pages pick up live prices and stock on revalidation.
+  // Deployed pages pick up new products and stock changes on revalidation.
   if (process.env.NEXT_PHASE === "phase-production-build") return snapshotProducts
   try {
     const live = await loadLiveProducts()
@@ -86,14 +86,9 @@ export function productBuyUrl(product: StoreProduct) {
   return `${product.storeUrl}?utm_source=madmakvi.com&utm_medium=referral&utm_campaign=product-page`
 }
 
-export function formatPrice(product: Pick<StoreProduct, "price" | "currency">) {
-  const value = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(product.price)
-  return `${value} ${product.currency === "SAR" ? "ر.س" : product.currency}`
-}
-
 export function productSummary(product: StoreProduct, maxLength = 155) {
   const text = product.blocks?.find((block) => block.type === "p")?.text || product.description
-  if (!text) return `${product.name} من مدماك فيجن: السعر والمواصفات والطلب المباشر من المتجر مع توصيل داخل المملكة.`
+  if (!text) return `${product.name} من مدماك فيجن: المواصفات والطلب المباشر من المتجر مع توصيل داخل المملكة.`
   if (text.length <= maxLength) return text
   const cut = text.slice(0, maxLength)
   return `${cut.slice(0, cut.lastIndexOf(" "))}…`
