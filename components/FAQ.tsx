@@ -20,10 +20,10 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary font-semibold tracking-wide uppercase mb-2 block">الأسئلة الشائعة</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">كل ما تود معرفته</h2>
+          <span className="text-primary font-semibold tracking-wide uppercase mb-2 block">إجابات قبل بدء مشروعك</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">الأسئلة الشائعة حول خدمات التجهيز</h2>
           <p className="text-xl text-muted-foreground">
-            إجابات على أهم الأسئلة حول خدماتنا وتجهيزاتنا
+            معلومات مختصرة تساعدك على معرفة الخدمات وطريقة الاستفسار.
           </p>
         </motion.div>
 
@@ -75,19 +75,6 @@ export default function FAQ() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div 
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          <p className="text-muted-foreground mb-6">هل لديك سؤال آخر لم تجد إجابته؟</p>
-          <a href="/#contact" className="btn-primary inline-block">
-            تواصل مع فريقنا
-          </a>
-        </motion.div>
       </div>
     </section>
   )

@@ -5,6 +5,16 @@ import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { storeUrl } from '@/lib/seo'
 
+const navLinks = [
+  { name: 'الرئيسية', href: '/' },
+  { name: 'خدماتنا', href: '/#services' },
+  { name: 'شركاؤنا', href: '/#partners' },
+  { name: 'المتجر والمنتجات', href: '/products' },
+  { name: 'لماذا مدماك؟', href: '/#why-madmak' },
+  { name: 'الأسئلة الشائعة', href: '/#faq' },
+  { name: 'تواصل معنا', href: '/#contact' },
+]
+
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -31,7 +41,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-20">
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-primary p-2 -mr-2"
+            className="lg:hidden text-primary p-2 -mr-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="فتح القائمة"
             aria-expanded={isOpen}
@@ -40,8 +50,8 @@ export default function Navigation() {
           </button>
 
           {/* Centered Logo for Mobile, Right for Desktop */}
-          <div className="flex-1 md:flex-none text-center md:text-right">
-            <a href="/" aria-label="مدماك فيجن - الصفحة الرئيسية" className="text-2xl font-bold text-primary flex items-center justify-center md:justify-end gap-2 group">
+          <div className="flex-1 lg:flex-none text-center lg:text-right">
+            <a href="/" aria-label="مدماك فيجن - الصفحة الرئيسية" className="text-2xl font-bold text-primary flex items-center justify-center lg:justify-end gap-2 group">
               <div className="flex items-center gap-2">
                 <img
                   src="/images/logo.webp"
@@ -58,14 +68,8 @@ export default function Navigation() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8 ml-12">
-            {[
-              { name: 'خدماتنا', href: '/#services' },
-              { name: 'المنتجات', href: '/products' },
-              { name: 'من نحن', href: '/#about' },
-              { name: 'المتجر', href: storeUrl },
-              { name: 'طلب عرض سعر', href: '/#contact' },
-            ].map((item) => (
+          <div className="hidden lg:flex items-center gap-6 ml-12">
+            {navLinks.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
@@ -79,9 +83,11 @@ export default function Navigation() {
               href={storeUrl}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              target="_blank"
+              rel="noreferrer"
               className="btn-primary"
             >
-              تسوق الآن
+              زيارة المتجر
             </motion.a>
           </div>
 
@@ -94,23 +100,21 @@ export default function Navigation() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-t border-gray-100"
+              className="lg:hidden overflow-hidden border-t border-gray-100"
             >
               <div className="py-4 space-y-4 bg-white/95 backdrop-blur-sm rounded-b-2xl shadow-xl px-4">
-                <a href="/#services" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
-                  خدماتنا
-                </a>
-                <a href="/products" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
-                  المنتجات
-                </a>
-                <a href="/#about" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
-                  من نحن
-                </a>
-                <a href="/#contact" className="block py-2 text-foreground hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
-                  طلب عرض سعر
-                </a>
+                {navLinks.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="block py-2 text-foreground hover:text-primary font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ))}
                 <a href={storeUrl} className="btn-primary w-full mt-4 block text-center" onClick={() => setIsOpen(false)}>
-                  تسوق الآن من المتجر
+                  زيارة المتجر
                 </a>
               </div>
             </motion.div>

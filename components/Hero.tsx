@@ -23,7 +23,7 @@ const itemVariants: Variants = {
 
 export default function Hero() {
   return (
-    <section className="min-h-[90vh] bg-gradient-to-b from-secondary/50 to-background pt-12 pb-20 overflow-hidden relative">
+    <section id="home" className="min-h-[90vh] bg-gradient-to-b from-secondary/50 to-background pt-12 pb-20 overflow-hidden relative">
       {/* Background Pattern - subtle geometric feel */}
       <div className="absolute inset-0 z-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#14215B 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
@@ -42,26 +42,26 @@ export default function Hero() {
           >
             <motion.div variants={itemVariants} className="inline-block mb-4">
               <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/20">
-                خدمات متخصصة وموثوقة
+                مدماك فيجن
               </span>
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-bold text-foreground mb-4 tracking-tight leading-[1.2] md:leading-[1.25] max-w-xl">
               مدماك فيجن
               <br />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-l from-primary to-primary/70">
-                لتجهيز مراكز العلاج الطبيعي والرعاية النهارية
+                لتجهيز مراكز العلاج الطبيعي والتأهيل في السعودية
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
-              نجهّز مراكز العلاج الطبيعي والرعاية النهارية ورعاية كبار السن في السعودية، ونورّد أجهزة العلاج الطبيعي ومعدات إعادة التأهيل للمنشآت والاستخدام المنزلي، مع توصيل لجميع مدن المملكة.
+              نساعد منشآت العلاج الطبيعي والرعاية النهارية والمرافق الطبية على استكشاف أجهزة ومعدات التأهيل وأدوات الحركة المناسبة لاحتياجها، مع تأكيد المواصفات والتوفر عند الطلب.
             </motion.p>
             <motion.div variants={itemVariants} className="flex gap-4 flex-wrap">
-              <a href="/products" className="btn-primary inline-flex items-center gap-2 group">
-                تصفح المنتجات والأسعار
+              <a href="#contact" className="btn-primary inline-flex items-center gap-2 group">
+                اطلب عرض سعر
                 <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
               </a>
-              <a href="#contact" className="btn-secondary">
-                اطلب عرض سعر
+              <a href="#services" className="btn-secondary">
+                استكشف حلول التجهيز
               </a>
             </motion.div>
           </motion.div>
@@ -80,6 +80,7 @@ export default function Hero() {
                 width={898}
                 height={559}
                 sizes="(min-width: 768px) 50vw, 100vw"
+                fetchPriority="high"
                 className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
                 priority
               />
@@ -100,8 +101,8 @@ export default function Hero() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-gray-900">جودة معتمدة</p>
-                  <p className="text-xs text-gray-500">ضمان شامل</p>
+                  <p className="text-sm font-bold text-gray-900">حلول متكاملة</p>
+                  <p className="text-xs text-gray-500">لتجهيز منشآت الرعاية والتأهيل</p>
                 </div>
               </div>
             </motion.div>

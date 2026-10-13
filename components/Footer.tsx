@@ -31,7 +31,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-white leading-relaxed mb-8 text-lg">
-              نوفر منتجات وأجهزة متخصصة في العلاج الطبيعي والرعاية النهارية ورعاية كبار السن داخل المملكة.
+              حلول تجهيز وتوريد لمراكز العلاج الطبيعي والرعاية النهارية والمرافق الطبية في المملكة العربية السعودية.
             </p>
             <div className="flex gap-4">
               {[
@@ -62,17 +62,17 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h4 className="text-xl font-bold mb-8 relative inline-block">
-              الروابط السريعة
+              روابط سريعة
               <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-primary rounded-full"></span>
             </h4>
             <ul className="space-y-4">
               {[
-                { name: 'المنتجات والأسعار', href: '/products' },
-                { name: 'متجر مدماك فيجن', href: storeUrl },
-                { name: 'الخدمات', href: '/#services' },
-                { name: 'عن مدماك فيجن', href: '/#about' },
+                { name: 'خدماتنا', href: '/#services' },
+                { name: 'المتجر والمنتجات', href: '/products' },
                 { name: 'الأسئلة الشائعة', href: '/#faq' },
-                { name: 'تواصل معنا', href: '/#contact' },
+                { name: 'لماذا مدماك فيجن؟', href: '/#why-madmak' },
+                { name: 'المتجر الرسمي', href: storeUrl },
+                { name: 'اطلب عرض سعر', href: '/#contact' },
               ].map((item) => (
                 <li key={item.name}>
                   <a href={item.href} className="text-white hover:text-primary transition flex items-center gap-2 group">
@@ -160,14 +160,14 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white text-sm text-center md:text-right">
-              © جميع الحقوق محفوظة لدى مدماك فيجن 2026
+              © 2026 مدماك فيجن. جميع الحقوق محفوظة.
             </p>
             <div className="flex gap-8 text-sm text-white">
-              <a href={storeUrl} className="hover:text-primary transition">
-                تسوق من المتجر
-              </a>
               <a href="/sitemap.xml" className="hover:text-primary transition">
                 خريطة الموقع
+              </a>
+              <a href="/#home" className="hover:text-primary transition">
+                العودة إلى الأعلى ↑
               </a>
             </div>
           </div>
