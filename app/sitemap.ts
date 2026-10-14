@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified,
       changeFrequency: "weekly",
       priority: 1,
-      images: [`${siteUrl}/images/hero-physiotherapy-equipment.webp`],
+      images: [`${siteUrl}/assets/images/hero-physiotherapy-clinic.webp`],
     },
     ...servicePages.map((page) => ({
       url: `${siteUrl}/${page.slug}`,

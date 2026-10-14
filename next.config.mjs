@@ -16,6 +16,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // The home page is the owner's static landing page (public/home.html, styles.css, script.js, assets/).
+  async rewrites() {
+    return {
+      beforeFiles: [{ source: '/', destination: '/home.html' }],
+    }
+  },
+  async redirects() {
+    return [{ source: '/home.html', destination: '/', permanent: true }]
+  },
 }
 
 export default nextConfig
