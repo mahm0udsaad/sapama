@@ -9,7 +9,7 @@ const navLinks = [
   { name: 'الرئيسية', href: '/' },
   { name: 'خدماتنا', href: '/#services' },
   { name: 'شركاؤنا', href: '/#partners' },
-  { name: 'المتجر والمنتجات', href: '/#store' },
+  { name: 'المتجر والمنتجات', href: '/products' },
   { name: 'لماذا مدماك؟', href: '/#why-madmak' },
   { name: 'الأسئلة الشائعة', href: '/#faq' },
   { name: 'تواصل معنا', href: '/#contact' },
