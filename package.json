@@ -6,7 +6,6 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "sync:store": "node scripts/sync-store-catalog.mjs",
     "lint": "next lint"
   },
   "dependencies": {

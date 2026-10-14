@@ -2,7 +2,6 @@
 export const storeUrl = "https://madmakvision.com"
 
 export type StoreCategory = {
-  /** Path segment of the category page on this site: /categories/<slug>. */
   slug: string
   /** Category id on the store. */
   id: string
@@ -32,7 +31,7 @@ const category = (
   metaDescription,
 })
 
-/** Real categories of the store. Each has a product listing page on this site. */
+/** Real categories of the store. Service pages link to them. */
 export const storeCategories = {
   physiotherapy: category(
     "physiotherapy",
@@ -187,25 +186,4 @@ export const storeCategories = {
   ),
 } as const satisfies Record<string, StoreCategory>
 
-export type StoreCategoryKey = keyof typeof storeCategories
-
 export const storeCategoryList: StoreCategory[] = Object.values(storeCategories)
-
-export const categoryPath = (category: StoreCategory) => `/categories/${category.slug}`
-
-export function findCategoryBySlug(slug: string) {
-  return storeCategoryList.find((item) => item.slug === slug)
-}
-
-export function findCategoryById(id: string) {
-  return storeCategoryList.find((item) => item.id === id)
-}
-
-export function parentCategory(category: StoreCategory) {
-  return category.parent ? storeCategories[category.parent as StoreCategoryKey] : undefined
-}
-
-export function childCategories(category: StoreCategory) {
-  const key = (Object.keys(storeCategories) as StoreCategoryKey[]).find((item) => storeCategories[item] === category)
-  return storeCategoryList.filter((item) => item.parent === key)
-}

@@ -1,4 +1,4 @@
-import { categoryPath, storeCategories, storeCategoryList, storeUrl, type StoreCategory } from "./store-categories"
+import { storeCategories, storeCategoryList, storeUrl, type StoreCategory } from "./store-categories"
 
 export { storeCategories, storeUrl }
 
@@ -122,11 +122,11 @@ export function organizationSchema(siteUrl: string) {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: `منتجات متجر ${companyName}`,
-      url: `${siteUrl}/products`,
+      url: storeUrl,
       itemListElement: storeCategoryList.map((category) => ({
         "@type": "OfferCatalog",
         name: category.name,
-        url: `${siteUrl}${categoryPath(category)}`,
+        url: category.url,
       })),
     },
   }
@@ -166,7 +166,7 @@ export type ServicePage = {
   overview: string[]
   image: string
   imageAlt: string
-  /** Product category the page's CTAs point to. Falls back to the products hub. */
+  /** Store category the page's CTAs point to. Falls back to the store home. */
   storeCategory?: StoreCategory
   sections: { heading: string; body: string; items?: string[]; storeLinks?: StoreCategory[] }[]
   faqs: { question: string; answer: string }[]
@@ -198,8 +198,8 @@ export const servicePages: ServicePage[] = [
       "نقسّم المركز عادةً إلى أربع مناطق عمل: غرف العلاج الكهربائي، غرف العلاج اليدوي والطاولات، صالة التأهيل الحركي والتمارين العلاجية، وركن التقييم والقياس. ولكل منطقة أجهزتها ومتطلباتها من التمديدات الكهربائية والمسافات الآمنة لحركة المريض والأخصائي، ونحسم هذه التفاصيل في مرحلة التخطيط قبل وصول أي جهاز إلى الموقع.",
       "نخدم المراكز والعيادات والمستشفيات في الرياض وجدة والدمام وبقية مدن المملكة، مع شحن الأجهزة وتركيبها وتشغيلها في الموقع. ويمكنكم الاطلاع على الأجهزة وأسعارها مباشرة في متجر مدماك فيجن، ثم طلب عرض سعر مفصل للمشروع كاملًا.",
     ],
-    image: "/images/physiotherapy-room-setup.webp",
-    imageAlt: "تجهيز مركز علاج طبيعي متكامل بغرف العلاج وصالة التأهيل",
+    image: "/assets/images/physiotherapy-centre-card.webp",
+    imageAlt: "مركز علاج طبيعي حديث مجهز بطاولات علاج وأجهزة تمارين زرقاء",
     storeCategory: storeCategories.physiotherapy,
     sections: [
       {
@@ -311,8 +311,8 @@ export const servicePages: ServicePage[] = [
       "رتّبنا المتجر حسب أقسام العمل داخل المركز، فتجدون الأجهزة الكهربائية في قسم، والطاولات في قسم، ومعدات صالة التأهيل في قسم ثالث، وهكذا. يساعد هذا الترتيب مسؤول المشتريات على مطابقة القائمة غرفةً بغرفة، والتأكد من عدم إغفال الملحقات والمواد الاستهلاكية التي يحتاجها التشغيل اليومي.",
       "بعد اعتماد القائمة نصدر عرض سعر رسميًا شاملًا الضريبة، ثم نتولى الشحن والتركيب في موقعكم داخل الرياض أو جدة أو الدمام أو أي مدينة أخرى في المملكة.",
     ],
-    image: "/images/physiotherapy-center-equipment.webp",
-    imageAlt: "أجهزة ومعدات العلاج الطبيعي الموردة للمراكز والعيادات",
+    image: "/assets/images/mobility-aids-card.webp",
+    imageAlt: "كراسٍ متحركة وأدوات مساعدة على الحركة معروضة داخل مساحة طبية مشرقة",
     storeCategory: storeCategories.physiotherapy,
     sections: [
       {
@@ -686,8 +686,8 @@ export const servicePages: ServicePage[] = [
       "نبدأ بمراجعة المخطط وعدد المستفيدين والفئات العمرية، ثم نضع لكل غرفة قائمة تجهيز مستقلة: الأثاث بمقاسات الأطفال، الأدوات العلاجية، وسائل الأمان مثل أرضيات الفوم، ومستلزمات عيادة التمريض. وكل بند في القائمة مرتبط بمنتج فعلي في متجر مدماك فيجن، فتعرفون السعر والمواصفات قبل اعتماد العرض.",
       "نجهّز مراكز الرعاية النهارية في الرياض وجدة والدمام وبقية مدن المملكة، ونتولى التوريد والتركيب وتسليم الغرف جاهزة للتشغيل.",
     ],
-    image: "/images/daycare-rehabilitation-room.webp",
-    imageAlt: "تجهيز غرف مراكز الرعاية النهارية للتأهيل",
+    image: "/assets/images/daycare-centre-card.webp",
+    imageAlt: "مساحة رعاية وتأهيل نهاري ملونة تضم أرجوحة علاجية ومكعبات وأنشطة حسية",
     storeCategory: storeCategories.daycare,
     sections: [
       {
@@ -951,11 +951,3 @@ export const servicePages: ServicePage[] = [
     ],
   },
 ]
-
-/** The setup guide that covers a product category, if any. */
-export function servicePageForCategory(category: StoreCategory) {
-  return (
-    servicePages.find((page) => page.storeCategory === category) ??
-    servicePages.find((page) => page.sections.some((section) => section.storeLinks?.includes(category)))
-  )
-}

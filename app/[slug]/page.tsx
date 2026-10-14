@@ -14,8 +14,8 @@ import {
   organizationId,
   servedCities,
   servicePages,
+  storeUrl,
 } from "@/lib/seo"
-import { categoryPath } from "@/lib/store-categories"
 
 export const dynamicParams = false
 
@@ -63,8 +63,8 @@ export default async function ServicePage({ params }: PageProps) {
   const siteUrl = getSiteUrl()
   const pageUrl = `${siteUrl}/${page.slug}`
   const relatedPages = servicePages.filter((item) => item.slug !== page.slug)
-  const productsLink = page.storeCategory ? categoryPath(page.storeCategory) : "/products"
-  const productsLinkLabel = page.storeCategory ? `تصفح منتجات ${page.storeCategory.name}` : "تصفح جميع المنتجات"
+  const storeLink = page.storeCategory?.url ?? storeUrl
+  const storeLinkLabel = page.storeCategory ? `تسوق ${page.storeCategory.name} من المتجر` : "تصفح متجر مدماك فيجن"
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -93,12 +93,12 @@ export default async function ServicePage({ params }: PageProps) {
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: page.title,
-          url: `${siteUrl}${productsLink}`,
+          url: storeLink,
           itemListElement: page.sections.map((section) => ({
             "@type": "OfferCatalog",
             name: section.heading,
             description: section.body,
-            ...(section.storeLinks?.[0] && { url: `${siteUrl}${categoryPath(section.storeLinks[0])}` }),
+            ...(section.storeLinks?.[0] && { url: section.storeLinks[0].url }),
           })),
         },
       },
@@ -140,8 +140,8 @@ export default async function ServicePage({ params }: PageProps) {
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">{page.intro}</p>
                 <div className="flex gap-4 flex-wrap">
-                  <a href={productsLink} className="btn-primary inline-flex items-center gap-2 group">
-                    {productsLinkLabel}
+                  <a href={storeLink} className="btn-primary inline-flex items-center gap-2 group">
+                    {storeLinkLabel}
                     <ArrowLeft size={20} className="group-hover:-translate-x-1 transition" />
                   </a>
                   <a href="/#contact" className="btn-secondary">
@@ -191,11 +191,11 @@ export default async function ServicePage({ params }: PageProps) {
                     {section.storeLinks.map((category) => (
                       <a
                         key={category.slug}
-                        href={categoryPath(category)}
+                        href={category.url}
                         className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
                       >
                         <ShoppingBag size={18} />
-                        منتجات {category.name}
+                        {category.name} في المتجر
                       </a>
                     ))}
                   </div>
@@ -235,8 +235,8 @@ export default async function ServicePage({ params }: PageProps) {
                   </a>
                 </p>
               </div>
-              <a href={productsLink} className="bg-white text-primary font-bold py-3 px-8 rounded-xl hover:shadow-lg transition">
-                {page.storeCategory ? `منتجات ${page.storeCategory.name}` : "جميع المنتجات"}
+              <a href={storeLink} className="bg-white text-primary font-bold py-3 px-8 rounded-xl hover:shadow-lg transition">
+                {page.storeCategory ? `قسم ${page.storeCategory.name}` : "زيارة المتجر"}
               </a>
             </div>
 

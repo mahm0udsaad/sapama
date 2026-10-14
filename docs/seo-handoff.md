@@ -169,17 +169,9 @@ Who ranks now (Bing, Saudi Arabic, 2026-10-12):
 
 The store appears for none of these, which is consistent with it not being indexed.
 
-## 5. Product catalog on the landing site
+## 5. Product catalog (removed)
 
-Added 2026-10-13 because the store's SEO settings cannot be edited. The landing site now carries the store's catalog and sends buyers to Salla to pay.
-
-- `/products` is the hub, `/categories/<slug>` lists each of the 17 store categories, and `/products/<arabic-slug>-p<id>` is one page per product (304 pages).
-- Each product page shows availability, the description, and a buy button that opens the product on `madmakvision.com` with `utm_source=madmakvi.com`, so referrals are measurable.
-- Prices are hidden on this site by request (2026-10-13); buyers see the price on the store. Product pages therefore carry no `Product`/`Offer` structured data, only `ItemPage` and breadcrumbs. Category pages carry `ItemList`.
-- Data comes from the store's public storefront API (`lib/store-api.mjs`). Builds use the committed snapshot `lib/store-catalog.snapshot.json`; deployed pages re-read the catalog and stock from the store every 6 hours.
-- Run `pnpm sync:store` and commit the result after adding products or editing descriptions in Salla. New products appear on their own within 6 hours, but with a plain description until the snapshot is refreshed.
-- This reverses the keyword split in section 4 for product and buying queries: those now target the pages on this site. If the store's own SEO is ever fixed, choose one site per product to avoid two copies competing.
-- 27 products have no description in the store, so their pages are thin. Add descriptions in Salla, then run the sync.
+A catalog of 304 product pages and 17 category pages ran on this site from 2026-10-13 and was removed by request on 2026-10-14. Old `/products/<store-slug>-p<id>` URLs redirect (301) to the same product on `madmakvision.com`; `/products` and `/categories/*` redirect to the store home. Service pages link to the store's category pages directly.
 
 ## 6. Off-site checklist
 

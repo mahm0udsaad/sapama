@@ -23,7 +23,13 @@ const nextConfig = {
     }
   },
   async redirects() {
-    return [{ source: '/home.html', destination: '/', permanent: true }]
+    return [
+      { source: '/home.html', destination: '/', permanent: true },
+      // The product catalog was removed; old product URLs (/products/<store-slug>-p<id>) go to the same product in the store.
+      { source: '/products/:slug-p:id(\\d+)', destination: 'https://madmakvision.com/:slug/p:id', permanent: true },
+      { source: '/products/:path*', destination: 'https://madmakvision.com/', permanent: true },
+      { source: '/categories/:path*', destination: 'https://madmakvision.com/', permanent: true },
+    ]
   },
 }
 
