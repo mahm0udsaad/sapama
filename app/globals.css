@@ -190,3 +190,71 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/*
+ * Public pages (service, product and category pages) follow the landing page in public/styles.css.
+ * Scoped to .site-theme so the admin and quotation screens keep their own palette.
+ */
+@layer base {
+  .site-theme {
+    --background: 0 0% 100%;
+    --foreground: 214 65% 24%; /* #153763 navy headings */
+    --card: 0 0% 100%;
+    --card-foreground: 214 65% 24%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 214 65% 24%;
+    --primary: 225 67% 43%; /* #2448B7 blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 203 56% 95%; /* #EDF5FA light blue wash */
+    --secondary-foreground: 214 65% 24%;
+    --muted: 210 50% 98%; /* #F6F9FC section background */
+    --muted-foreground: 219 12% 47%; /* #697386 */
+    --accent: 172 92% 37%; /* #08B7A1 teal */
+    --accent-foreground: 0 0% 100%;
+    --border: 210 48% 92%; /* #E0EAF4 */
+    --input: 210 48% 92%;
+    --ring: 225 67% 43%;
+
+    color: #263b5b;
+    background-color: #fff;
+    font-family: var(--font-plex-arabic), Tahoma, Arial, sans-serif;
+  }
+}
+
+@layer components {
+  .site-theme .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-0 px-6 py-3 font-semibold text-white transition-all duration-300;
+    background-image: linear-gradient(110deg, #3448b5, #08b7a1);
+  }
+  .site-theme .btn-primary:hover {
+    @apply -translate-y-0.5 shadow-lg;
+    background-image: linear-gradient(110deg, #2b3d9e, #069a88);
+  }
+
+  .site-theme .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border bg-white px-6 py-3 font-semibold transition-all duration-300;
+    color: #153763;
+    border-color: #8fa9cc;
+  }
+  .site-theme .btn-secondary:hover {
+    @apply text-white;
+    background-color: #2448b7;
+    border-color: #2448b7;
+  }
+
+  .site-theme .service-card {
+    @apply overflow-hidden bg-white transition-all duration-300;
+    border: 1px solid #e0eaf4;
+    border-radius: 15px;
+    box-shadow: 0 8px 22px rgb(38 85 141 / 6%);
+  }
+  .site-theme .service-card:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 14px 32px rgb(38 85 141 / 12%);
+  }
+
+  /* Gradient of the store feature block on the landing page. */
+  .brand-gradient {
+    background-image: linear-gradient(115deg, #173c9a 0%, #4a4cc0 54%, #0b7899 100%);
+  }
+}

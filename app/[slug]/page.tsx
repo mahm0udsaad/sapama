@@ -108,7 +108,7 @@ export default async function ServicePage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full bg-background">
+    <div id="top" className="site-theme w-full bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -225,7 +225,7 @@ export default async function ServicePage({ params }: PageProps) {
 
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-primary text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="rounded-3xl brand-gradient text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">جاهز للطلب؟</h2>
                 <p className="text-white/90">

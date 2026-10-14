@@ -121,7 +121,7 @@ export default async function ProductPage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full bg-background">
+    <div id="top" className="site-theme w-full bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Navigation />
 

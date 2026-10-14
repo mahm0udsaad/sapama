@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Menu, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { ArrowUpLeft } from 'lucide-react'
 import { storeUrl } from '@/lib/seo'
 
+// Mirrors the header of the landing page (public/home.html).
 const navLinks = [
   { name: 'الرئيسية', href: '/' },
   { name: 'خدماتنا', href: '/#services' },
@@ -17,110 +17,83 @@ const navLinks = [
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-primary/10' : 'bg-transparent border-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> 
+    <header className="sticky top-0 z-50 w-full border-b border-[rgb(21_55_99/7%)] bg-white/95 backdrop-blur-md shadow-[0_3px_16px_rgb(28_72_125/5%)]">
+      <div className="mx-auto flex min-h-[76px] w-[min(1360px,88%)] items-center justify-between gap-8">
+        <a href="/" aria-label="مدماك فيجن - الرئيسية" className="shrink-0">
+          <img
+            src="/assets/images/madmak-vision-logo-small.png"
+            alt="مدماك فيجن"
+            width={900}
+            height={274}
+            className="h-[52px] w-[170px] object-contain lg:h-[60px] lg:w-[190px]"
+          />
+        </a>
 
-        <div className="flex justify-between items-center h-20">
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-primary p-2 -mr-2"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="فتح القائمة"
-            aria-expanded={isOpen}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          {/* Centered Logo for Mobile, Right for Desktop */}
-          <div className="flex-1 lg:flex-none text-center lg:text-right">
-            <a href="/" aria-label="مدماك فيجن - الصفحة الرئيسية" className="text-2xl font-bold text-primary flex items-center justify-center lg:justify-end gap-2 group">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/images/logo.webp"
-                  alt="مدماك فيجن"
-                  width={600}
-                  height={182}
-                  className="h-12 md:h-16 w-auto object-contain"
-                  style={{ minWidth: 150, mixBlendMode: 'multiply' }}
-                />
-                {/* Optionally: add Arabic name if you want to keep the bilingual touch */}
-                {/* <span className="text-foreground hidden md:inline">مادمـاك</span> */}
-              </div>
+        <nav aria-label="التنقل الرئيسي" className="hidden items-center gap-[clamp(18px,2.4vw,32px)] lg:flex">
+          {navLinks.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="group relative text-[13px] font-medium text-[#415b7c] transition-colors hover:text-[#2448b7]"
+            >
+              {item.name}
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 origin-right scale-x-0 rounded bg-[#2448b7] transition-transform duration-200 group-hover:scale-x-100" />
             </a>
-          </div>
+          ))}
+          <a
+            href={storeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[39px] items-center gap-2 whitespace-nowrap rounded-full px-4 text-[12px] font-semibold text-white transition hover:-translate-y-0.5 bg-[linear-gradient(105deg,#5145bc_0%,#08bcae_100%)]"
+          >
+            زيارة المتجر
+            <ArrowUpLeft size={16} />
+          </a>
+        </nav>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6 ml-12">
-            {navLinks.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-muted-foreground hover:text-primary transition font-medium relative group"
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            ))}
-            <motion.a
-              href={storeUrl}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-            >
-              زيارة المتجر
-            </motion.a>
-          </div>
-
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden border-t border-gray-100"
-            >
-              <div className="py-4 space-y-4 bg-white/95 backdrop-blur-sm rounded-b-2xl shadow-xl px-4">
-                {navLinks.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block py-2 text-foreground hover:text-primary font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-                <a href={storeUrl} className="btn-primary w-full mt-4 block text-center" onClick={() => setIsOpen(false)}>
-                  زيارة المتجر
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <button
+          type="button"
+          className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-[#e2e9f2] bg-white text-[#153763] lg:hidden"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'إغلاق قائمة التنقل' : 'فتح قائمة التنقل'}
+          aria-expanded={isOpen}
+          aria-controls="site-navigation-mobile"
+        >
+          <span className={`h-0.5 w-[19px] rounded bg-current transition-transform ${isOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+          <span className={`h-0.5 w-[19px] rounded bg-current transition-opacity ${isOpen ? 'opacity-0' : ''}`} />
+          <span className={`h-0.5 w-[19px] rounded bg-current transition-transform ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+        </button>
       </div>
-    </motion.nav>
+
+      {isOpen && (
+        <nav
+          id="site-navigation-mobile"
+          aria-label="التنقل الرئيسي"
+          className="border-t border-[#e2e9f2] bg-white px-[6%] pb-5 pt-2 lg:hidden"
+        >
+          {navLinks.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={() => setIsOpen(false)}
+              className="block border-b border-[#eef3f8] py-3 text-sm font-medium text-[#415b7c] hover:text-[#2448b7]"
+            >
+              {item.name}
+            </a>
+          ))}
+          <a
+            href={storeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex min-h-[44px] items-center justify-center gap-2 rounded-full text-sm font-semibold text-white bg-[linear-gradient(105deg,#5145bc_0%,#08bcae_100%)]"
+          >
+            زيارة المتجر
+            <ArrowUpLeft size={16} />
+          </a>
+        </nav>
+      )}
+    </header>
   )
 }

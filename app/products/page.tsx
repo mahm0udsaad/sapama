@@ -56,7 +56,7 @@ export default async function ProductsPage() {
   }
 
   return (
-    <div className="w-full bg-background">
+    <div id="top" className="site-theme w-full bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Navigation />
 

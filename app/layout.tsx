@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 import {
@@ -19,6 +19,13 @@ import {
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
+// Font of the landing page; public pages use it through the .site-theme class.
+const plexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-plex-arabic",
+})
 const siteUrl = getSiteUrl()
 
 export const metadata: Metadata = {
@@ -105,7 +112,7 @@ export default function RootLayout({
 
   return (
     <html lang="ar" dir="rtl">
-      <body className="font-sans antialiased">
+      <body className={`${plexArabic.variable} font-sans antialiased`}>
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
