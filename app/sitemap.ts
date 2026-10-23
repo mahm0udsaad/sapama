@@ -13,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
       images: [`${siteUrl}/assets/images/hero-physiotherapy-clinic.webp`],
     },
+    {
+      url: `${siteUrl}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     ...servicePages.map((page) => ({
       url: `${siteUrl}/${page.slug}`,
       lastModified,

@@ -9,6 +9,7 @@ const quickLinks = [
   { name: 'تجهيز المرافق الطبية', href: '/physiotherapy-equipment' },
   { name: 'الأسئلة الشائعة', href: '/#faq' },
   { name: 'لماذا مدماك فيجن؟', href: '/#why-madmak' },
+  { name: 'المدونة', href: '/blog' },
   { name: 'المتجر الرسمي', href: storeUrl, external: true },
   { name: 'اطلب عرض سعر', href: '/#contact' },
   { name: 'سياسة الخصوصية', href: '/privacy.html' },
